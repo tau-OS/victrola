@@ -35,7 +35,7 @@ sources = [
 
   'src/application.vala',
   'src/main.vala',
-  'src/play-bar.vala',
+  'src/Widgets/play-bar.vala',
   'src/Utils/async-task.vala',
   'src/Utils/gst-player.vala',
   'src/Utils/mpris.vala',
