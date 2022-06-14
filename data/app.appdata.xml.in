@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>@app_id@</id>
+    <name>Victrola</name>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0-or-later</project_license>
+    <summary>Play your music, in an elegant way.</summary>
+
+    <url type="homepage">https://github.com/tau-OS/victrola</url>
+    <url type="bugtracker">https://github.com/tau-OS/victrola/issues</url>
+
+    <launchable type="desktop-id">@app_id@.desktop</launchable>
+    <content_rating type="oars-1.1"/>
+
+    <description>
+      	<p>A fast and lightweight music player.</p>
+    </description>
+        
+    <screenshots>
+        <screenshot type="default">
+            <image>https://gitlab.gnome.org/tau-OS/victrola/-/raw/main/data/shot.png</image>
+        </screenshot>
+    </screenshots>
+
+    <releases>
+        <release version="0.1" date="2022-08-01">
+            <description>
+                <p>First release.</p>
+            </description>
+        </release>
+    </releases>
+
+    <kudos>
+        <kudo>HiDpiIcon</kudo>
+        <kudo>ModernToolkit</kudo>
+        <kudo>Notifications</kudo>
+    </kudos>
+
+</component>

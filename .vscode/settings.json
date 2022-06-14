@@ -1,0 +1,4 @@
+{
+    "mesonbuild.configureOnOpen": true,
+    "C_Cpp.errorSquiggles": "Disabled"
+}
