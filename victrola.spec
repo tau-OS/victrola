@@ -53,3 +53,7 @@ install -pm 0644 %SOURCE2 README.md
 %{_datadir}/applications/*
 %doc README.md
 %license licenses/LICENSE
+
+%changelog
+* Tue Jun 14 2022 Jamie Murphy <jamie@fyralabs.com> - 1.0-1
+- Initial Release
