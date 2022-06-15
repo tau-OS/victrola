@@ -101,6 +101,10 @@
   <menu id="primary_menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="action">app.keys</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">_About Victrola</attribute>
         <attribute name="action">app.about</attribute>
       </item>

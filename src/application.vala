@@ -1,6 +1,7 @@
 namespace Victrola {
     public const string ACTION_APP = "app.";
     public const string ACTION_ABOUT = "about";
+    public const string ACTION_KEYS = "keys";
     public const string ACTION_PLAY = "play";
     public const string ACTION_PREV = "prev";
     public const string ACTION_NEXT = "next";
@@ -32,6 +33,7 @@ namespace Victrola {
 
             ActionEntry[] action_entries = {
                 { ACTION_ABOUT, show_about },
+                { ACTION_KEYS, show_keys },
                 { ACTION_PLAY, play_pause },
                 { ACTION_PREV, play_previous },
                 { ACTION_NEXT, play_next },
@@ -42,8 +44,8 @@ namespace Victrola {
 
             ActionShortKey[] action_keys = {
                 { ACTION_PLAY, "<primary>p" },
-                { ACTION_PREV, "<primary>Left" },
-                { ACTION_NEXT, "<primary>Right" },
+                { ACTION_PREV, "<primary>m" },
+                { ACTION_NEXT, "<primary>n" },
                 { ACTION_SEARCH, "<primary>f" },
                 { ACTION_QUIT, "<primary>q" }
             };
@@ -285,6 +287,18 @@ namespace Victrola {
             //      He.Colors.ORANGE
             //  );
             //  about.present ();
+        }
+
+        public void show_keys () {
+            try {
+                var build = new Gtk.Builder ();
+                build.add_from_resource ("/co/tauos/Victrola/help-overlay.ui");
+                var window =  (Gtk.ShortcutsWindow) build.get_object ("help_overlay");
+                window.set_transient_for (active_window);
+                window.show ();
+            } catch (Error e) {
+                warning ("Failed to open shortcuts window: %s\n", e.message);
+            }
         }
 
         private void on_bus_acquired (DBusConnection connection, string name) {
