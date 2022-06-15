@@ -5,6 +5,7 @@ namespace Victrola {
         private Gtk.Button _prev = new Gtk.Button ();
         private Gtk.Button _play = new Gtk.Button ();
         private Gtk.Button _next = new Gtk.Button ();
+        private Gtk.Button _stop = new Gtk.Button ();
         private int _duration = 1;
         private int _position = 0;
         Application app = (Application) GLib.Application.get_default ();
@@ -17,6 +18,7 @@ namespace Victrola {
             add_child (builder, _prev, "left");
             add_child (builder, _play, "left");
             add_child (builder, _next, "left");
+            add_child (builder, _stop, "left");
 
             _repeat.icon_name = "media-playlist-repeat-symbolic";
             _repeat.valign = Gtk.Align.CENTER;
@@ -44,6 +46,12 @@ namespace Victrola {
             _next.icon_name = "media-skip-forward-symbolic";
             _next.tooltip_text = _("Play Next");
             _next.add_css_class ("flat");
+
+            _stop.valign = Gtk.Align.CENTER;
+            _stop.action_name = ACTION_APP + ACTION_STOP;
+            _stop.icon_name = "media-playback-stop-symbolic";
+            _stop.tooltip_text = _("Stop");
+            _stop.add_css_class ("flat");
 
             player.duration_changed.connect ((duration) => {
                 this.duration = GstPlayer.to_second (duration);

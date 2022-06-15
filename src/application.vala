@@ -5,6 +5,7 @@ namespace Victrola {
     public const string ACTION_PLAY = "play";
     public const string ACTION_PREV = "prev";
     public const string ACTION_NEXT = "next";
+    public const string ACTION_STOP = "stop";
     public const string ACTION_SEARCH = "search";
     public const string ACTION_SORT = "sort";
     public const string ACTION_QUIT = "quit";
@@ -37,6 +38,7 @@ namespace Victrola {
                 { ACTION_PLAY, play_pause },
                 { ACTION_PREV, play_previous },
                 { ACTION_NEXT, play_next },
+                { ACTION_STOP, stop },
                 { ACTION_SEARCH, toggle_search },
                 { ACTION_QUIT, quit }
             };
@@ -185,6 +187,10 @@ namespace Victrola {
 
         public void play_pause() {
             _player.playing = !_player.playing;
+        }
+
+        public void stop() {
+            _player.playing = false;
         }
 
         public void play_previous () {
