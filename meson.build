@@ -53,7 +53,7 @@ conf.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
 configure_file(output: 'config.h', configuration: conf)
 
 asresources = gnome.compile_resources(
-	'as-resources', join_paths(meson.project_source_root(), 'data', 'app.gresource.xml'),
+	'as-resources', join_paths(meson.project_source_root(), 'data', 'co.tauos.Victrola.gresource.xml'),
 	source_dir: join_paths(meson.project_source_root(), 'data'),
 	c_name: 'as'
 )

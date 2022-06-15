@@ -80,7 +80,7 @@ namespace Victrola {
         }
 
         protected override void startup () {
-            resource_base_path = "/co/tauos/Enigma";
+            resource_base_path = "/co/tauos/Victrola";
 
             base.startup ();
 
