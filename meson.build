@@ -8,8 +8,24 @@ project('co.tauos.Victrola',
 gnome = import('gnome')
 i18n = import('i18n')
 
-app_id = meson.project_name()
+if get_option('development')
+  app_id = 'co.tauos.Victrola.Devel'
+  name_suffix = ' (Development)'
+else
+  app_id = 'co.tauos.Victrola'
+  name_suffix = ''
+endif
+
 version = meson.project_version()
+
+conf = configuration_data()
+conf.set_quoted('APP_ID', app_id)
+conf.set_quoted('NAME_SUFFIX', name_suffix)
+conf.set_quoted('VERSION', version)
+conf.set_quoted('GETTEXT_PACKAGE', app_id)
+conf.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
+conf.set10('DEVELOPMENT', get_option('development'))
+configure_file(output: 'config.h', configuration: conf)
 
 add_project_arguments('-DGETTEXT_PACKAGE="' + app_id + '"', language: 'c')
 
@@ -41,16 +57,9 @@ sources = [
   'src/Utils/mpris.vala',
   'src/Utils/song-store.vala',
   'src/Utils/tag-parser.vala',
-  'src/Widgets/preferences.vala',
   'src/Widgets/song-entry.vala',
   'src/window.vala',
 ]
-
-conf = configuration_data()
-conf.set_quoted('APP_ID', app_id)
-conf.set_quoted('VERSION', version)
-conf.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
-configure_file(output: 'config.h', configuration: conf)
 
 asresources = gnome.compile_resources(
 	'as-resources', join_paths(meson.project_source_root(), 'data', 'co.tauos.Victrola.gresource.xml'),
@@ -59,7 +68,7 @@ asresources = gnome.compile_resources(
 )
 
 executable(
-  app_id,
+  'co.tauos.Victrola',
   sources,
   asresources,
   vala_args: [

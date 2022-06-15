@@ -15,7 +15,6 @@ namespace Victrola {
         }
 
         private dynamic Gst.Pipeline? _pipeline = Gst.ElementFactory.make ("playbin", "player") as Gst.Pipeline;
-        private dynamic Gst.Element? _audio_sink = null;
         private Gst.ClockTime _duration = Gst.CLOCK_TIME_NONE;
         private Gst.ClockTime _position = Gst.CLOCK_TIME_NONE;
         private Gst.ClockTime _last_seeked_pos = Gst.CLOCK_TIME_NONE;
@@ -37,7 +36,6 @@ namespace Victrola {
                 var pipeline = (!)_pipeline;
                 pipeline.async_handling = true;
                 pipeline.flags = 0x0022; // audio | native audio
-                pipeline.bind_property ("volume", this, "volume", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
                 pipeline.get_bus ().add_watch (Priority.DEFAULT, bus_callback);
             }
         }
@@ -83,8 +81,6 @@ namespace Victrola {
             }
         }
 
-        public double volume { get; set; }
-
         public void play () {
             _pipeline?.set_state (Gst.State.PLAYING);
         }
@@ -106,15 +102,6 @@ namespace Victrola {
             if (diff > 10 * Gst.MSECOND || diff < -10 * Gst.MSECOND) {
                 _last_seeked_pos = position;
                 _pipeline?.seek_simple (Gst.Format.TIME, Gst.SeekFlags.ACCURATE | Gst.SeekFlags.FLUSH, (int64) position);
-            }
-        }
-
-        public void use_pipewire (bool use) {
-            if (_pipeline != null) {
-                _audio_sink = Gst.ElementFactory.make (use ? "pipewiresink" : "pulsesink", "audiosink");
-                ((!)_audio_sink).enable_last_sample = true;
-                ((!)_pipeline).audio_sink = _audio_sink;
-                print (@"Enable pipewire: $(use && _audio_sink != null)\n");
             }
         }
 

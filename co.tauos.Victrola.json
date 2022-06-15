@@ -4,6 +4,7 @@
     "runtime-version" : "daily",
     "sdk" : "co.tauos.Sdk",
     "command": "co.tauos.Victrola",
+    "desktop-file-name-suffix" : " (Development)",
     "finish-args": [
         "--device=dri",
         "--share=network",
@@ -34,6 +35,9 @@
             "name" : "victrola",
             "builddir" : true,
             "buildsystem" : "meson",
+            "config-opts" : [
+                "-Ddevelopment=true"
+            ],
             "sources" : [
                 {
                     "type" : "dir",

@@ -1,7 +1,6 @@
 namespace Victrola {
     public const string ACTION_APP = "app.";
     public const string ACTION_ABOUT = "about";
-    public const string ACTION_PREFS = "preferences";
     public const string ACTION_PLAY = "play";
     public const string ACTION_PREV = "prev";
     public const string ACTION_NEXT = "next";
@@ -20,7 +19,7 @@ namespace Victrola {
         private GstPlayer _player = new GstPlayer ();
         private Gtk.FilterListModel _song_list = new Gtk.FilterListModel (null, null);
         private SongStore _song_store = new SongStore ();
-        private Settings _settings = new Settings (Config.APP_ID);
+        private Settings _settings = new Settings ("co.tauos.Victrola");
         private MprisPlayer? _mpris = null;
 
         public signal void loading_changed (bool loading, uint size);
@@ -29,15 +28,14 @@ namespace Victrola {
         public signal void song_tag_parsed (Song song);
 
         public Application () {
-            Object (application_id: Config.APP_ID, flags: ApplicationFlags.HANDLES_OPEN);
+            Object (application_id: "co.tauos.Victrola", flags: ApplicationFlags.HANDLES_OPEN);
 
             ActionEntry[] action_entries = {
                 { ACTION_ABOUT, show_about },
-                { ACTION_PREFS, show_preferences },
                 { ACTION_PLAY, play_pause },
                 { ACTION_PREV, play_previous },
                 { ACTION_NEXT, play_next },
-                { ACTION_SEARCH, toggle_seach },
+                { ACTION_SEARCH, toggle_search },
                 { ACTION_QUIT, quit }
             };
             add_action_entries (action_entries, this);
@@ -54,9 +52,6 @@ namespace Victrola {
             }
 
             _song_list.model = _song_store.store;
-
-            _player.use_pipewire (_settings.get_boolean ("pipewire-sink"));
-            _player.volume = _settings.get_double ("volume");
 
             _player.end_of_stream.connect (() => {
                 if (single_loop) {
@@ -114,7 +109,6 @@ namespace Victrola {
 
         public override void shutdown () {
              _settings.set_string ("played-uri", _current_song?.uri ?? "");
-             _settings.set_double ("volume", _player.volume);
 
              delete_cover_tmp_file_async.begin ((obj, res) => {
                 delete_cover_tmp_file_async.end (res);
@@ -204,7 +198,7 @@ namespace Victrola {
             });
         }
 
-        public void toggle_seach () {
+        public void toggle_search () {
             var win = active_window as Window;
             if (win != null)
                 ((!)win).search_btn.active = ! ((!)win).search_btn.active;
@@ -275,24 +269,22 @@ namespace Victrola {
         }
 
         public void show_about () {
-            string[] authors = { "Lains" };
-            Gtk.show_about_dialog (active_window,
-                                   "logo-icon-name", application_id,
-                                   "program-name", _("Victrola"),
-                                   "authors", authors,
-                                   "version", Config.VERSION,
-                                   "license-type", Gtk.License.GPL_3_0,
-                                   "comments", _("A fast and lightweight music player.")
-                                  );
-        }
-
-        public void show_preferences () {
-            activate ();
-            var win = new PreferencesWindow (this);
-            win.destroy_with_parent = true;
-            win.transient_for = active_window;
-            win.modal = true;
-            win.present ();
+            //  var about = new He.AboutWindow (
+            //      this,
+            //      "Victrola" + Config.NAME_SUFFIX,
+            //      Config.APP_ID,
+            //      Config.VERSION,
+            //      Config.APP_ID,
+            //      "https://github.com/tau-OS/victrola/tree/main/po",
+            //      "https://github.com/tau-OS/victrola/issues",
+            //      "catalogue://co.tauos.Victrola",
+            //      {"Lains"},
+            //      {"Lains"},
+            //      2022,
+            //      He.AboutWindow.Licenses.GPLv3,
+            //      He.Colors.ORANGE
+            //  );
+            //  about.present ();
         }
 
         private void on_bus_acquired (DBusConnection connection, string name) {

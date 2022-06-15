@@ -16,14 +16,20 @@
               <object class="GtkMenuButton">
                 <property name="icon_name">open-menu-symbolic</property>
                 <property name="menu_model">primary_menu</property>
-                <property name="tooltip-text" translatable="yes">Main Menu</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="music_dir_btn">
+                <property name="valign">center</property>
+                <property name="icon_name">document-open-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Choose music folder</property>
               </object>
             </child>
             <child>
               <object class="GtkToggleButton" id="search_btn">
                 <property name="icon_name">edit-find-symbolic</property>
                 <property name="active" bind-source="search_entry" bind-property="visible" bind-flags="bidirectional"/>
-                <property name="tooltip-text" translatable="yes">Search</property>
+                <property name="tooltip-text" translatable="yes">Search music</property>
               </object>
             </child>
           </object>
@@ -94,10 +100,6 @@
 
   <menu id="primary_menu">
     <section>
-      <item>
-        <attribute name="label" translatable="yes">_Preferences</attribute>
-        <attribute name="action">app.preferences</attribute>
-      </item>
       <item>
         <attribute name="label" translatable="yes">_About Victrola</attribute>
         <attribute name="action">app.about</attribute>
