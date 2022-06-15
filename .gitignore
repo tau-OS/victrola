@@ -1,2 +1,5 @@
 .flatpak
 _build
+*.log
+*.rpm
+*.tar.gz
