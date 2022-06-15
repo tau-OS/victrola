@@ -81,12 +81,8 @@ namespace Victrola {
 
         protected override void startup () {
             resource_base_path = "/co/tauos/Enigma";
-    
-            base.startup ();
-        }
 
-        public override void activate () {
-            base.activate ();
+            base.startup ();
 
             Gtk.Window? awindow = active_window;
             if (awindow != null) {
@@ -94,6 +90,10 @@ namespace Victrola {
             } else {
                 open ({}, "");
             }
+        }
+
+        protected override void activate () {
+            active_window?.present ();
         }
 
         public override void open (File[] files, string hint) {
