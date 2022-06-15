@@ -1,6 +1,6 @@
 Name:           victrola
 Version:        1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Play your music, in an elegant way.
 
 License:        GPLv3
