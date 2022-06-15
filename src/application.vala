@@ -55,8 +55,6 @@ namespace Victrola {
 
             _song_list.model = _song_store.store;
 
-            dark_theme = _settings.get_boolean ("dark-theme");
-
             _player.use_pipewire (_settings.get_boolean ("pipewire-sink"));
             _player.volume = _settings.get_double ("volume");
 
@@ -153,12 +151,6 @@ namespace Victrola {
         public Song? current_song {
             get {
                 return _current_song;
-            }
-        }
-
-        public bool dark_theme {
-            set {
-                //style_manager.color_scheme = value ? Adw.ColorScheme.PREFER_DARK : Adw.ColorScheme.DEFAULT;
             }
         }
 

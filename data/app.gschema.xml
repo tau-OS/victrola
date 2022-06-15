@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="victrola">
   <schema id="@app_id@" path="/co/tauos/Victrola/">
-    <key name="dark-theme" type="b">
-      <default>false</default>
-      <summary>Prefer dark theme</summary>
-    </key>
     <key name="music-dir" type="s">
       <default>''</default>
       <summary>Load music from folder</summary>
-    </key>
-    <key name="remote-thumbnail" type="b">
-      <default>false</default>
-      <summary>Load thumbnails for non-local files</summary>
     </key>
     <key name="pipewire-sink" type="b">
       <default>false</default>

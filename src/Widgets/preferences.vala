@@ -3,17 +3,12 @@ namespace Victrola {
     [GtkTemplate (ui = "/co/tauos/Victrola/preferences.ui")]
     public class PreferencesWindow : He.Window {
         [GtkChild]
-        unowned Gtk.Switch dark_btn;
-        [GtkChild]
         unowned Gtk.Button music_dir_btn;
         [GtkChild]
         unowned Gtk.Switch pipewire_btn;
 
         public PreferencesWindow (Application app) {
             var settings = app.settings;
-
-            dark_btn.bind_property ("state", app, "dark_theme", BindingFlags.DEFAULT);
-            settings.bind ("dark-theme", dark_btn, "state", SettingsBindFlags.DEFAULT);
 
             var music_dir = app.get_music_folder ();
             music_dir_btn.label = get_display_name (music_dir);
