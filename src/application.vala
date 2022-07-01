@@ -83,12 +83,10 @@ namespace Victrola {
 
             base.startup ();
 
-            Gtk.Window? awindow = active_window;
-            if (awindow != null) {
-                active_window.present ();
-            } else {
-                open ({}, "");
-            }
+            typeof(PlayBar).ensure ();
+            typeof(SongEntry).ensure ();
+
+            new MainWindow (this);
         }
 
         protected override void activate () {
@@ -106,9 +104,7 @@ namespace Victrola {
                 });
             });
 
-            Gtk.Window? awindow = active_window;
-            var window = awindow ?? new Window (this);
-            window.present ();
+            new MainWindow (this);
         }
 
         public override void shutdown () {
@@ -207,7 +203,7 @@ namespace Victrola {
         }
 
         public void toggle_search () {
-            var win = active_window as Window;
+            var win = active_window as MainWindow;
             if (win != null)
                 ((!)win).search_btn.active = ! ((!)win).search_btn.active;
         }
@@ -277,22 +273,22 @@ namespace Victrola {
         }
 
         public void show_about () {
-            //  var about = new He.AboutWindow (
-            //      this,
-            //      "Victrola" + Config.NAME_SUFFIX,
-            //      Config.APP_ID,
-            //      Config.VERSION,
-            //      Config.APP_ID,
-            //      "https://github.com/tau-OS/victrola/tree/main/po",
-            //      "https://github.com/tau-OS/victrola/issues",
-            //      "catalogue://co.tauos.Victrola",
-            //      {"Lains"},
-            //      {"Lains"},
-            //      2022,
-            //      He.AboutWindow.Licenses.GPLv3,
-            //      He.Colors.ORANGE
-            //  );
-            //  about.present ();
+            var about = new He.AboutWindow (
+                active_window,
+                "Victrola" + Config.NAME_SUFFIX,
+                Config.APP_ID,
+                Config.VERSION,
+                Config.APP_ID,
+                "https://github.com/tau-OS/victrola/tree/main/po",
+                "https://github.com/tau-OS/victrola/issues",
+                "catalogue://co.tauos.Victrola",
+                {"Lains"},
+                {"Lains"},
+                2022,
+                He.AboutWindow.Licenses.GPLv3,
+                He.Colors.ORANGE
+            );
+            about.present ();
         }
 
         public void show_keys () {

@@ -1,10 +1,10 @@
 {
-    "app-id": "co.tauos.Victrola",
+    "app-id": "co.tauos.Victrola.Devel",
     "runtime" : "co.tauos.Platform",
     "runtime-version" : "daily",
     "sdk" : "co.tauos.Sdk",
     "command": "co.tauos.Victrola",
-    "desktop-file-name-suffix" : " (Development Build)",
+    "desktop-file-name-suffix" : " (Development)",
     "finish-args": [
         "--device=dri",
         "--share=network",

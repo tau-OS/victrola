@@ -9,7 +9,7 @@ namespace Victrola {
     }
 
     [GtkTemplate (ui = "/co/tauos/Victrola/window.ui")]
-    public class Window : He.ApplicationWindow {
+    public class MainWindow : He.ApplicationWindow {
         [GtkChild]
         private unowned Gtk.Box content_box;
         [GtkChild]
@@ -28,7 +28,7 @@ namespace Victrola {
         private SearchType _search_type = SearchType.ALL;
         private PlayBar play_bar;
 
-        public Window (Application app) {
+        public MainWindow (Application app) {
             Object (application: app);
             this.icon_name = app.application_id;
 

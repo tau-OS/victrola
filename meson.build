@@ -10,7 +10,7 @@ i18n = import('i18n')
 
 if get_option('development')
   app_id = 'co.tauos.Victrola.Devel'
-  name_suffix = ' (Development)'
+  name_suffix = ' (Nightly)'
 else
   app_id = 'co.tauos.Victrola'
   name_suffix = ''

@@ -2,10 +2,10 @@ namespace Victrola {
 
     public class PlayBar : He.BottomBar {
         private Gtk.ToggleButton _repeat = new Gtk.ToggleButton ();
-        private Gtk.Button _prev = new Gtk.Button ();
-        private Gtk.Button _play = new Gtk.Button ();
-        private Gtk.Button _next = new Gtk.Button ();
-        private Gtk.Button _stop = new Gtk.Button ();
+        private He.IconicButton _prev = new He.IconicButton ("");
+        private He.IconicButton _play = new He.IconicButton ("");
+        private He.IconicButton _next = new He.IconicButton ("");
+        private He.IconicButton _stop = new He.IconicButton ("");
         private int _duration = 1;
         private int _position = 0;
         Application app = (Application) GLib.Application.get_default ();
@@ -14,11 +14,13 @@ namespace Victrola {
             var builder = new Gtk.Builder ();
             var player = app.player;
 
-            add_child (builder, _repeat, "left");
-            add_child (builder, _prev, "left");
-            add_child (builder, _play, "left");
-            add_child (builder, _next, "left");
-            add_child (builder, _stop, "left");
+            this.collapse_actions = false;
+
+            append_button ((He.IconicButton)_repeat, Position.LEFT);
+            append_button (_prev, Position.LEFT);
+            append_button (_play, Position.LEFT);
+            append_button (_next, Position.LEFT);
+            append_button (_stop, Position.LEFT);
 
             _repeat.icon_name = "media-playlist-repeat-symbolic";
             _repeat.valign = Gtk.Align.CENTER;
@@ -79,7 +81,7 @@ namespace Victrola {
                 if (_position != (int) value) {
                     _position = (int) value;
                     this.description = format_time (_position) + " / " + format_time (_duration);
-                    ((Window)app.active_window).scale.set_fraction (value / duration);
+                    ((MainWindow)app.active_window).scale.set_fraction (value / duration);
                 }
             }
         }

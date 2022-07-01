@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="VictrolaWindow" parent="HeApplicationWindow">
+  <template class="VictrolaMainWindow" parent="HeApplicationWindow">
     <property name="title">Victrola</property>
     <property name="default_width">360</property>
     <property name="default_height">600</property>
-    <property name="resizable">1</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
           <object class="HeAppBar" id="title">
             <property name="flat">1</property>
+            <property name="show-back">0</property>
             <child>
               <object class="GtkMenuButton">
                 <property name="icon_name">open-menu-symbolic</property>
