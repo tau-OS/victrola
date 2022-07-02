@@ -4,8 +4,10 @@ namespace Victrola {
             set {
                 if (value) {
                     icon = "media-playback-start-symbolic";
+                    add_css_class ("playing");
                 } else {
                     icon = "";
+                    remove_css_class ("playing");
                 }
             }
         }
