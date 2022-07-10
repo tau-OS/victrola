@@ -79,6 +79,10 @@ namespace Victrola {
         }
 
         protected override void startup () {
+            Gdk.RGBA accent_color = { 0 };
+            accent_color.parse("#F7812B");
+            default_accent_color = He.Color.from_gdk_rgba(accent_color);
+
             resource_base_path = "/co/tauos/Victrola";
 
             base.startup ();
