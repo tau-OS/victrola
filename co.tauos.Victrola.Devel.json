@@ -7,16 +7,11 @@
     "desktop-file-name-suffix" : " (Development)",
     "finish-args": [
         "--device=dri",
-        "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
         "--socket=pulseaudio",
-        "--filesystem=/tmp",
-        "--filesystem=xdg-music:ro",
-        "--filesystem=xdg-download:ro",
-        "--filesystem=xdg-run/pipewire-0:ro",
-        "--filesystem=xdg-run/gvfsd"
+        "--filesystem=xdg-run/pipewire-0:ro"
     ],
     "cleanup": [
         "/include",
