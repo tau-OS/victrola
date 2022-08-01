@@ -56,9 +56,10 @@
               <object class="GtkSearchEntry" id="search_entry">
                 <property name="hexpand">1</property>
                 <property name="visible">0</property>
-                <property name="halign">start</property>
+                <property name="halign">fill</property>
                 <property name="margin-top">6</property>
                 <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
                 <property name="margin-bottom">12</property>
               </object>
             </child>
