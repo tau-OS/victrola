@@ -17,7 +17,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
       visible-child: listgrid;
 
       Bis.AlbumPage {
-        child:         Box listgrid {
+        child:
+        Box listgrid {
           orientation: vertical;
 
           He.AppBar title {
@@ -98,7 +99,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
             hexpand: true;
           }
         }
-
         ;
       }
 
@@ -107,12 +107,12 @@ template VictrolaMainWindow : He.ApplicationWindow {
         child: 
         Separator sep1 {
         }
-
         ;
       }
 
       Bis.AlbumPage {
-        child:         Box infogrid {
+        child:
+        Box infogrid {
           orientation: vertical;
 
           He.AppBar info_title {
@@ -123,7 +123,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
             orientation: vertical;
           }
         }
-
         ;
       }
     }
