@@ -3,3 +3,4 @@ _build
 *.log
 *.rpm
 *.tar.gz
+subprojects/blueprint-compiler

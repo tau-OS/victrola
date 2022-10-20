@@ -1,0 +1,145 @@
+using Gtk 4.0;
+using He 1;
+using Bis 1;
+
+template VictrolaMainWindow : He.ApplicationWindow {
+  visible: true;
+  default-width: 800;
+  default-height: 600;
+
+  Box {
+    orientation: vertical;
+    homogeneous: true;
+
+    Bis.Album album {
+      can-navigate-back: true;
+      can-navigate-forward: true;
+      visible-child: listgrid;
+
+      Bis.AlbumPage {
+        child:         Box listgrid {
+          orientation: vertical;
+
+          He.AppBar title {
+            flat: true;
+            show-back: false;
+
+            MenuButton {
+              icon-name: "open-menu-symbolic";
+              menu-model: primary_menu;
+            }
+
+            Button music_dir_btn {
+              valign: center;
+              icon-name: "document-open-symbolic";
+              tooltip-text: _("Choose music folder");
+            }
+
+            ToggleButton search_btn {
+              icon-name: "edit-find-symbolic";
+              active: bind search_entry.visible no-sync-create bidirectional;
+              tooltip-text: _("Search music");
+            }
+          }
+
+          Box {
+            orientation: vertical;
+            hexpand: false;
+
+            Label {
+              hexpand: true;
+              label: _("Music");
+              margin-start: 18;
+              margin-end: 18;
+              margin-top: 6;
+              margin-bottom: 6;
+              halign: start;
+
+              styles [
+                "view-title",
+              ]
+            }
+
+            SearchEntry search_entry {
+              hexpand: true;
+              visible: false;
+              halign: fill;
+              margin-top: 6;
+              margin-start: 18;
+              margin-end: 18;
+              margin-bottom: 12;
+            }
+
+            ScrolledWindow scroll_view {
+              hscrollbar-policy: never;
+              vscrollbar-policy: automatic;
+              vexpand: true;
+
+              ListView list_view {
+                single-click-activate: true;
+                margin-start: 6;
+                margin-end: 6;
+
+                styles [
+                  "navigation-sidebar",
+                ]
+              }
+            }
+          }
+
+          ProgressBar scale {
+            styles [
+              "osd",
+            ]
+          }
+
+          Box content_box {
+            orientation: vertical;
+            hexpand: true;
+          }
+        }
+
+        ;
+      }
+
+      Bis.AlbumPage {
+        navigatable: false;
+        child: 
+        Separator sep1 {
+        }
+
+        ;
+      }
+
+      Bis.AlbumPage {
+        child:         Box infogrid {
+          orientation: vertical;
+
+          He.AppBar info_title {
+            flat: true;
+          }
+
+          Box info_box {
+            orientation: vertical;
+          }
+        }
+
+        ;
+      }
+    }
+  }
+}
+
+menu primary_menu {
+  section {
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "app.keys";
+    }
+
+    item {
+      label: _("_About Victrola");
+      action: "app.about";
+    }
+  }
+}

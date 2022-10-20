@@ -29,6 +29,14 @@ configure_file(output: 'config.h', configuration: conf)
 
 add_project_arguments('-DGETTEXT_PACKAGE="' + app_id + '"', language: 'c')
 
+# Blueprint
+subproject('blueprint-compiler')
+add_project_arguments(
+    '--gresourcesdir', meson.current_build_dir() / 'data',
+    language: ['vala']
+)
+#
+
 libm_dep = meson.get_compiler('c').find_library('m', required: false)
 
 taglib_c_dep = dependency('taglib_c', required: false)
@@ -62,24 +70,18 @@ sources = [
   'src/window.vala',
 ]
 
-asresources = gnome.compile_resources(
-	'as-resources', join_paths(meson.project_source_root(), 'data', 'co.tauos.Victrola.gresource.xml'),
-	source_dir: join_paths(meson.project_source_root(), 'data'),
-	c_name: 'as'
-)
+subdir('data')
 
 executable(
   'co.tauos.Victrola',
-  sources,
   asresources,
+  sources: sources,
   vala_args: [
     join_paths(meson.project_source_root(), 'src', 'Utils', 'config.vapi'),
   ],
   dependencies: dependencies,
   install: true,
 )
-
-subdir('data')
 
 gnome.post_install(
   glib_compile_schemas: true,

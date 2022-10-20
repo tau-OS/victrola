@@ -1,0 +1,52 @@
+using Gtk 4.0;
+
+ShortcutsWindow help_overlay {
+  modal: true;
+
+  ShortcutsSection {
+    section-name: "shortcuts";
+    max-height: 10;
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "General");
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Show Shortcuts");
+        accelerator: "<ctrl>question";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Quit");
+        accelerator: "<ctrl>q";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "Playback");
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Play/Pause");
+        accelerator: "<ctrl>p";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Play Next");
+        accelerator: "<ctrl>n";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Play Previous");
+        accelerator: "<ctrl>m";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "Playlist");
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Search");
+        accelerator: "<ctrl>f";
+      }
+    }
+  }
+}

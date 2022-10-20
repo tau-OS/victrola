@@ -75,4 +75,23 @@ if compile_schemas.found()
   )
 endif
 
+blueprints = custom_target(
+  'blueprints',
+  input: files(
+    'ui/help-overlay.blp',
+    'ui/window.blp',
+  ),
+  output: '.',
+  command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+)
+
+asresources = gnome.compile_resources(
+	'as-resources',
+  'co.tauos.Victrola.gresource.xml',
+	source_dir: meson.current_build_dir(),
+  dependencies: blueprints,
+	c_name: 'as',
+  install_dir: get_option('datadir') / meson.project_name(),
+)
+
 subdir('icons')
