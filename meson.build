@@ -42,6 +42,7 @@ dependencies = [
   dependency('gtk4'),
   dependency('gee-0.8'),
   dependency('libhelium-1'),
+  dependency('libbismuth-1'),
   libm_dep,
   taglib_c_dep,
 ]

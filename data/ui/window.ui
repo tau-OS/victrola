@@ -1,98 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk" version="4.0"/>
   <template class="VictrolaMainWindow" parent="HeApplicationWindow">
-    <property name="title">Victrola</property>
-    <property name="default_width">360</property>
-    <property name="default_height">600</property>
+    <property name="visible">1</property>
+    <property name="default-width">800</property>
+    <property name="default-height">600</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
+        <property name="homogeneous">1</property>
         <child>
-          <object class="HeAppBar" id="title">
-            <property name="flat">1</property>
-            <property name="show-back">0</property>
+          <object class="BisAlbum" id="album">
+            <property name="can-navigate-back">1</property>
+            <property name="can-navigate-forward">1</property>
+            <property name="visible-child">listgrid</property>
             <child>
-              <object class="GtkMenuButton">
-                <property name="icon_name">open-menu-symbolic</property>
-                <property name="menu_model">primary_menu</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="music_dir_btn">
-                <property name="valign">center</property>
-                <property name="icon_name">document-open-symbolic</property>
-                <property name="tooltip-text" translatable="yes">Choose music folder</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="search_btn">
-                <property name="icon_name">edit-find-symbolic</property>
-                <property name="active" bind-source="search_entry" bind-property="visible" bind-flags="bidirectional"/>
-                <property name="tooltip-text" translatable="yes">Search music</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <property name="hexpand">0</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="hexpand">1</property>
-                <property name="label" translatable="yes">Music</property>
-                <property name="margin-start">18</property>
-                <property name="margin-end">18</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <property name="halign">start</property>
-                <style>
-                  <class name="view-title"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkSearchEntry" id="search_entry">
-                <property name="hexpand">1</property>
-                <property name="visible">0</property>
-                <property name="halign">fill</property>
-                <property name="margin-top">6</property>
-                <property name="margin-start">18</property>
-                <property name="margin-end">18</property>
-                <property name="margin-bottom">12</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow" id="scroll_view">
-                <property name="hscrollbar_policy">never</property>
-                <property name="vscrollbar_policy">automatic</property>
-                <property name="vexpand">1</property>
-                <child>
-                  <object class="GtkListView" id="list_view">
-                    <property name="single_click_activate">1</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <style>
-                      <class name="navigation-sidebar"/>
-                    </style>
+              <object class="BisAlbumPage">
+                <property name="child">
+                  <object class="GtkBox" id="listgrid">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="HeAppBar" id="title">
+                        <property name="flat">1</property>
+                        <property name="show-back">0</property>
+                        <child>
+                          <object class="GtkMenuButton">
+                            <property name="icon_name">open-menu-symbolic</property>
+                            <property name="menu_model">primary_menu</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="music_dir_btn">
+                            <property name="valign">center</property>
+                            <property name="icon_name">document-open-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Choose music folder</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkToggleButton" id="search_btn">
+                            <property name="icon_name">edit-find-symbolic</property>
+                            <property name="active" bind-source="search_entry" bind-property="visible" bind-flags="bidirectional"/>
+                            <property name="tooltip-text" translatable="yes">Search music</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="hexpand">0</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="hexpand">1</property>
+                            <property name="label" translatable="yes">Music</property>
+                            <property name="margin-start">18</property>
+                            <property name="margin-end">18</property>
+                            <property name="margin-top">6</property>
+                            <property name="margin-bottom">6</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="view-title"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSearchEntry" id="search_entry">
+                            <property name="hexpand">1</property>
+                            <property name="visible">0</property>
+                            <property name="halign">fill</property>
+                            <property name="margin-top">6</property>
+                            <property name="margin-start">18</property>
+                            <property name="margin-end">18</property>
+                            <property name="margin-bottom">12</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkScrolledWindow" id="scroll_view">
+                            <property name="hscrollbar_policy">never</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <property name="vexpand">1</property>
+                            <child>
+                              <object class="GtkListView" id="list_view">
+                                <property name="single_click_activate">1</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <style>
+                                  <class name="navigation-sidebar"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkProgressBar" id="scale">
+                        <style>
+                          <class name="osd"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="content_box">
+                        <property name="orientation">vertical</property>
+                        <property name="hexpand">1</property>
+                      </object>
+                    </child>
                   </object>
-                </child>
+                </property>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkProgressBar" id="scale">
-            <style>
-              <class name="osd"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox" id="content_box">
-            <property name="orientation">vertical</property>
-            <property name="hexpand">1</property>
+            <child>
+              <object class="BisAlbumPage">
+                <property name="navigatable">0</property>
+                <property name="child">
+                  <object class="GtkSeparator" id="sep1">
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="BisAlbumPage">
+                <property name="child">
+                  <object class="GtkBox" id="infogrid">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="HeAppBar" id="info_title">
+                        <property name="flat">1</property>
+                        <binding name="show-back">
+                          <lookup name="folded">album</lookup>
+                        </binding>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="info_box">
+                        <property name="orientation">vertical</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
