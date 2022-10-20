@@ -9,7 +9,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
   Box {
     orientation: vertical;
-    homogeneous: true;
 
     Bis.Album album {
       can-navigate-back: true;
@@ -20,9 +19,12 @@ template VictrolaMainWindow : He.ApplicationWindow {
         child:
         Box listgrid {
           orientation: vertical;
+          hexpand: false;
+          width-request: 370;
 
           He.AppBar title {
             flat: true;
+            show-buttons: bind album.folded;
             show-back: false;
 
             MenuButton {
@@ -83,6 +85,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
                 styles [
                   "navigation-sidebar",
+                  "music-list"
                 ]
               }
             }
@@ -114,9 +117,12 @@ template VictrolaMainWindow : He.ApplicationWindow {
         child:
         Box infogrid {
           orientation: vertical;
+          hexpand: true;
 
           He.AppBar info_title {
             flat: true;
+            show-back: bind album.folded;
+            show-buttons: true;
           }
 
           Box info_box {

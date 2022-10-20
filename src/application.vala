@@ -87,6 +87,8 @@ namespace Victrola {
 
             base.startup ();
 
+            Bis.init ();
+
             typeof(PlayBar).ensure ();
             typeof(SongEntry).ensure ();
 

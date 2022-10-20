@@ -1,4 +1,14 @@
 {
-    "mesonbuild.configureOnOpen": true,
-    "C_Cpp.errorSquiggles": "Disabled"
+    "mesonbuild.configureOnOpen": false,
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/.hg/store/**": true,
+        ".flatpak/**": true,
+        "_build/**": true
+    },
+    "mesonbuild.buildFolder": "_build",
+    "mesonbuild.mesonPath": "/var/home/lains/Projects/tauos/victrola/.flatpak/meson.sh"
 }
