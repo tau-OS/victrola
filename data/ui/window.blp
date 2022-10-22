@@ -4,7 +4,7 @@ using Bis 1;
 
 template VictrolaMainWindow : He.ApplicationWindow {
   visible: true;
-  default-width: 800;
+  default-width: 804;
   default-height: 600;
 
   Box {
@@ -20,7 +20,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
         Box listgrid {
           orientation: vertical;
           hexpand: false;
-          width-request: 370;
+          width-request: 400;
 
           He.AppBar title {
             flat: true;
@@ -118,6 +118,11 @@ template VictrolaMainWindow : He.ApplicationWindow {
         Box infogrid {
           orientation: vertical;
           hexpand: true;
+          width-request: 400;
+
+          styles [
+                "info-view",
+          ]
 
           He.AppBar info_title {
             flat: true;
@@ -127,6 +132,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
           Box info_box {
             orientation: vertical;
+            vexpand: true;
           }
         }
         ;

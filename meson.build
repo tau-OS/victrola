@@ -38,6 +38,7 @@ add_project_arguments(
 #
 
 libm_dep = meson.get_compiler('c').find_library('m', required: false)
+posix_dep = meson.get_compiler('c').find_library('posix', required: false)
 
 taglib_c_dep = dependency('taglib_c', required: false)
 if taglib_c_dep.found()
@@ -52,6 +53,7 @@ dependencies = [
   dependency('libhelium-1'),
   dependency('libbismuth-1'),
   libm_dep,
+  posix_dep,
   taglib_c_dep,
 ]
 
@@ -60,14 +62,15 @@ sources = [
 
   'src/application.vala',
   'src/main.vala',
-  'src/Widgets/play-bar.vala',
+  'src/window.vala',
   'src/Utils/async-task.vala',
   'src/Utils/gst-player.vala',
   'src/Utils/mpris.vala',
   'src/Utils/song-store.vala',
   'src/Utils/tag-parser.vala',
+  'src/Widgets/info-page.vala',
+  'src/Widgets/play-bar.vala',
   'src/Widgets/song-entry.vala',
-  'src/window.vala',
 ]
 
 subdir('data')

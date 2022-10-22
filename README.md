@@ -19,6 +19,7 @@ Please make sure you have these dependencies first before building.
 gtk4
 libgee-0.8
 libhelium-1.0
+libbismuth-1.0
 meson
 vala
 ```

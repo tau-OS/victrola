@@ -1,3 +1,20 @@
+/* 
+ * Copyright 2022 Fyra Labs
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace Victrola {
     public const string ACTION_APP = "app.";
     public const string ACTION_ABOUT = "about";
@@ -18,6 +35,7 @@ namespace Victrola {
     public class Application : He.Application {
         private int _current_item = -1;
         private Song? _current_song = null;
+        private Gst.Sample? _cover_image = null;
         private GstPlayer _player = new GstPlayer ();
         private Gtk.FilterListModel _song_list = new Gtk.FilterListModel (null, null);
         private SongStore _song_store = new SongStore ();
@@ -27,7 +45,7 @@ namespace Victrola {
         public signal void loading_changed (bool loading, uint size);
         public signal void index_changed (int index, uint size);
         public signal void song_changed (Song song);
-        public signal void song_tag_parsed (Song song);
+        public signal void song_tag_parsed (Song song, Gst.Sample image);
 
         public Application () {
             Object (application_id: "co.tauos.Victrola", flags: ApplicationFlags.HANDLES_OPEN);
@@ -89,6 +107,7 @@ namespace Victrola {
 
             Bis.init ();
 
+            typeof(InfoPage).ensure ();
             typeof(PlayBar).ensure ();
             typeof(SongEntry).ensure ();
 
@@ -178,9 +197,10 @@ namespace Victrola {
             var music_uri = _settings.get_string ("music-dir");
             if (music_uri.length > 0) {
                 return File.new_for_uri (music_uri);
+            } else {
+                var music_path = Environment.get_user_special_dir (UserDirectory.MUSIC);
+                return File.new_for_path (music_path);
             }
-            var music_path = Environment.get_user_special_dir (UserDirectory.MUSIC);
-            return File.new_for_path (music_path);
         }
 
         public void play_next () {
@@ -331,10 +351,21 @@ namespace Victrola {
             }
         }
 
-        private async void on_tag_parsed (string? artist, string? title) {
+        private async void on_tag_parsed (string? artist, string? title, Gst.Sample? image) {
+            _cover_image = image;
             if (_current_song != null) {
                 var song = (!)current_song;
-                song_tag_parsed (song);
+                song_tag_parsed (song, image);
+
+                string? cover_uri = null;
+                if (image != null) {
+                    var file = File.new_build_filename (Environment.get_tmp_dir(), application_id + "_" + str_hash(song.cover_uri).to_string ("%x"));
+                    //yield save_sample_to_file (file, (!)image);
+                    //yield delete_cover_tmp_file_asynce ();
+                    _cover_tmp_file = file;
+                    cover_uri = file.get_uri ();
+                }
+
                 _mpris?.send_meta_data (song);
             }
         }

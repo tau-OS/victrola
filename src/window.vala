@@ -1,5 +1,21 @@
-namespace Victrola {
+/* 
+ * Copyright 2022 Fyra Labs
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+namespace Victrola {
     public const string ACTION_WIN = "win.";
 
     enum SearchType {
@@ -11,7 +27,11 @@ namespace Victrola {
     [GtkTemplate (ui = "/co/tauos/Victrola/window.ui")]
     public class MainWindow : He.ApplicationWindow {
         [GtkChild]
+        public unowned Bis.Album album;
+        [GtkChild]
         private unowned Gtk.Box content_box;
+        [GtkChild]
+        private unowned Gtk.Box info_box;
         [GtkChild]
         private unowned Gtk.ListView list_view;
         [GtkChild]
@@ -27,6 +47,7 @@ namespace Victrola {
         private string _search_property = "";
         private SearchType _search_type = SearchType.ALL;
         private PlayBar play_bar;
+        private InfoPage info_page;
 
         public MainWindow (Application app) {
             Object (application: app);
@@ -61,7 +82,26 @@ namespace Victrola {
             });
 
             play_bar = new PlayBar ();
-            content_box.append (play_bar);
+            info_page = new InfoPage ();
+            info_box.append (info_page);
+            if (album.folded) {
+                info_box.remove (play_bar);
+                content_box.append (play_bar);
+            } else {
+                content_box.remove (play_bar);
+                info_box.append (play_bar);
+            }
+
+            album.notify["folded"].connect (() => {
+                if (album.folded) {
+                    info_box.remove (play_bar);
+                    content_box.append (play_bar);
+                } else {
+                    content_box.remove (play_bar);
+                    info_box.append (play_bar);
+                }
+            });
+
             action_set_enabled (ACTION_APP + ACTION_PREV, false);
             action_set_enabled (ACTION_APP + ACTION_PLAY, false);
             action_set_enabled (ACTION_APP + ACTION_NEXT, false);
@@ -78,6 +118,7 @@ namespace Victrola {
             });
             app.song_changed.connect (on_song_changed);
             app.index_changed.connect (on_index_changed);
+            app.song_tag_parsed.connect (on_song_tag_parsed);
         }
 
         private async void on_bind_item (Gtk.ListItem item) {
@@ -121,6 +162,53 @@ namespace Victrola {
             action_set_enabled (ACTION_APP + ACTION_PLAY, true);
         }
 
+        private async void on_song_tag_parsed (Song song, Gst.Sample? image) {
+            update_song_info (song);
+            
+            var app = (Application) application;
+            var pixbufs = new Gdk.Pixbuf?[1] {null};
+
+            if (song == app.current_song) {
+                Gdk.Paintable? paintable = null;
+                pixbufs[0] = load_clamp_pixbuf_from_sample((!)image, 300);
+
+                if (pixbufs[0] != null) {
+                    paintable = Gdk.Texture.for_pixbuf ((!)pixbufs[0]);
+                }
+
+                update_cover_paintable (song, paintable);
+            }
+        }
+
+        private void update_cover_paintable (Song song, Gdk.Paintable? paintable) {
+            info_page.cover_art.paintable = paintable;
+        }
+
+        public static Gdk.Pixbuf? load_clamp_pixbuf_from_sample (Gst.Sample sample, int size) {
+            var buffer = sample.get_buffer ();
+            Gst.MapInfo? info = null;
+
+            if (buffer?.map (out info, Gst.MapFlags.READ) ?? false) {
+                var bytes = new Bytes.static (info?.data);
+                var stream = new MemoryInputStream.from_bytes (bytes);
+                try {
+                    var pixbuf = new Gdk.Pixbuf.from_stream (stream);
+                    var width = pixbuf.width; var height = pixbuf.height;
+                    if (size > 0 && width > size && height > size) {
+                        var scale = width > height ? (size / (double) height) : (size / (double) width);
+                        var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
+                        var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
+                        if (newbuf != null)
+                            return ((!)newbuf);
+                        buffer?.unmap((!) info);
+                    }
+                } catch (Error e) {
+                    // w/e lol lmao even
+                }
+            }
+            return null;
+        }
+
         private void scroll_to_item (int index) {
             list_view.activate_action ("list.scroll-to-item", "u", index);
         }
@@ -131,8 +219,16 @@ namespace Victrola {
 
         private void update_song_info (Song song) {
             var artist_text = simple_html_encode (song.artist);
-            play_bar.description = (@"$(artist_text)");
-            play_bar.title = song.title;
+            album.notify["folded"].connect (() => {
+                if (album.folded) {
+                    play_bar.description = (@"$(artist_text)");
+                    play_bar.title = song.title;
+                } else {
+                    play_bar.description = "";
+                    play_bar.title = "";
+                }
+            });
+            info_page.update (song);
             this.title = song.artist == UNKNOWN_ARTIST ? song.title : @"$(song.artist) - $(song.title)";
         }
 

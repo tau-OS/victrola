@@ -10,3 +10,10 @@
   background: alpha(@accent_color, 0.8);
   color: @window_bg_color;
 }
+
+.info-view {
+  background: @view_bg_color;
+}
+.cover {
+  border-radius: 12px;
+}
