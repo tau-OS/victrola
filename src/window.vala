@@ -40,8 +40,6 @@ namespace Victrola {
         private unowned Gtk.Button music_dir_btn;
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
-        [GtkChild]
-        public unowned Gtk.ProgressBar scale;
 
         private string _search_text = "";
         private string _search_property = "";

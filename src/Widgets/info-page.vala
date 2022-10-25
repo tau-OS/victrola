@@ -23,7 +23,6 @@ namespace Victrola {
         Gtk.Label song_title;
         Gtk.Label song_artist;
         Gtk.Scale scale;
-        Gtk.Adjustment sc_adj;
         public Gtk.Image cover_art;
         public Gtk.Image cover_blur;
 

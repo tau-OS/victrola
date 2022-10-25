@@ -105,7 +105,6 @@ namespace Victrola {
                 if (_position != (int) value) {
                     _position = (int) value;
                     this.description = format_time (_position) + " / " + format_time (_duration);
-                    ((MainWindow)app.active_window).scale.set_fraction (value / duration);
                 }
             }
         }
