@@ -25,26 +25,27 @@ namespace Victrola {
         Gtk.Scale scale;
         Gtk.Adjustment sc_adj;
         public Gtk.Image cover_art;
+        public Gtk.Image cover_blur;
 
-        private int _duration = 1;
+        private int _position = 0;
         public double position {
             get { return _position; }
             set {
                 if (_position != (int) value) {
                     _position = (int) value;
                     this.start_duration.label = format_time (_position);
-                    this.scale.set_value (_position);
+                    scale.set_value (value);
                 }
             }
         }
 
-        private int _position = 0;
+        private int _duration = 1;
         public double duration {
             get { return _duration; }
             set {
                 _duration = (int) (value);
                 this.end_duration.label = format_time (_duration);
-                this.sc_adj.set_upper (_duration);
+                scale.set_range (0, _duration);
             }
         }
 
@@ -57,21 +58,23 @@ namespace Victrola {
             cover_art.halign = Gtk.Align.CENTER;
             cover_art.valign = Gtk.Align.CENTER;
 
-            var cover_box  = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            cover_box.add_css_class ("cover");
-            cover_box.halign = Gtk.Align.CENTER;
-            cover_box.append (cover_art);
+            cover_blur = new Gtk.Image ();
+            cover_blur.width_request = 300;
+            cover_blur.height_request = 300;
+
+            var cover_box  = new Gtk.Overlay ();
+            cover_box.add_overlay (cover_art);
+            cover_box.set_child (cover_blur);
 
             var bottom_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-            sc_adj = new Gtk.Adjustment (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-            sc_adj.step_increment = duration / position;
-            scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, sc_adj);
-            scale.width_request = 300;
-
-            bottom_box.append (scale);
+            scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
+            scale.width_request = 330;
+            scale.halign = Gtk.Align.CENTER;
+            scale.set_range (0, _duration);
 
             var song_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+            song_box.margin_top = 12;
             song_title = new Gtk.Label ("");
             song_title.add_css_class ("cb-title");
             song_artist = new Gtk.Label ("");
@@ -80,18 +83,20 @@ namespace Victrola {
             song_box.append (song_artist);
 
             var duration_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            duration_box.homogeneous = true;
+            duration_box.margin_start = duration_box.margin_end = 18;
             duration_box.width_request = 300;
-            start_duration = new Gtk.Label ("-:--");
-            start_duration.hexpand = true;
+            duration_box.halign = Gtk.Align.CENTER;
+            start_duration = new Gtk.Label ("0:00");
+            end_duration = new Gtk.Label ("0:00");
             start_duration.halign = Gtk.Align.START;
-            end_duration = new Gtk.Label ("-:--");
-            end_duration.hexpand = true;
             end_duration.halign = Gtk.Align.END;
             duration_box.append (start_duration);
             duration_box.append (end_duration);
 
-            bottom_box.append (duration_box);
             bottom_box.append (song_box);
+            bottom_box.append (scale);
+            bottom_box.append (duration_box);
 
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             main_box.vexpand = main_box.hexpand = true;
@@ -111,6 +116,10 @@ namespace Victrola {
             });
             player.position_updated.connect ((position) => {
                 this.position = GstPlayer.to_second (position);
+            });
+
+            scale.adjust_bounds.connect ((value) => {
+                player.seek (GstPlayer.from_second (value));
             });
         }
 

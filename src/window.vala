@@ -84,23 +84,7 @@ namespace Victrola {
             play_bar = new PlayBar ();
             info_page = new InfoPage ();
             info_box.append (info_page);
-            if (album.folded) {
-                info_box.remove (play_bar);
-                content_box.append (play_bar);
-            } else {
-                content_box.remove (play_bar);
-                info_box.append (play_bar);
-            }
-
-            album.notify["folded"].connect (() => {
-                if (album.folded) {
-                    info_box.remove (play_bar);
-                    content_box.append (play_bar);
-                } else {
-                    content_box.remove (play_bar);
-                    info_box.append (play_bar);
-                }
-            });
+            content_box.append (play_bar);
 
             action_set_enabled (ACTION_APP + ACTION_PREV, false);
             action_set_enabled (ACTION_APP + ACTION_PLAY, false);
@@ -170,18 +154,32 @@ namespace Victrola {
 
             if (song == app.current_song) {
                 Gdk.Paintable? paintable = null;
-                pixbufs[0] = load_clamp_pixbuf_from_sample((!)image, 300);
+                if (image != null) {
+                    pixbufs[0] = load_clamp_pixbuf_from_sample ((!)image, 280);
+                }
 
                 if (pixbufs[0] != null) {
                     paintable = Gdk.Texture.for_pixbuf ((!)pixbufs[0]);
                 }
 
-                update_cover_paintable (song, paintable);
+                var art = update_cover_paintable (song, info_page.cover_art, paintable);
+                info_page.cover_art.paintable = art;
+                print ("Update cover\n");
             }
         }
 
-        private void update_cover_paintable (Song song, Gdk.Paintable? paintable) {
-            info_page.cover_art.paintable = paintable;
+        private static Gdk.Texture? update_cover_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
+            var snapshot = new Gtk.Snapshot ();
+            var rect = (!)Graphene.Rect ().init (0, 0, 300, 300);
+            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 18);
+            snapshot.push_rounded_clip (rounded);
+            paintable.snapshot (snapshot, 300, 300);
+            snapshot.pop ();
+            var node = snapshot.free_to_node ();
+            if (node is Gsk.RenderNode) {
+                return widget.get_native ()?.get_renderer ()?.render_texture ((!)node, rect);
+            }
+            return null;
         }
 
         public static Gdk.Pixbuf? load_clamp_pixbuf_from_sample (Gst.Sample sample, int size) {

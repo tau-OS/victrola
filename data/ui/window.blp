@@ -108,33 +108,33 @@ template VictrolaMainWindow : He.ApplicationWindow {
       Bis.AlbumPage {
         navigatable: false;
         child: 
-        Separator sep1 {
+        Separator sep {
         }
         ;
       }
 
       Bis.AlbumPage {
         child:
-        Box infogrid {
-          orientation: vertical;
-          hexpand: true;
-          width-request: 400;
-
-          styles [
-                "info-view",
-          ]
-
-          He.AppBar info_title {
-            flat: true;
-            show-back: bind album.folded;
-            show-buttons: true;
-          }
-
-          Box info_box {
+          Box infogrid {
             orientation: vertical;
-            vexpand: true;
+            hexpand: true;
+            width-request: 400;
+
+            styles [
+                  "info-view",
+            ]
+
+            He.AppBar info_title {
+              flat: true;
+              show-back: bind album.folded;
+              show-buttons: true;
+            }
+
+            Box info_box {
+              orientation: vertical;
+              vexpand: true;
+            }
           }
-        }
         ;
       }
     }
