@@ -1,5 +1,5 @@
 {
-    "rename-icon" : "v",
+    "rename-icon" : "co.tauos.Victrola",
     "app-id": "co.tauos.Victrola",
     "runtime" : "co.tauos.Platform",
     "runtime-version" : "stable",
