@@ -1,5 +1,5 @@
 {
-    "id": "co.tauos.Victrola.Devel",
+    "app-id": "co.tauos.Victrola.Devel",
     "runtime" : "co.tauos.Platform",
     "runtime-version" : "daily",
     "sdk" : "co.tauos.Sdk",
@@ -11,7 +11,13 @@
         "--socket=fallback-x11",
         "--socket=wayland",
         "--socket=pulseaudio",
-        "--filesystem=xdg-run/pipewire-0:ro"
+        "--filesystem=xdg-run/pipewire-0:ro",
+        "--filesystem=xdg-music",
+        "--talk-name=org.freedesktop.Notifications",
+        "--talk-name=org.freedesktop.ScreenSaver",
+        "--talk-name=org.gnome.SettingsDaemon.MediaKeys",
+        "--talk-name=org.mpris.MediaPlayer2",
+        "--own-name=org.mpris.MediaPlayer2.co.tauos.Victrola"
     ],
     "cleanup": [
         "/include",
