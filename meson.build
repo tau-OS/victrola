@@ -51,7 +51,7 @@ dependencies = [
   dependency('gtk4'),
   dependency('gee-0.8'),
   dependency('libhelium-1'),
-  dependency('libbismuth-1'),
+  dependency('libbismuth-1', fallback: [ 'libbismuth', 'libbismuth_dep' ], version: '>=1.0.0'),
   libm_dep,
   posix_dep,
   taglib_c_dep,
