@@ -60,6 +60,7 @@ namespace Victrola {
             cover_blur = new Gtk.Image ();
             cover_blur.width_request = 300;
             cover_blur.height_request = 300;
+            cover_blur.add_css_class ("cover-art");
 
             var cover_box  = new Gtk.Overlay ();
             cover_box.add_overlay (cover_art);
@@ -73,7 +74,7 @@ namespace Victrola {
             scale.set_range (0, _duration);
 
             var song_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
-            song_box.margin_top = 12;
+            song_box.margin_top = 24;
             song_title = new Gtk.Label ("");
             song_title.add_css_class ("cb-title");
             song_artist = new Gtk.Label ("");

@@ -163,10 +163,26 @@ namespace Victrola {
                 var art = update_cover_paintable (song, info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
                 print ("Update cover\n");
+                var blur = update_blur_paintable (song, info_page.cover_blur, paintable);
+                info_page.cover_blur.paintable = blur;
+                print ("Update blur\n");
             }
         }
 
         private static Gdk.Texture? update_cover_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
+            var snapshot = new Gtk.Snapshot ();
+            var rect = (!)Graphene.Rect ().init (0, 0, 300, 300);
+            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 18);
+            snapshot.push_rounded_clip (rounded);
+            paintable.snapshot (snapshot, 300, 300);
+            snapshot.pop ();
+            var node = snapshot.free_to_node ();
+            if (node is Gsk.RenderNode) {
+                return widget.get_native ()?.get_renderer ()?.render_texture ((!)node, rect);
+            }
+            return null;
+        }
+        private static Gdk.Texture? update_blur_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
             var rect = (!)Graphene.Rect ().init (0, 0, 300, 300);
             var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 18);
