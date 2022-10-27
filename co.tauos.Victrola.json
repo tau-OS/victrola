@@ -40,12 +40,6 @@
                     "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler.git",
                     "branch": "main",
                     "dest": "./subprojects/blueprint-compiler"
-                },
-                {
-                    "type": "git",
-                    "url": "https://github.com/tau-os/libbismuth",
-                    "branch": "main",
-                    "dest": "./subprojects/libbismuth"
                 }
             ]
         }
