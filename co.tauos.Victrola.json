@@ -1,6 +1,6 @@
 {
     "rename-icon" : "co.tauos.Victrola",
-    "id": "co.tauos.Victrola",
+    "app-id": "co.tauos.Victrola",
     "runtime" : "co.tauos.Platform",
     "runtime-version" : "stable",
     "sdk" : "co.tauos.Sdk",
