@@ -22,66 +22,49 @@ template VictrolaMainWindow : He.ApplicationWindow {
           hexpand: false;
           width-request: 400;
 
-          He.AppBar title {
-            flat: true;
+          He.SideBar {
+            vexpand: true;
+            title: _("Music");
             show-buttons: bind album.folded;
             show-back: false;
 
+            [titlebar-button]
             MenuButton {
               icon-name: "open-menu-symbolic";
               menu-model: primary_menu;
             }
 
+            [titlebar-button]
             Button music_dir_btn {
               valign: center;
               icon-name: "document-open-symbolic";
               tooltip-text: _("Choose music folder");
             }
 
+            [titlebar-button]
             ToggleButton search_btn {
               icon-name: "edit-find-symbolic";
               active: bind search_entry.visible no-sync-create bidirectional;
               tooltip-text: _("Search music");
             }
-          }
-
-          Box {
-            orientation: vertical;
-            hexpand: false;
-
-            Label {
-              hexpand: true;
-              label: _("Music");
-              margin-start: 18;
-              margin-end: 18;
-              margin-top: 6;
-              margin-bottom: 6;
-              halign: start;
-
-              styles [
-                "view-title",
-              ]
-            }
 
             SearchEntry search_entry {
               hexpand: true;
               visible: false;
-              halign: fill;
-              margin-top: 6;
-              margin-start: 18;
-              margin-end: 18;
-              margin-bottom: 12;
+              halign: start;
+              placeholder-text: "";
+
+              styles [
+                  "search",
+              ]
             }
 
             ScrolledWindow scroll_view {
               hscrollbar-policy: never;
-              vscrollbar-policy: automatic;
               vexpand: true;
 
               ListView list_view {
                 single-click-activate: true;
-                margin-start: 6;
-                margin-end: 6;
 
                 styles [
                   "navigation-sidebar",

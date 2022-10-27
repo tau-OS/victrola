@@ -308,8 +308,8 @@ namespace Victrola {
                 "https://github.com/tau-OS/victrola/tree/main/po",
                 "https://github.com/tau-OS/victrola/issues",
                 "catalogue://co.tauos.Victrola",
-                {"Lains"},
-                {"Lains"},
+                {},
+                {"Lains","Lea"},
                 2022,
                 He.AboutWindow.Licenses.GPLv3,
                 He.Colors.ORANGE

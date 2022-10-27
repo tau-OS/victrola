@@ -82,7 +82,7 @@ namespace Victrola {
             play_bar = new PlayBar ();
             info_page = new InfoPage ();
             info_box.append (info_page);
-            content_box.append (play_bar);
+            info_box.append (play_bar);
 
             action_set_enabled (ACTION_APP + ACTION_PREV, false);
             action_set_enabled (ACTION_APP + ACTION_PLAY, false);
@@ -98,6 +98,8 @@ namespace Victrola {
             list_view.activate.connect ((index) => {
                 app.current_item = (int) index;
             });
+            uint num = list_view.get_model ().get_n_items ();
+            search_entry.placeholder_text = num.to_string() + " " + (_("songs"));
             app.song_changed.connect (on_song_changed);
             app.index_changed.connect (on_index_changed);
             app.song_tag_parsed.connect (on_song_tag_parsed);
@@ -242,6 +244,8 @@ namespace Victrola {
             });
             info_page.update (song);
             this.title = song.artist == UNKNOWN_ARTIST ? song.title : @"$(song.artist) - $(song.title)";
+            uint num = list_view.get_model ().get_n_items ();
+            search_entry.placeholder_text = num.to_string() + " " + (_("songs"));
         }
 
         private void update_song_filter () {
