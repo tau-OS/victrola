@@ -26,7 +26,7 @@ jobs:
     - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
       name: "Build"
       with:
-        bundle: modi.flatpak
+        bundle: victrola.flatpak
         manifest-path: co.tauos.Victrola.json
         cache-key: flatpak-builder-${{ github.sha }}
         repository-name: catalogue
