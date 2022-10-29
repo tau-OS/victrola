@@ -39,6 +39,7 @@ add_project_arguments(
 
 libm_dep = meson.get_compiler('c').find_library('m', required: false)
 posix_dep = meson.get_compiler('c').find_library('posix', required: false)
+libbismuth_dep = meson.get_compiler('c').find_library('libbismuth', required: false)
 
 taglib_c_dep = dependency('taglib_c', required: false)
 if taglib_c_dep.found()
