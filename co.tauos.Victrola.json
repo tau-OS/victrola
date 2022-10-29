@@ -2,7 +2,7 @@
     "rename-icon" : "co.tauos.Victrola",
     "app-id": "co.tauos.Victrola",
     "runtime" : "co.tauos.Platform",
-    "runtime-version" : "stable",
+    "runtime-version" : "devel",
     "sdk" : "co.tauos.Sdk",
     "command": "co.tauos.Victrola",
     "finish-args": [
