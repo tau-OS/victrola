@@ -4,7 +4,7 @@ using Bis 1;
 
 template VictrolaMainWindow : He.ApplicationWindow {
   visible: true;
-  default-width: 804;
+  default-width: 915;
   default-height: 600;
 
   Box {
@@ -14,6 +14,23 @@ template VictrolaMainWindow : He.ApplicationWindow {
       can-navigate-back: true;
       can-navigate-forward: true;
       visible-child: listgrid;
+
+      Bis.AlbumPage {
+        navigatable: false;
+        child:
+        He.NavigationRail {
+          stack: stack;
+        }
+        ;
+      }
+
+      Bis.AlbumPage {
+        navigatable: false;
+        child: 
+        Separator sep4 {
+        }
+        ;
+      }
 
       Bis.AlbumPage {
         child:
@@ -65,14 +82,57 @@ template VictrolaMainWindow : He.ApplicationWindow {
             ScrolledWindow scroll_view {
               hscrollbar-policy: never;
               vexpand: true;
+              margin-start: 6;
+              margin-end: 6;
 
-              ListView list_view {
-                single-click-activate: true;
+              Stack stack {
+                StackPage {
+                  icon-name: "media-optical-cd-audio-symbolic";
+                  title: "Album";
+                  name: "album";
+                  child:
+                  ListView list_view1 {
+                    single-click-activate: true;
 
-                styles [
-                  "navigation-sidebar",
-                  "music-list"
-                ]
+                    styles [
+                      "navigation-sidebar",
+                      "music-list"
+                    ]
+                  }
+                  ;
+                }
+
+                StackPage {
+                  icon-name: "system-users-symbolic";
+                  title: "Artist";
+                  name: "artist";
+                  child:
+                  ListView list_view2 {
+                    single-click-activate: true;
+
+                    styles [
+                      "navigation-sidebar",
+                      "music-list"
+                    ]
+                  }
+                  ;
+                }
+
+                StackPage {
+                  icon-name: "audio-x-generic-symbolic";
+                  title: "Title";
+                  name: "title";
+                  child:
+                  ListView list_view3 {
+                    single-click-activate: true;
+
+                    styles [
+                      "navigation-sidebar",
+                      "music-list"
+                    ]
+                  }
+                  ;
+                }
               }
             }
           }
@@ -80,6 +140,15 @@ template VictrolaMainWindow : He.ApplicationWindow {
           Box content_box {
             orientation: vertical;
             hexpand: true;
+          }
+
+          Separator {
+            visible: bind album.folded;
+          }
+
+          He.NavigationRail folded_rail {
+            stack: stack;
+            visible: bind album.folded;
           }
         }
         ;

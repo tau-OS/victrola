@@ -29,23 +29,63 @@ namespace Victrola {
         [GtkChild]
         public unowned Bis.Album album;
         [GtkChild]
-        private unowned Gtk.Box content_box;
-        [GtkChild]
         private unowned Gtk.Box info_box;
         [GtkChild]
-        private unowned Gtk.ListView list_view;
+        private unowned Gtk.Stack stack;
+        [GtkChild]
+        private unowned Gtk.ListView list_view1;
+        [GtkChild]
+        private unowned Gtk.ListView list_view2;
+        [GtkChild]
+        private unowned Gtk.ListView list_view3;
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
         [GtkChild]
         private unowned Gtk.Button music_dir_btn;
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
+        [GtkChild]
+        private unowned He.NavigationRail folded_rail;
 
         private string _search_text = "";
         private string _search_property = "";
         private SearchType _search_type = SearchType.ALL;
         private PlayBar play_bar;
         private InfoPage info_page;
+        uint num1;
+        uint num2;
+        uint num3;
+
+        public SortMode sort_mode {
+            set {
+                switch (value) {
+                    case SortMode.ALBUM:
+                        list_view1.set_visible (true);
+                        list_view2.set_visible (false);
+                        list_view3.set_visible (false);
+                        num1 = list_view1.get_model ().get_n_items ();
+                        search_entry.placeholder_text = num1.to_string() + " " + (_("songs"));
+                        break;
+                    case SortMode.ARTIST:
+                        list_view1.set_visible (false);
+                        list_view2.set_visible (true);
+                        list_view3.set_visible (false);
+                        num2 = list_view2.get_model ().get_n_items ();
+                        search_entry.placeholder_text = num2.to_string() + " " + (_("songs"));
+                        break;
+                    case SortMode.RECENT:
+                    case SortMode.SHUFFLE:
+                        break;
+                    default:
+                        list_view1.set_visible (false);
+                        list_view2.set_visible (false);
+                        list_view3.set_visible (true);
+                        num3 = list_view3.get_model ().get_n_items ();
+                        search_entry.placeholder_text = num3.to_string() + " " + (_("songs"));
+                        break;
+                }
+            }
+        }
 
         public MainWindow (Application app) {
             Object (application: app);
@@ -88,21 +128,65 @@ namespace Victrola {
             action_set_enabled (ACTION_APP + ACTION_PLAY, false);
             action_set_enabled (ACTION_APP + ACTION_NEXT, false);
 
+            app.bind_property ("sort_mode", this, "sort_mode", BindingFlags.DEFAULT);
+            sort_mode = app.sort_mode;
+
             var factory = new Gtk.SignalListItemFactory ();
             factory.setup.connect ((item) => {
                 item.child = new SongEntry ();
             });
             factory.bind.connect (on_bind_item);
-            list_view.factory = factory;
-            list_view.model = new Gtk.NoSelection (app.song_list);
-            list_view.activate.connect ((index) => {
+            list_view1.factory = factory;
+            list_view1.model = new Gtk.NoSelection (app.song_list);
+            list_view1.activate.connect ((index) => {
                 app.current_item = (int) index;
             });
-            uint num = list_view.get_model ().get_n_items ();
-            search_entry.placeholder_text = num.to_string() + " " + (_("songs"));
+            num1 = list_view1.get_model ().get_n_items ();
+
+            var factory2 = new Gtk.SignalListItemFactory ();
+            factory2.setup.connect ((item) => {
+                item.child = new SongEntry ();
+            });
+            factory2.bind.connect (on_bind_item);
+            list_view2.factory = factory2;
+            list_view2.model = new Gtk.NoSelection (app.song_list);
+            list_view2.activate.connect ((index) => {
+                app.current_item = (int) index;
+            });
+            num2 = list_view2.get_model ().get_n_items ();
+
+            var factory3 = new Gtk.SignalListItemFactory ();
+            factory3.setup.connect ((item) => {
+                item.child = new SongEntry ();
+            });
+            factory3.bind.connect (on_bind_item);
+            list_view3.factory = factory3;
+            list_view3.model = new Gtk.NoSelection (app.song_list);
+            list_view3.activate.connect ((index) => {
+                app.current_item = (int) index;
+            });
+            num3 = list_view3.get_model ().get_n_items ();
+
             app.song_changed.connect (on_song_changed);
             app.index_changed.connect (on_index_changed);
             app.song_tag_parsed.connect (on_song_tag_parsed);
+
+            Settings settings = new Settings ("co.tauos.Victrola");
+            stack.notify["visible-child-name"].connect (() => {
+                if (stack.visible_child_name == "album") {
+                    app.sort_mode = SortMode.ALBUM;
+                    settings?.set_uint ("sort-mode", SortMode.ALBUM);
+                } else if (stack.visible_child_name == "artist") {
+                    app.sort_mode = SortMode.ARTIST;
+                    settings?.set_uint ("sort-mode", SortMode.ARTIST);
+                } else if (stack.visible_child_name == "title") {
+                    app.sort_mode = SortMode.ALL;
+                    settings?.set_uint ("sort-mode", SortMode.ALL);
+                }
+            });
+
+            ((Gtk.BoxLayout) folded_rail.get_layout_manager ()).orientation = Gtk.Orientation.HORIZONTAL;
+            folded_rail.halign = Gtk.Align.CENTER;
         }
 
         private async void on_bind_item (Gtk.ListItem item) {
@@ -110,7 +194,7 @@ namespace Victrola {
             var entry = (SongEntry) item.child;
             var song = (Song) item.item;
             entry.playing = item.position == app.current_item;
-            entry.update (song);
+            entry.update (song, app.sort_mode);
             var saved_pos = item.position;
             if (saved_pos != item.position) {
                 Idle.add (() => {
@@ -224,7 +308,9 @@ namespace Victrola {
         }
 
         private void scroll_to_item (int index) {
-            list_view.activate_action ("list.scroll-to-item", "u", index);
+            list_view1.activate_action ("list.scroll-to-item", "u", index);
+            list_view2.activate_action ("list.scroll-to-item", "u", index);
+            list_view3.activate_action ("list.scroll-to-item", "u", index);
         }
 
         private static string simple_html_encode (string text) {
@@ -243,9 +329,6 @@ namespace Victrola {
                 }
             });
             info_page.update (song);
-            this.title = song.artist == UNKNOWN_ARTIST ? song.title : @"$(song.artist) - $(song.title)";
-            uint num = list_view.get_model ().get_n_items ();
-            search_entry.placeholder_text = num.to_string() + " " + (_("songs"));
         }
 
         private void update_song_filter () {

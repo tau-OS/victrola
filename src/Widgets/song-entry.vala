@@ -29,9 +29,30 @@ namespace Victrola {
             }
         }
 
-        public void update (Song song) {
-            title = song.title;
-            subtitle = song.artist;
+        public void update (Song song, SortMode sort) {
+            switch (sort) {
+                case SortMode.ALBUM:
+                    title = song.album;
+                    subtitle = (0 < song.track < int.MAX) ? @"$(song.track). $(song.title)" : song.title;
+                    break;
+
+                case SortMode.ARTIST:
+                    title = song.artist;
+                    subtitle = song.title;
+                    break;
+
+                case SortMode.RECENT:
+                    var date = new DateTime.from_unix_local (song.modified_time);
+                    title = song.title;
+                    subtitle = date.format ("%x %H:%M");
+                    break;
+
+                case SortMode.ALL:
+                default:
+                    title = song.title;
+                    subtitle = song.artist;
+                    break;
+            }
         }
     }
 }

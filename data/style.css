@@ -2,10 +2,6 @@
   background: none;
 }
 
-.music-list row:hover .mini-content-block {
-  color: @window_bg_color;
-}
-
 .playing {
   background: alpha(@accent_color, 0.8);
   color: @window_bg_color;

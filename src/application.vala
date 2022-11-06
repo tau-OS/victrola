@@ -47,6 +47,15 @@ namespace Victrola {
         public signal void song_changed (Song song);
         public signal void song_tag_parsed (Song song, Gst.Sample image);
 
+        public SortMode sort_mode {
+            get {
+                return _song_store.sort_mode;
+            }
+            set {
+                _song_store.sort_mode = value;
+            }
+        }
+
         public Application () {
             Object (application_id: "co.tauos.Victrola", flags: ApplicationFlags.HANDLES_OPEN);
 
@@ -62,6 +71,15 @@ namespace Victrola {
             };
             add_action_entries (action_entries, this);
 
+            ActionEntry[] sort_entries = {
+                { ACTION_SORT, sort_by, "u", "0" },
+                { ACTION_SORT, sort_by, "u", "1" },
+                { ACTION_SORT, sort_by, "u", "2" },
+                { ACTION_SORT, sort_by, "u", "3" },
+                { ACTION_SORT, sort_by, "u", "4" }
+            };
+            add_action_entries (sort_entries, this);
+
             ActionShortKey[] action_keys = {
                 { ACTION_PLAY, "<primary>p" },
                 { ACTION_PREV, "<primary>m" },
@@ -74,6 +92,7 @@ namespace Victrola {
             }
 
             _song_list.model = _song_store.store;
+            _song_store.sort_mode = (SortMode) (_settings?.get_uint ("sort-mode") ?? SortMode.TITLE);
 
             _player.end_of_stream.connect (() => {
                 if (single_loop) {
@@ -217,6 +236,12 @@ namespace Victrola {
 
         public void play_previous () {
             current_item = current_item - 1;
+        }
+
+        public void sort_by (SimpleAction action, Variant? parameter) {
+            sort_mode = (SortMode) (parameter?.get_uint32 () ?? 2);
+            _settings?.set_uint ("sort-mode", sort_mode);
+            find_current_item ();
         }
 
         public void reload_song_store () {

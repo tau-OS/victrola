@@ -17,6 +17,8 @@
 
 namespace Victrola {
     public const string UNKNOWN_ARTIST = _("Unknown Artist");
+    public const string UNKNOWN_ALBUM = _("Unknown Album");
+    public const int UNKNOWN_TRACK = int.MAX;
     public const string DEFAULT_MIMETYPE = "audio/mpeg";
 
     public enum TagType {
@@ -26,12 +28,25 @@ namespace Victrola {
         SPARQL
     }
 
+    public enum SortMode {
+        ALBUM,
+        ARTIST,
+        TITLE,
+        RECENT,
+        SHUFFLE,
+        ALL,
+    }
+
     public class Song : Object {
+        public string album = "";
         public string artist = "";
         public string title = "";
         public string uri = "";
+        public int64 modified_time = 0;
+        public int track = UNKNOWN_TRACK;
         public TagType ttype = TagType.NONE;
 
+        private string _album_key = "";
         private string _artist_key = "";
         private string _title_key = "";
         private string? _cover_uri = null;
@@ -46,6 +61,47 @@ namespace Victrola {
             }
         }
 
+        public static GenericArray<string> split_string (string text, string delimiter) {
+            var ar = text.split ("-");
+            var sa = new GenericArray<string> (ar.length);
+            foreach (var str in ar) {
+                var s = str.strip ();
+                if (s.length > 0)
+                    sa.add (s);
+            }
+            return sa;
+        }
+
+        public bool from_gst_tags (Gst.TagList tags) {
+            var changed = false;
+            unowned string? al = null, ar = null, ti = null;
+            if (tags.peek_string_index (Gst.Tags.ALBUM, 0, out al)
+                    && al != null && al?.length > 0 && album != (!)al) {
+                album = (!)al;
+                _album_key = album.collate_key_for_filename ();
+                changed = true;
+            }
+            if (tags.peek_string_index (Gst.Tags.ARTIST, 0, out ar)
+                    && ar != null && ar?.length > 0 && artist != (!)ar) {
+                artist = (!)ar;
+                _artist_key = artist.collate_key_for_filename ();
+                changed = true;
+            }
+            if (tags.peek_string_index (Gst.Tags.TITLE, 0, out ti)
+                    && ti != null && ti?.length > 0 && title != (!)ti) {
+                title = (!)ti;
+                _title_key = title.collate_key_for_filename ();
+                changed = true;
+            }
+            uint tr = 0;
+            if (tags.get_uint (Gst.Tags.TRACK_NUMBER, out tr)
+                    && (int) tr > 0 && track != tr) {
+                track = (int) tr;
+                changed = true;
+            }
+            return changed;
+        }
+
         public void init_from_gst_tags (Gst.TagList? tags) {
             string? ar = null, ti = null;
             if (tags != null) {
@@ -57,6 +113,57 @@ namespace Victrola {
                 this.title = (!)ti;
             this.ttype = TagType.GST;
             update_keys ();
+        }
+
+        public void parse_tags () {
+            var file = File.new_for_uri (uri);
+            var name = title;
+            this.title = "";
+
+            if (file.is_native ()) {
+                var tags = parse_gst_tags (file);
+                if (tags != null)
+                    from_gst_tags ((!)tags);
+            }
+
+            if (title.length == 0 || artist.length == 0) {
+                //  guess tags from the file name
+                var end = name.last_index_of_char ('.');
+                if (end > 0) {
+                    name = name.substring (0, end);
+                }
+
+                int track_index = 0;
+                var pos = name.index_of_char ('.');
+                if (pos > 0) {
+                    // assume prefix number as track index
+                    int.try_parse (name.substring (0, pos), out track_index, null, 10);
+                    name = name.substring (pos + 1);
+                }
+
+                //  split the file name by '-'
+                var sa = split_string (name, "-");
+                var len = sa.length;
+                if (title.length == 0) {
+                    title = len >= 1 ? sa[len - 1] : name;
+                    _title_key = title.collate_key_for_filename ();
+                }
+                if (artist.length == 0) {
+                    artist = len >= 2 ? sa[len - 2] : UNKNOWN_ARTIST;
+                    _artist_key = artist.collate_key_for_filename ();
+                }
+                if (track_index == UNKNOWN_TRACK) {
+                    if (track_index == 0 && len >= 3)
+                        int.try_parse (sa[0], out track_index, null, 10);
+                    if (track_index > 0)
+                        this.track = track_index;
+                }
+            }
+            if (album.length == 0) {
+                //  assume folder name as the album
+                album = file.get_parent ()?.get_basename () ?? UNKNOWN_ALBUM;
+                _album_key = album.collate_key_for_filename ();
+            }
         }
 
 #if HAS_TAGLIB_C
@@ -95,16 +202,28 @@ namespace Victrola {
             _title_key = title.collate_key ();
         }
 
+        public static int compare_by_album (Object obj1, Object obj2) {
+            var s1 = (Song) obj1;
+            var s2 = (Song) obj2;
+            int ret = strcmp (s1._album_key, s2._album_key);
+            if (ret != 0) return ret;
+            ret = s1.track - s2.track;
+            if (ret != 0) return ret;
+            ret = strcmp (s1._title_key, s2._title_key);
+            if (ret != 0) return ret;
+            return strcmp (s1.uri, s2.uri);
+        }
+
         public static int compare_by_artist (Object obj1, Object obj2) {
             var s1 = (Song) obj1;
             var s2 = (Song) obj2;
             int ret = strcmp (s1._artist_key, s2._artist_key);
-            if (ret == 0)
-                ret = strcmp (s1._title_key, s2._title_key);
-            if (ret == 0)
-                ret = strcmp (s1.uri, s2.uri);
-            return ret;
+            if (ret != 0) return ret;
+            ret = strcmp (s1._title_key, s2._title_key);
+            if (ret != 0) return ret;
+            return strcmp (s1.uri, s2.uri);
         }
+
 
         public static int compare_by_title (Object obj1, Object obj2) {
             var s1 = (Song) obj1;
@@ -123,6 +242,13 @@ namespace Victrola {
             return s1._order - s2._order;
         }
 
+        public static int compare_by_date_ascending (Object obj1, Object obj2) {
+            var s1 = (Song) obj1;
+            var s2 = (Song) obj2;
+            var diff = s2.modified_time - s1.modified_time;
+            return (int) diff.clamp (-1, 1);
+        }
+
         public static void shuffle_order (GenericArray<Object> arr) {
             for (var i = arr.length - 1; i > 0; i--) {
                 var r = Random.int_range (0, i);
@@ -137,10 +263,47 @@ namespace Victrola {
     public class SongStore : Object {
         private CompareDataFunc<Object> _compare = Song.compare_by_title;
         private ListStore _store = new ListStore (typeof (Song));
+        private SortMode _sort_mode = SortMode.TITLE;
+
+        public signal void parse_progress (int percent);
 
         public ListStore store {
             get {
                 return _store;
+            }
+        }
+        public SortMode sort_mode {
+            get {
+                return _sort_mode;
+            }
+            set {
+                _sort_mode = value;
+                switch (value) {
+                    case SortMode.ALBUM:
+                        _compare = Song.compare_by_album;
+                        break;
+                    case SortMode.ARTIST:
+                        _compare = Song.compare_by_artist;
+                        break;
+                    case SortMode.RECENT:
+                        _compare = Song.compare_by_date_ascending;
+                        break;
+                    case SortMode.SHUFFLE:
+                        _compare = Song.compare_by_order;
+                        break;
+                    default:
+                        _compare = Song.compare_by_title;
+                        break;
+                }
+                if (_sort_mode == SortMode.SHUFFLE) {
+                    var count = _store.get_n_items ();
+                    var arr = new GenericArray<Object> (count);
+                    for (var i = 0; i < count; i++) {
+                        arr.add ((!)_store.get_item (i));
+                    }
+                    Song.shuffle_order (arr);
+                }
+                _store.sort (_compare);
             }
         }
 
@@ -197,18 +360,63 @@ namespace Victrola {
         }
 #endif
 
+        private delegate G ThreadFunc<G> (uint index);
+        private static void run_in_threads<G> (owned ThreadFunc<G> func, uint num_tasks) {
+            var threads = new Thread<G>[num_tasks];
+            for (var i = 0; i < num_tasks; i++) {
+                var index = i;
+                threads[i] = new Thread<G> (null, () => {
+                    return func (index);
+                });
+            }
+            foreach (var thread in threads) {
+                thread.join ();
+            }
+        }
+
         public async void add_files_async (File[] files) {
-            var arr = new GenericArray<Object> (4096);
+            var songs = new GenericArray<Object> (4096);
             yield run_async<void> (() => {
                 var begin_time = get_monotonic_time ();
                 foreach (var file in files) {
-                    add_file (file, arr);
+                    add_file (file, songs);
                 }
-                arr.sort ((CompareFunc<Object>) _compare);
-                print ("Found %u songs in %g seconds\n", arr.length,
+
+                var queue = new AsyncQueue<Song?> ();
+                for (var i = 0; i < songs.length; i++) {
+                    var song = (Song) songs[i];
+                    queue.push (song);
+                }
+                var queue_count = queue.length ();
+                if (queue_count > 0) {
+                    int percent = -1;
+                    uint progress = 0;
+                    var num_tasks = uint.min (queue_count, get_num_processors ());
+                    run_in_threads<void> ((index) => {
+                        Song? s;
+                        while ((s = queue.try_pop ()) != null) {
+                            var song = (!)s;
+                            song.parse_tags ();
+                            var per = (int) AtomicUint.add (ref progress, 1) * 100 / queue_count;
+                            if (percent != per) {
+                                percent = per;
+                                Idle.add (() => {
+                                    parse_progress (per);
+                                    return false;
+                                });
+                            }
+                        }
+                    }, num_tasks);
+                }
+
+                if (_sort_mode == SortMode.SHUFFLE) {
+                    Song.shuffle_order (songs);
+                }
+                songs.sort ((CompareFunc<Object>) _compare);
+                print ("Found %u songs in %g seconds\n", songs.length,
                         (get_monotonic_time () - begin_time) / 1e6);
             });
-            _store.splice (_store.get_n_items (), 0, arr.data);
+            _store.splice (_store.get_n_items (), 0, songs.data);
         }
 
         private static void add_file (File file, GenericArray<Object> arr) {
