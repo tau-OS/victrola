@@ -175,12 +175,15 @@ namespace Victrola {
             stack.notify["visible-child-name"].connect (() => {
                 if (stack.visible_child_name == "album") {
                     app.sort_mode = SortMode.ALBUM;
+                    app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ALBUM);
                 } else if (stack.visible_child_name == "artist") {
                     app.sort_mode = SortMode.ARTIST;
+                    app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ARTIST);
                 } else if (stack.visible_child_name == "title") {
                     app.sort_mode = SortMode.ALL;
+                    app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ALL);
                 }
             });

@@ -71,6 +71,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
               visible: false;
               halign: start;
               margin-start: 18;
+              margin-end: 18;
               margin-bottom: 6;
               placeholder-text: "";
 
@@ -82,8 +83,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
             ScrolledWindow scroll_view {
               hscrollbar-policy: never;
               vexpand: true;
-              margin-start: 6;
-              margin-end: 6;
+              margin-start: 18;
+              margin-end: 18;
 
               Stack stack {
                 StackPage {
@@ -95,7 +96,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
                     single-click-activate: true;
 
                     styles [
-                      "navigation-sidebar",
+                      "content-list",
                       "music-list"
                     ]
                   }
@@ -111,7 +112,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
                     single-click-activate: true;
 
                     styles [
-                      "navigation-sidebar",
+                      "content-list",
                       "music-list"
                     ]
                   }
@@ -127,7 +128,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
                     single-click-activate: true;
 
                     styles [
-                      "navigation-sidebar",
+                      "content-list",
                       "music-list"
                     ]
                   }
@@ -135,11 +136,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
                 }
               }
             }
-          }
-
-          Box content_box {
-            orientation: vertical;
-            hexpand: true;
           }
 
           Separator {

@@ -10,8 +10,8 @@
       <summary>Played uri when quit</summary>
     </key>
     <key name="sort-mode" type="u">
-      <range min="0" max="4"/>
-      <default>2</default>
+      <range min="0" max="5"/>
+      <default>5</default>
       <summary>Sort Mode</summary>
     </key>
   </schema>
