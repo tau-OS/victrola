@@ -190,6 +190,16 @@ namespace Victrola {
 
             ((Gtk.BoxLayout) folded_rail.get_layout_manager ()).orientation = Gtk.Orientation.HORIZONTAL;
             folded_rail.halign = Gtk.Align.CENTER;
+
+            app.load_songs_async.begin (null, (obj, res) => {
+                var item = app.load_songs_async.end (res);
+                if (app.current_song == null) {
+                    app.current_item = item;
+                    scroll_to_item (item);
+                } else {
+                    scroll_to_item (item);
+                }
+            });
         }
 
         private async void on_bind_item (Gtk.ListItem item) {
