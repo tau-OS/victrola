@@ -45,6 +45,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
             show-buttons: bind album.folded;
             show-back: false;
             has-margins: false;
+            scroller: scroll_view;
 
             [titlebar-button]
             MenuButton {
@@ -73,6 +74,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
               margin-start: 18;
               margin-end: 18;
               margin-bottom: 6;
+              margin-top: 6;
               placeholder-text: "";
 
               styles [
@@ -83,10 +85,11 @@ template VictrolaMainWindow : He.ApplicationWindow {
             ScrolledWindow scroll_view {
               hscrollbar-policy: never;
               vexpand: true;
-              margin-start: 18;
-              margin-end: 18;
 
               Stack stack {
+                margin-start: 18;
+                margin-end: 18;
+
                 StackPage {
                   icon-name: "media-optical-cd-audio-symbolic";
                   title: "Album";
