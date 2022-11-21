@@ -45,7 +45,7 @@ namespace Victrola {
         public signal void end_of_stream ();
         public signal void position_updated (Gst.ClockTime position);
         public signal void state_changed (Gst.State state);
-        public signal void tag_parsed (string? artist, string? title, Gst.Sample? image);
+        public signal void tag_parsed (string? album, string? artist, string? title, Gst.Sample? image);
 
         public GstPlayer () {
             if (_pipeline != null) {
@@ -181,7 +181,28 @@ namespace Victrola {
             _timer?.attach (MainContext.default ());
         }
 
-        public static Gst.Sample? parse_image_from_taglist (Gst.TagList tags) {
+        private void parse_tags (Gst.Message message) {
+            Gst.TagList tags;
+            message.parse_tag (out tags);
+
+            string? album = null, artist = null, title = null;
+            var ret = tags.get_string (Gst.Tags.ALBUM, out album);
+            ret |= tags.get_string (Gst.Tags.ARTIST, out artist);
+            ret |= tags.get_string (Gst.Tags.TITLE, out title);
+
+            Gst.Sample? image = parse_image_from_tag_list (tags);
+            ret |= image != null;
+            _tag_parsed = ret;
+
+            var hash = str_hash (album ?? "") | str_hash (artist ?? "") | str_hash (title ?? "")
+                        | (image?.get_buffer ()?.get_size () ?? 0);
+            if (_tag_hash != hash) {
+                _tag_hash = hash;
+                // notify only when changed
+                tag_parsed (album, artist, title, image);
+            }
+        }
+        public static Gst.Sample? parse_image_from_tag_list (Gst.TagList tags) {
             Gst.Sample? sample = null;
             if (tags.get_sample (Gst.Tags.IMAGE, out sample)) {
                 return sample;
@@ -189,43 +210,21 @@ namespace Victrola {
             if (tags.get_sample (Gst.Tags.PREVIEW_IMAGE, out sample)) {
                 return sample;
             }
-
+    
             for (var i = 0; i < tags.n_tags (); i++) {
                 var tag = tags.nth_tag_name (i);
                 var value = tags.get_value_index (tag, 0);
                 sample = null;
-
                 if (value?.type () == typeof (Gst.Sample)
-                    && tags.get_sample (tag, out sample)) {
-                    
+                        && tags.get_sample (tag, out sample)) {
                     var caps = sample?.get_caps ();
                     if (caps != null) {
                         return sample;
                     }
+                    //  print (@"unknown image tag: $(tag)\n");
                 }
             }
-
             return null;
-        }
-
-        private void parse_tags (Gst.Message message) {
-            Gst.TagList tags;
-            message.parse_tag (out tags);
-
-            string? artist = null, title = null;
-            var ret = tags.get_string ("artist", out artist);
-            ret |= tags.get_string ("title", out title);
-
-            Gst.Sample? image = parse_image_from_taglist (tags);
-            ret |= image != null;
-            _tag_parsed = ret;
-
-            var hash = str_hash (artist ?? "") | str_hash (title ?? "") | (image?.get_buffer()?.get_size () ?? 0);
-            if (_tag_hash != hash) {
-                _tag_hash = hash;
-                // notify only when changed
-                tag_parsed (artist, title, image);
-            }
         }
 
         private bool timeout_callback () {

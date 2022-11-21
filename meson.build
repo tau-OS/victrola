@@ -60,6 +60,7 @@ dependencies = [
 
 sources = [
   'src/Utils/gst-level.c',
+  'src/Utils/ape-demux.c',
 
   'src/application.vala',
   'src/main.vala',
@@ -81,7 +82,8 @@ executable(
   asresources,
   sources: sources,
   vala_args: [
-    join_paths(meson.project_source_root(), 'src', 'Utils', 'config.vapi'),
+    meson.current_source_dir () + '/src/Utils' + '/config.vapi',
+    meson.current_source_dir () + '/src/Utils' + '/gst-ext.vapi',
   ],
   dependencies: dependencies,
   install: true,

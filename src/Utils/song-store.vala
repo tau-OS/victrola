@@ -37,6 +37,53 @@ namespace Victrola {
         ALL,
     }
 
+    public size_t read_size (DataInputStream dis) throws IOError {
+        var value = dis.read_byte ();
+        switch (value) {
+        case 254:
+            return dis.read_uint16 ();
+        case 255:
+            return dis.read_uint32 ();
+        default:
+            return value;
+        }
+    }
+
+    public void write_size (DataOutputStream dos, size_t value) throws IOError {
+        if (value < 254) {
+            dos.put_byte ((uint8) value);
+        } else if (value <= 0xffff) {
+            dos.put_byte (254);
+            dos.put_uint16 ((uint16) value);
+        } else {
+            dos.put_byte (255);
+            dos.put_uint32 ((uint32) value);
+        }
+    }
+
+    public string read_string (DataInputStream dis) throws IOError {
+        var size = read_size (dis);
+        if ((int) size < 0 || size > 0xfffffff) { // 28 bits
+            throw new IOError.INVALID_ARGUMENT (@"Size=$size");
+        } else if (size > 0) {
+            var buffer = new uint8[size + 1];
+            if (dis.read_all (buffer[0:size], out size)) {
+                buffer[size] = '\0';
+                return (string) buffer;
+            }
+        }
+        return "";
+    }
+
+    public void write_string (DataOutputStream dos, string value) throws IOError {
+        size_t size = value.length;
+        write_size (dos, size);
+        if (size > 0) {
+            unowned uint8[] data = (uint8[])value;
+            dos.write_all (data[0:size], out size);
+        }
+    }
+
     public class Song : Object {
         public string album = "";
         public string artist = "";
@@ -59,6 +106,27 @@ namespace Victrola {
             set {
                 _cover_uri = value;
             }
+        }
+
+        public Song.deserialize (DataInputStream dis) throws IOError {
+            album = read_string (dis);
+            artist = read_string (dis);
+            title = read_string (dis);
+            track = dis.read_int32 ();
+            modified_time = dis.read_int64 ();
+            uri = read_string (dis);
+            _album_key = album.collate_key_for_filename ();
+            _artist_key = artist.collate_key_for_filename ();
+            _title_key = title.collate_key_for_filename ();
+        }
+
+        public void serialize (DataOutputStream dos) throws IOError {
+            write_string (dos, album);
+            write_string (dos, artist);
+            write_string (dos, title);
+            dos.put_int32 (track);
+            dos.put_int64 (modified_time);
+            write_string (dos, uri);
         }
 
         public static GenericArray<string> split_string (string text, string delimiter) {
@@ -260,10 +328,105 @@ namespace Victrola {
         }
     }
 
+    public class TagCache {
+        private static uint32 MAGIC = 0x54414743; //  'TAGC'
+
+        private File _file;
+        private bool _loaded = false;
+        private bool _modified = false;
+        private HashTable<weak string, Song> _cache = new HashTable<weak string, Song> (str_hash, str_equal);
+
+        public TagCache (string name = "tag-cache") {
+            var dir = Environment.get_user_cache_dir ();
+            _file = File.new_build_filename (dir, Config.APP_ID, name);
+        }
+
+        public bool loaded {
+            get {
+                return _loaded;
+            }
+        }
+
+        public bool modified {
+            get {
+                return _modified;
+            }
+        }
+
+        public Song? @get (string uri) {
+            weak string key;
+            weak Song song;
+            lock (_cache) {
+                if (_cache.lookup_extended (uri, out key, out song)) {
+                    return song;
+                }
+            }
+            return null;
+        }
+
+        public void add (Song song) {
+            lock (_cache) {
+                _cache[song.uri] = song;
+                _modified = true;
+            }
+        }
+
+        public void load () {
+            try {
+                var fis = _file.read ();
+                var bis = new BufferedInputStream (fis);
+                bis.buffer_size = 16384;
+                var dis = new DataInputStream (bis);
+                var magic = dis.read_uint32 ();
+                if (magic != MAGIC)
+                    throw new IOError.INVALID_DATA (@"Magic=$magic");
+
+                var count = read_size (dis);
+                lock (_cache) {
+                    for (var i = 0; i < count; i++) {
+                        var song = new Song.deserialize (dis);
+                        _cache[song.uri] = song;
+                    }
+                }
+            } catch (Error e) {
+                if (e.code != IOError.NOT_FOUND)
+                    print ("Load tags error: %s\n", e.message);
+            }
+            _loaded = true;
+        }
+
+        public void save () {
+            try {
+                var parent = _file.get_parent ();
+                var exists = parent?.query_exists () ?? false;
+                if (exists)
+                    parent?.make_directory_with_parents ();
+                var fos = _file.replace (null, false, FileCreateFlags.NONE);
+                var bos = new BufferedOutputStream (fos);
+                bos.buffer_size = 16384;
+                var dos = new DataOutputStream (bos);
+                dos.put_uint32 (MAGIC);
+                lock (_cache) {
+                    write_size (dos, _cache.length);
+                    _cache.for_each ((key, song) => {
+                        try {
+                            song.serialize (dos);
+                        } catch (Error e) {
+                        }
+                    });
+                }
+                _modified = false;
+            } catch (Error e) {
+                print ("Save tags error: %s\n", e.message);
+            }
+        }
+    }
+
     public class SongStore : Object {
         private CompareDataFunc<Object> _compare = Song.compare_by_title;
         private ListStore _store = new ListStore (typeof (Song));
         private SortMode _sort_mode = SortMode.TITLE;
+        private TagCache _tag_cache = new TagCache ();
 
         public signal void parse_progress (int percent);
 
@@ -319,6 +482,15 @@ namespace Victrola {
 
         public Song? get_song (uint position) {
             return _store.get_item (position) as Song;
+        }
+
+        public async void load_tag_cache_async () {
+            yield run_async<void> (_tag_cache.load);
+        }
+        public async void save_tag_cache_async () {
+            if (_tag_cache.modified) {
+                yield run_async<void> (_tag_cache.save);
+            }
         }
 
 #if HAS_TRACKER_SPARQL

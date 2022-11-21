@@ -41,6 +41,7 @@ namespace Victrola {
         private SongStore _song_store = new SongStore ();
         private Settings _settings = new Settings ("co.tauos.Victrola");
         private MprisPlayer? _mpris = null;
+        private uint _mpris_id = 0;
 
         public signal void loading_changed (bool loading, uint size);
         public signal void index_changed (int index, uint size);
@@ -131,6 +132,28 @@ namespace Victrola {
             typeof(SongEntry).ensure ();
 
             new MainWindow (this);
+
+            //  Must load tag cache after the app register (GLib init), to make sort works
+            _song_store.load_tag_cache_async.begin ((obj, res) => {
+                _song_store.load_tag_cache_async.end (res);
+            });
+        }
+
+        public override void shutdown () {
+            if (_mpris_id != 0) {
+                Bus.unown_name (_mpris_id);
+                _mpris_id = 0;
+            }
+
+            _song_store.save_tag_cache_async.begin ((obj, res) => {
+                _song_store.save_tag_cache_async.end (res);
+            });
+
+            delete_cover_tmp_file_async.begin ((obj, res) => {
+                delete_cover_tmp_file_async.end (res);
+            });
+
+            base.shutdown ();
         }
 
         protected override void activate () {
@@ -149,16 +172,6 @@ namespace Victrola {
             });
 
             new MainWindow (this);
-        }
-
-        public override void shutdown () {
-             _settings.set_string ("played-uri", _current_song?.uri ?? "");
-
-             delete_cover_tmp_file_async.begin ((obj, res) => {
-                delete_cover_tmp_file_async.end (res);
-             });
-
-            base.shutdown ();
         }
 
         public int current_item {
@@ -358,25 +371,13 @@ namespace Victrola {
             _mpris = new MprisPlayer (this, connection);
             try {
                 connection.register_object ("/org/mpris/MediaPlayer2", _mpris);
-                connection.register_object ("/org/mpris/MediaPlayer2", new MprisRoot ());
+                connection.register_object ("/org/mpris/MediaPlayer2", new MprisRoot (this));
             } catch (Error e) {
                 warning ("Register MPRIS failed: %s\n", e.message);
             }
         }
 
-        private File? _cover_tmp_file = null;
-
-        private async void delete_cover_tmp_file_async () {
-            try {
-                if (_cover_tmp_file != null) {
-                    yield ((!)_cover_tmp_file).delete_async ();
-                    _cover_tmp_file = null;
-                }
-            } catch (Error e) {
-            }
-        }
-
-        private async void on_tag_parsed (string? artist, string? title, Gst.Sample? image) {
+        private async void on_tag_parsed (string? album, string? artist, string? title, Gst.Sample? image) {
             _cover_image = image;
             if (_current_song != null) {
                 var song = (!)current_song;
@@ -384,14 +385,41 @@ namespace Victrola {
 
                 string? cover_uri = null;
                 if (image != null) {
-                    var file = File.new_build_filename (Environment.get_tmp_dir(), application_id + "_" + str_hash(song.cover_uri).to_string ("%x"));
-                    //yield save_sample_to_file (file, (!)image);
-                    //yield delete_cover_tmp_file_asynce ();
+                    var file = File.new_build_filename (Environment.get_tmp_dir (), application_id + "_" + str_hash (song.cover_uri).to_string ("%x"));
+                    yield save_sample_to_file (file, (!)image);
+                    yield delete_cover_tmp_file_async ();
                     _cover_tmp_file = file;
                     cover_uri = file.get_uri ();
                 }
 
-                _mpris?.send_meta_data (song);
+                if (song == _current_song) {
+                    if (cover_uri == null && song.cover_uri != song.uri) {
+                        cover_uri = song.cover_uri;
+                    }
+                    _mpris?.send_meta_data (song, cover_uri);
+                }
+            }
+        }
+        public static async void save_sample_to_file (File file, Gst.Sample sample) {
+            try {
+                var buffer = sample.get_buffer ();
+                Gst.MapInfo? info = null;
+                if (buffer?.map (out info, Gst.MapFlags.READ) ?? false) {
+                    var stream = yield file.create_async (FileCreateFlags.NONE);
+                    yield stream.write_all_async (info?.data, Priority.DEFAULT, null, null);
+                    buffer?.unmap ((!)info);
+                }
+            } catch (Error e) {
+            }
+        }
+        private File? _cover_tmp_file = null;
+        private async void delete_cover_tmp_file_async () {
+            try {
+                if (_cover_tmp_file != null) {
+                    yield ((!)_cover_tmp_file).delete_async ();
+                    _cover_tmp_file = null;
+                }
+            } catch (Error e) {
             }
         }
     }

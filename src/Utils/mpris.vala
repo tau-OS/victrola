@@ -63,36 +63,57 @@ namespace Victrola {
         }
 
         private void on_index_changed (int index, uint size) {
-            send_property ("CanGoNext", can_go_next);
-            send_property ("CanGoPrevious", can_go_previous);
-            send_property ("CanPlay", can_play);
+            var builder = new VariantBuilder (new VariantType ("a{sv}"));
+            builder.add ("{sv}", "CanGoNext", new Variant.boolean (index < (int) size - 1));
+            builder.add ("{sv}", "CanGoPrevious", new Variant.boolean (index > 0));
+            builder.add ("{sv}", "CanPlay", new Variant.boolean (size > 0));
+            send_properties (builder);
         }
 
         private void on_song_changed (Song song) {
             send_meta_data (song);
         }
 
-        private void on_song_tag_parsed (Song song) {
+        private void on_song_tag_parsed (Song song, Gst.Sample? image) {
             send_meta_data (song);
         }
 
         private void on_state_changed (Gst.State state) {
-            send_property ("PlaybackStatus", state == Gst.State.PLAYING ? "Playing" : "Stopped");
+            string st;
+            switch (state) {
+                case Gst.State.PLAYING:
+                    st = "Playing";
+                    break;
+                case Gst.State.PAUSED:
+                    st = "Paused";
+                    break;
+                default:
+                    st = "Stopped";
+                    break;
+            }
+            send_property ("PlaybackStatus", new Variant.string (st));
         }
 
-        internal void send_meta_data (Song song) {
-            var data = new HashTable<string, Variant> (str_hash, str_equal);
-            string[] artist = { song.artist };
-            data.insert ("xesam:artist", artist);
-            data.insert ("xesam:title", song.title);
-            send_property ("Metadata", data);
+        internal void send_meta_data (Song song, string? art_uri = null) {
+            var dict = new VariantDict (null);
+            var artists = new VariantBuilder (new VariantType ("as"));
+            artists.add ("s", song.artist);
+            dict.insert ("xesam:artist", "as", artists);
+            dict.insert ("xesam:title", "s", song.title);
+            if (art_uri != null) {
+                dict.insert ("mpris:artUrl", "s", (!)art_uri);
+            }
+            send_property ("Metadata", dict.end ());
         }
 
         private void send_property (string name, Variant variant) {
-            var invalid = new VariantBuilder (new VariantType ("as"));
-            var builder = new VariantBuilder (VariantType.ARRAY);
+            var builder = new VariantBuilder (new VariantType ("a{sv}"));
             builder.add ("{sv}", name, variant);
+            send_properties (builder);
+        }
 
+        private void send_properties (VariantBuilder builder) {
+            var invalid = new VariantBuilder (new VariantType ("as"));
             try {
                 _connection.emit_signal (
                     null,
@@ -107,13 +128,19 @@ namespace Victrola {
                     )
                 );
             } catch (Error e) {
-                warning ("Send MPRIS property failed: %s\n", e.message);
+                warning ("Send MPRIS failed: %s\n", e.message);
             }
         }
     }
 
     [DBus (name = "org.mpris.MediaPlayer2")]
     public class MprisRoot : Object {
+        private unowned Application _app;
+
+        public MprisRoot (Application app) {
+            _app = app;
+        }
+
         public bool can_quit {
             get {
                 return true;
@@ -134,13 +161,13 @@ namespace Victrola {
 
         public string desktop_entry {
             get {
-                return Config.APP_ID;
+                return _app.application_id;
             }
         }
 
         public string identity {
             get {
-                return Config.APP_ID;
+                return _app.application_id;
             }
         }
 
@@ -152,16 +179,16 @@ namespace Victrola {
 
         public string[] supported_mime_types {
             owned get {
-                return {"audio"};
+                return {"audio/*"};
             }
         }
 
         public void quit () throws Error {
-            GLib.Application.get_default ()?.quit ();
+            _app.quit ();
         }
 
         public void raise () throws Error {
-            GLib.Application.get_default ()?.activate ();
+            _app.activate ();
         }
     }
 }

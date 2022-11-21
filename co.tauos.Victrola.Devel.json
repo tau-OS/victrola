@@ -13,6 +13,7 @@
         "--socket=pulseaudio",
         "--filesystem=xdg-run/pipewire-0:ro",
         "--filesystem=xdg-music",
+        "--filesystem=/tmp",
         "--talk-name=org.freedesktop.Notifications",
         "--talk-name=org.freedesktop.ScreenSaver",
         "--talk-name=org.gnome.SettingsDaemon.MediaKeys",
