@@ -78,7 +78,6 @@ endif
 blueprints = custom_target(
   'blueprints',
   input: files(
-    'ui/help-overlay.blp',
     'ui/window.blp',
   ),
   output: '.',
