@@ -31,6 +31,10 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.Box info_box;
         [GtkChild]
+        private unowned Gtk.Box infogrid;
+        [GtkChild]
+        private unowned Gtk.Box listgrid;
+        [GtkChild]
         private unowned Gtk.Stack stack;
         [GtkChild]
         private unowned Gtk.ListView list_view1;
@@ -46,6 +50,8 @@ namespace Victrola {
         private unowned Gtk.SearchEntry search_entry;
         [GtkChild]
         private unowned He.NavigationRail folded_rail;
+        [GtkChild]
+        private unowned He.AppBar info_title;
 
         private string _search_text = "";
         private string _search_property = "";
@@ -140,6 +146,9 @@ namespace Victrola {
             list_view1.model = new Gtk.NoSelection (app.song_list);
             list_view1.activate.connect ((index) => {
                 app.current_item = (int) index;
+                if (album.folded) {
+                    album.set_visible_child (infogrid);
+                }
             });
             num1 = list_view1.get_model ().get_n_items ();
 
@@ -152,6 +161,9 @@ namespace Victrola {
             list_view2.model = new Gtk.NoSelection (app.song_list);
             list_view2.activate.connect ((index) => {
                 app.current_item = (int) index;
+                if (album.folded) {
+                    album.set_visible_child (infogrid);
+                }
             });
             num2 = list_view2.get_model ().get_n_items ();
 
@@ -164,6 +176,9 @@ namespace Victrola {
             list_view3.model = new Gtk.NoSelection (app.song_list);
             list_view3.activate.connect ((index) => {
                 app.current_item = (int) index;
+                if (album.folded) {
+                    album.set_visible_child (infogrid);
+                }
             });
             num3 = list_view3.get_model ().get_n_items ();
 
@@ -198,6 +213,12 @@ namespace Victrola {
                     scroll_to_item (item);
                 } else {
                     scroll_to_item (item);
+                }
+            });
+
+            info_title.back_button.clicked.connect (() => {
+                if (album.folded) {
+                    album.set_visible_child (listgrid);
                 }
             });
         }
@@ -331,16 +352,6 @@ namespace Victrola {
         }
 
         private void update_song_info (Song song) {
-            var artist_text = simple_html_encode (song.artist);
-            album.notify["folded"].connect (() => {
-                if (album.folded) {
-                    play_bar.description = (@"$(artist_text)");
-                    play_bar.title = song.title;
-                } else {
-                    play_bar.description = "";
-                    play_bar.title = "";
-                }
-            });
             info_page.update (song);
         }
 

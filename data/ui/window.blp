@@ -82,60 +82,62 @@ template VictrolaMainWindow : He.ApplicationWindow {
               ]
             }
 
-            ScrolledWindow scroll_view {
-              hscrollbar-policy: never;
-              vexpand: true;
+            Bis.Latch {
+              ScrolledWindow scroll_view {
+                hscrollbar-policy: never;
+                vexpand: true;
 
-              Stack stack {
-                margin-start: 18;
-                margin-end: 18;
+                Stack stack {
+                  margin-start: 18;
+                  margin-end: 18;
 
-                StackPage {
-                  icon-name: "media-optical-cd-audio-symbolic";
-                  title: "Album";
-                  name: "album";
-                  child:
-                  ListView list_view1 {
-                    single-click-activate: true;
+                  StackPage {
+                    icon-name: "media-optical-cd-audio-symbolic";
+                    title: "Album";
+                    name: "album";
+                    child:
+                    ListView list_view1 {
+                      single-click-activate: true;
 
-                    styles [
-                      "content-list",
-                      "music-list"
-                    ]
+                      styles [
+                        "content-list",
+                        "music-list"
+                      ]
+                    }
+                    ;
                   }
-                  ;
-                }
 
-                StackPage {
-                  icon-name: "system-users-symbolic";
-                  title: "Artist";
-                  name: "artist";
-                  child:
-                  ListView list_view2 {
-                    single-click-activate: true;
+                  StackPage {
+                    icon-name: "system-users-symbolic";
+                    title: "Artist";
+                    name: "artist";
+                    child:
+                    ListView list_view2 {
+                      single-click-activate: true;
 
-                    styles [
-                      "content-list",
-                      "music-list"
-                    ]
+                      styles [
+                        "content-list",
+                        "music-list"
+                      ]
+                    }
+                    ;
                   }
-                  ;
-                }
 
-                StackPage {
-                  icon-name: "audio-x-generic-symbolic";
-                  title: "Title";
-                  name: "title";
-                  child:
-                  ListView list_view3 {
-                    single-click-activate: true;
+                  StackPage {
+                    icon-name: "audio-x-generic-symbolic";
+                    title: "Title";
+                    name: "title";
+                    child:
+                    ListView list_view3 {
+                      single-click-activate: true;
 
-                    styles [
-                      "content-list",
-                      "music-list"
-                    ]
+                      styles [
+                        "content-list",
+                        "music-list"
+                      ]
+                    }
+                    ;
                   }
-                  ;
                 }
               }
             }
