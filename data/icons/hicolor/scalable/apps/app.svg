@@ -6,7 +6,7 @@
    fill="none"
    version="1.1"
    id="svg99"
-   sodipodi:docname="Victrola.svg"
+   sodipodi:docname="app.svg"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -26,11 +26,11 @@
      inkscape:cx="64.081841"
      inkscape:cy="64"
      inkscape:window-width="2560"
-     inkscape:window-height="911"
+     inkscape:window-height="895"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g14" />
+     inkscape:current-layer="svg99" />
   <g
      filter="url(#filter0_i_812_2)"
      id="g4">
@@ -53,20 +53,23 @@
        id="path8" />
   </g>
   <g
-     style="mix-blend-mode:hard-light"
+     style="opacity:0.9;mix-blend-mode:hard-light;fill:#f0f0f2;fill-opacity:0.7;stroke:none;filter:url(#filter2_d_812_2)"
      filter="url(#filter2_d_812_2)"
-     id="g16">
+     id="g16"
+     transform="translate(0.53590012,0.20700073)">
     <g
        filter="url(#filter3_ii_812_2)"
-       id="g14">
+       id="g14"
+       style="display:inline;fill:#f0f0f2;fill-opacity:0.7;stroke:none"
+       inkscape:label="g14">
       <path
          fill-rule="evenodd"
          clip-rule="evenodd"
-         d="M75.854 38.9703L68.2237 82.244L68.1368 82.7364C68.1039 82.9234 68.0598 83.1057 68.0054 83.2827C66.0191 91.4031 58.0396 96.6951 49.6884 95.2225C40.9861 93.6881 35.1754 85.3895 36.7098 76.6872C38.2443 67.9849 46.5428 62.1742 55.2451 63.7087C57.7173 64.1446 59.9561 65.1264 61.8595 66.5082L67.7823 32.9179C68.0202 31.5689 68.8361 30.4669 69.9304 29.8217C70.9109 29.014 72.2255 28.6243 73.5746 28.8621C76.6881 29.4111 81.223 30.987 84.8418 34.1468C88.6686 37.4883 91.4521 42.6491 90.2319 49.5692C89.8004 52.0168 87.4664 53.651 85.0189 53.2195C82.5714 52.7879 80.9371 50.4539 81.3687 48.0064C81.9544 44.6846 80.7785 42.547 78.9223 40.9262C78.0085 40.1283 76.9364 39.4778 75.854 38.9703Z"
-         fill="#F0F0F2"
+         d="m 71.520122,37.509914 c -0.06573,15.088394 -0.03956,30.179898 -0.162788,45.266345 -0.361341,8.809819 -8.929767,16.059317 -17.589412,14.893162 -8.513452,-0.670107 -15.281648,-9.185082 -14.187467,-17.6975 0.665766,-8.672543 9.259457,-15.526332 17.758733,-14.290248 1.73783,-0.614119 5.603826,3.076758 5.128426,0.118832 0.05021,-11.136862 0.0257,-22.276036 0.12274,-33.411448 0.454823,-3.550115 4.404409,-5.289938 7.593332,-4.338862 7.412386,0.731357 15.106959,5.450103 16.786577,13.19948 0.743326,2.894331 1.088061,7.108985 -2.273843,8.456959 -3.060943,1.447207 -6.72275,-1.484765 -6.236374,-4.807797 0.0058,-3.962441 -3.44275,-6.535091 -6.939924,-7.388923 z"
+         fill="#f0f0f2"
          fill-opacity="0.7"
          id="path12"
-         style="filter:url(#filter986)" />
+         style="opacity:1;mix-blend-mode:normal;fill:#f0f0f2;fill-opacity:0.7;stroke:none;stroke-width:1.00139" />
     </g>
   </g>
   <defs
@@ -179,7 +182,7 @@
          dy="4"
          id="feOffset52" />
       <feGaussianBlur
-         stdDeviation="4"
+         stdDeviation="2.6183485"
          id="feGaussianBlur54" />
       <feColorMatrix
          type="matrix"
@@ -287,18 +290,5 @@
          stop-opacity="0.2"
          id="stop94" />
     </linearGradient>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter986"
-       x="-0.0048241374"
-       y="-0.0039112607"
-       width="1.0096483"
-       height="1.0078225">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.10866012"
-         id="feGaussianBlur988" />
-    </filter>
   </defs>
 </svg>
