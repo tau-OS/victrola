@@ -23,7 +23,7 @@ namespace Victrola {
                     icon = "media-playback-start-symbolic";
                     add_css_class ("playing");
                 } else {
-                    icon = "";
+                    icon = null;
                     remove_css_class ("playing");
                 }
             }

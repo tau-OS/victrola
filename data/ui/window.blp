@@ -4,8 +4,10 @@ using Bis 1;
 
 template VictrolaMainWindow : He.ApplicationWindow {
   visible: true;
-  default-width: 915;
+  default-width: 820;
   default-height: 600;
+  width-request: 360;
+  height-request: 266;
 
   Box {
     orientation: vertical;
@@ -16,26 +18,17 @@ template VictrolaMainWindow : He.ApplicationWindow {
       visible-child: listgrid;
 
       Bis.AlbumPage {
-        navigatable: false;
-        child: 
-        Separator sep4 {
-        }
-        ;
-      }
-
-      Bis.AlbumPage {
         child:
         Box listgrid {
           orientation: vertical;
           hexpand: false;
-          width-request: 400;
+          width-request: 300;
 
           He.SideBar {
             vexpand: true;
             show-buttons: bind album.folded;
             show-back: false;
             has-margins: false;
-            scroller: scroll_view;
 
             [titlebar-button]
             MenuButton {
@@ -59,6 +52,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
             He.ViewChooser {
               stack: stack;
+              margin-start: 18;
+              margin-end: 18;
             }
 
             SearchEntry search_entry {

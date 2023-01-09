@@ -52,14 +52,14 @@ namespace Victrola {
             var player = app.player;
 
             cover_art = new Gtk.Image ();
-            cover_art.width_request = 300;
-            cover_art.height_request = 300;
+            cover_art.width_request = 280;
+            cover_art.height_request = 280;
             cover_art.halign = Gtk.Align.CENTER;
             cover_art.valign = Gtk.Align.CENTER;
 
             cover_blur = new Gtk.Image ();
-            cover_blur.width_request = 300;
-            cover_blur.height_request = 300;
+            cover_blur.width_request = 280;
+            cover_blur.height_request = 280;
             cover_blur.add_css_class ("cover-art");
 
             var cover_box  = new Gtk.Overlay ();
@@ -69,7 +69,7 @@ namespace Victrola {
             var bottom_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
             scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
-            scale.width_request = 330;
+            scale.width_request = 300;
             scale.halign = Gtk.Align.CENTER;
             scale.set_range (0, _duration);
 
@@ -84,7 +84,6 @@ namespace Victrola {
 
             var duration_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             duration_box.homogeneous = true;
-            duration_box.margin_start = duration_box.margin_end = 18;
             duration_box.width_request = 300;
             duration_box.halign = Gtk.Align.CENTER;
             start_duration = new Gtk.Label ("0:00");

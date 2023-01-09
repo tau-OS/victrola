@@ -95,7 +95,6 @@ namespace Victrola {
             get { return _duration; }
             set {
                 _duration = (int) (value + 0.5);
-                this.description = format_time (_position) + " / " + format_time (_duration);
             }
         }
 
@@ -104,7 +103,6 @@ namespace Victrola {
             set {
                 if (_position != (int) value) {
                     _position = (int) value;
-                    this.description = format_time (_position) + " / " + format_time (_duration);
                 }
             }
         }
