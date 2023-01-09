@@ -49,8 +49,6 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
         [GtkChild]
-        private unowned He.NavigationRail folded_rail;
-        [GtkChild]
         private unowned He.AppBar info_title;
 
         private string _search_text = "";
@@ -202,9 +200,6 @@ namespace Victrola {
                     settings?.set_uint ("sort-mode", SortMode.ALL);
                 }
             });
-
-            ((Gtk.BoxLayout) folded_rail.get_layout_manager ()).orientation = Gtk.Orientation.HORIZONTAL;
-            folded_rail.halign = Gtk.Align.CENTER;
 
             app.load_songs_async.begin (null, (obj, res) => {
                 var item = app.load_songs_async.end (res);
