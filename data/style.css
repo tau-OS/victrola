@@ -3,7 +3,7 @@
 }
 
 .playing {
-  background: @accent_color;
+  background: @accent_bg_color;
   color: @accent_fg_color;
 }
 
