@@ -31,6 +31,7 @@ namespace Victrola {
             var player = app.player;
 
             this.collapse_actions = false;
+            this.margin_top = 12;
 
             append_button ((He.IconicButton)_repeat, Position.LEFT);
             append_button (_prev, Position.LEFT);

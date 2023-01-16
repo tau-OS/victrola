@@ -17,13 +17,22 @@
 
 namespace Victrola {
     public class SongEntry : He.MiniContentBlock {
+        private Gtk.Image picon;
+        construct {
+            picon = new Gtk.Image ();
+            picon.icon_name = "media-playback-start-symbolic";
+            picon.pixel_size = 24;
+            picon.visible = false;
+            picon.set_parent (this);
+        }
+
         public bool playing {
             set {
                 if (value) {
-                    icon = "media-playback-start-symbolic";
+                    picon.visible = true;
                     add_css_class ("playing");
                 } else {
-                    icon = null;
+                    picon.visible = false;
                     remove_css_class ("playing");
                 }
             }
