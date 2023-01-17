@@ -27,6 +27,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
             show-buttons: bind album.folded;
             show-back: false;
             has-margins: false;
+            width-request: 250;
 
             He.ViewChooser {
               stack: stack;
@@ -91,8 +92,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
             }
 
             Bis.Latch {
-              maximum-size: 360;
-              tightening-threshold: 250;
+              maximum-size: 400;
+              tightening-threshold: 360;
               margin-top: 12;
 
               ScrolledWindow scroll_view {
