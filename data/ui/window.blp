@@ -29,6 +29,11 @@ template VictrolaMainWindow : He.ApplicationWindow {
             has-margins: false;
             width-request: 250;
             scroller: scroll_view;
+            titlewidget:
+              He.ViewChooser {
+                stack: stack;
+              }
+            ;
 
             [titlebar-button]
             ToggleButton search_btn {
@@ -62,13 +67,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
               styles [
                 "disclosure-button",
               ]
-            }
-
-            He.ViewChooser {
-              stack: stack;
-              margin-top: 12;
-              margin-start: 18;
-              margin-end: 18;
             }
 
             SearchEntry search_entry {
