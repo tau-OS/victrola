@@ -19,10 +19,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
       Bis.AlbumPage {
         child:
-        Box listgrid {
-          orientation: vertical;
-
-          He.SideBar {
+          He.SideBar listgrid {
             vexpand: true;
             show-buttons: bind album.folded;
             show-back: false;
@@ -131,7 +128,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
               }
             }
           }
-        }
         ;
       }
 

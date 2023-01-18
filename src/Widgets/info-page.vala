@@ -52,15 +52,17 @@ namespace Victrola {
             var player = app.player;
 
             cover_art = new Gtk.Image ();
-            cover_art.width_request = 280;
-            cover_art.height_request = 280;
+            cover_art.width_request = 300;
+            cover_art.height_request = 300;
             cover_art.halign = Gtk.Align.CENTER;
             cover_art.valign = Gtk.Align.CENTER;
             cover_art.add_css_class ("cover-art");
 
             cover_blur = new Gtk.Image ();
-            cover_blur.width_request = 280;
-            cover_blur.height_request = 280;
+            cover_blur.width_request = 300;
+            cover_blur.height_request = 300;
+            cover_blur.halign = Gtk.Align.CENTER;
+            cover_blur.valign = Gtk.Align.CENTER;
             cover_blur.add_css_class ("cover-art-blur");
 
             var cover_box  = new Gtk.Overlay ();

@@ -33,7 +33,7 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.Box infogrid;
         [GtkChild]
-        private unowned Gtk.Box listgrid;
+        private unowned He.SideBar listgrid;
         [GtkChild]
         private unowned Gtk.Stack stack;
         [GtkChild]
@@ -268,7 +268,7 @@ namespace Victrola {
             if (song == app.current_song) {
                 Gdk.Paintable? paintable = null;
                 if (image != null) {
-                    pixbufs[0] = load_clamp_pixbuf_from_sample ((!)image, 280);
+                    pixbufs[0] = load_clamp_pixbuf_from_sample ((!)image, 300);
                 }
 
                 if (pixbufs[0] != null) {
