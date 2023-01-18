@@ -37,25 +37,15 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
             [titlebar-button]
             ToggleButton search_btn {
-              valign: center;
               icon-name: "edit-find-symbolic";
               active: bind search_entry.visible no-sync-create bidirectional;
               tooltip-text: _("Search music");
-
-              styles [
-                "disclosure-button",
-              ]
             }
 
             [titlebar-button]
             Button music_dir_btn {
-              valign: center;
               icon-name: "document-open-symbolic";
               tooltip-text: _("Choose music folder");
-
-              styles [
-                "disclosure-button",
-              ]
             }
 
             [titlebar-button]
@@ -63,10 +53,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
               valign: center;
               icon-name: "open-menu-symbolic";
               menu-model: primary_menu;
-
-              styles [
-                "disclosure-button",
-              ]
             }
 
             SearchEntry search_entry {
@@ -75,8 +61,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
               halign: start;
               margin-start: 18;
               margin-end: 18;
-              margin-bottom: 6;
-              margin-top: 6;
               placeholder-text: "";
 
               styles [
@@ -87,7 +71,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
             Bis.Latch {
               maximum-size: 400;
               tightening-threshold: 360;
-              margin-top: 12;
 
               ScrolledWindow scroll_view {
                 hscrollbar-policy: never;
