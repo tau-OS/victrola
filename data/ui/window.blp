@@ -66,8 +66,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
             }
 
             Bis.Latch {
-              maximum-size: 400;
-              tightening-threshold: 360;
+              maximum-size: 360;
+              tightening-threshold: 300;
 
               ScrolledWindow scroll_view {
                 hscrollbar-policy: never;
@@ -143,7 +143,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
             ]
 
             He.AppBar info_title {
-              flat: true;
               show-back: bind album.folded;
               show-buttons: true;
             }
