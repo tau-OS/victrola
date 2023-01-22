@@ -1,0 +1,17 @@
+data/app.appdata.xml.in
+data/app.desktop.in
+data/ui/window.blp
+src/Utils/ape-demux.c
+src/Utils/async-task.vala
+src/Utils/gst-ext.h
+src/Utils/gst-level.c
+src/Utils/gst-player.vala
+src/Utils/mpris.vala
+src/Utils/song-store.vala
+src/Utils/tag-parser.vala
+src/Widgets/info-page.vala
+src/Widgets/play-bar.vala
+src/Widgets/song-entry.vala
+src/application.vala
+src/main.vala
+src/window.vala

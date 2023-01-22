@@ -76,6 +76,7 @@ sources = [
 ]
 
 subdir('data')
+subdir('po')
 
 executable(
   'co.tauos.Victrola',
