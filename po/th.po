@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: co.tauos.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2023-01-22 08:37+0000\n"
-"Last-Translator: Cappy <cappy@fyralabs.com>\n"
+"PO-Revision-Date: 2023-01-23 01:48+0000\n"
+"Last-Translator: Cappy <cappy@cappuchino.xyz>\n"
 "Language-Team: Thai <https://weblate.fyralabs.com/projects/tauOS/victrola/th/"
 ">\n"
 "Language: th\n"
@@ -25,14 +25,13 @@ msgstr "Victrola"
 
 #: data/app.appdata.xml.in:7
 msgid "Play your music, in an elegant way."
-msgstr "ฟังเพลงของคุณอย่างเก๋ๆ"
+msgstr "ฟังเพลงของคุณอย่างมีระดับ"
 
 #: data/app.appdata.xml.in:16
 msgid "A fast and lightweight music player."
-msgstr ""
+msgstr "โปรแกรมเล่นเพลงที่รวดเร็วและเบาบาง"
 
 #: data/app.appdata.xml.in:28
-#, fuzzy
 msgid "First release."
 msgstr "เวอร์ชันแรก"
 
@@ -42,7 +41,7 @@ msgstr "โปรแกรมฟังเพลง"
 
 #: data/app.desktop.in:5
 msgid "Play your music, in an elegant way"
-msgstr "ฟังเพลงของคุณอย่างเก๋ๆ"
+msgstr "ฟังเพลงของคุณอย่างมีระดับ"
 
 #: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
