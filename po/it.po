@@ -8,24 +8,21 @@ msgstr ""
 "Project-Id-Version: co.tauos.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2023-01-23 03:14+0000\n"
-"Last-Translator: windowsboy111 <windowsboy111@fyralabs.com>\n"
-"Language-Team: Japanese <https://weblate.fyralabs.com/projects/tauOS/"
-"victrola/ja/>\n"
-"Language: ja\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15.1\n"
 
 #: data/app.appdata.xml.in:4 data/app.desktop.in:3 src/main.vala:24
 msgid "Victrola"
-msgstr "Victrola"
+msgstr ""
 
 #: data/app.appdata.xml.in:7
 msgid "Play your music, in an elegant way."
-msgstr "音楽をやすくプレイする。"
+msgstr ""
 
 #: data/app.appdata.xml.in:16
 msgid "A fast and lightweight music player."
@@ -37,7 +34,7 @@ msgstr ""
 
 #: data/app.desktop.in:4
 msgid "Music Player"
-msgstr "音楽プレイヤー"
+msgstr ""
 
 #: data/app.desktop.in:5
 msgid "Play your music, in an elegant way"
