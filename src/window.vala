@@ -259,6 +259,7 @@ namespace Victrola {
             action_set_enabled (ACTION_APP + ACTION_PLAY, true);
         }
 
+        private Bis.Animation? fade_animation = null;
         private async void on_song_tag_parsed (Song song, Gst.Sample? image) {
             update_song_info (song);
             
@@ -281,6 +282,16 @@ namespace Victrola {
                 var blur = update_blur_paintable (song, info_page.cover_blur, paintable);
                 info_page.cover_blur.paintable = blur;
                 print ("Update blur\n");
+
+                var target = new Bis.CallbackAnimationTarget ((value) => {
+                    info_page.cover_art.opacity = value;
+                });
+                fade_animation?.pause ();
+                fade_animation = new Bis.TimedAnimation (info_page.cover_art, 0.1, info_page.cover_art.opacity + 0.1, 900, target);
+                ((!)fade_animation).done.connect (() => {
+                    fade_animation = null;
+                });
+                fade_animation?.play ();
             }
         }
 
