@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: co.tauos.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2023-01-25 22:11+0000\n"
-"Last-Translator: Lains <lains@fyralabs.com>\n"
+"PO-Revision-Date: 2023-01-27 21:11+0000\n"
+"Last-Translator: Písek Pískovec <pisekpiskovec@gmail.com>\n"
 "Language-Team: Czech <https://weblate.fyralabs.com/projects/tauOS/victrola/"
 "cs/>\n"
 "Language: cs\n"
@@ -59,7 +59,7 @@ msgstr "Zvolte složku s hudbou"
 
 #: data/ui/window.blp:164
 msgid "About Victrola"
-msgstr "O Victrolau"
+msgstr "O Victrole"
 
 #: src/Utils/song-store.vala:19
 msgid "Unknown Artist"
