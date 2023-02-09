@@ -47,8 +47,6 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.Button music_dir_btn;
         [GtkChild]
-        private unowned Gtk.SearchBar search_bar;
-        [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
         [GtkChild]
         private unowned He.AppBar info_title;
@@ -70,14 +68,14 @@ namespace Victrola {
                         list_view2.set_visible (false);
                         list_view3.set_visible (false);
                         num1 = list_view1.get_model ().get_n_items ();
-                        search_entry.placeholder_text = num1.to_string() + " " + (_("songs"));
+                        search_entry.placeholder_text = num1.to_string () + " " + (_("songs"));
                         break;
                     case SortMode.ARTIST:
                         list_view1.set_visible (false);
                         list_view2.set_visible (true);
                         list_view3.set_visible (false);
                         num2 = list_view2.get_model ().get_n_items ();
-                        search_entry.placeholder_text = num2.to_string() + " " + (_("songs"));
+                        search_entry.placeholder_text = num2.to_string () + " " + (_("songs"));
                         break;
                     case SortMode.RECENT:
                     case SortMode.SHUFFLE:
@@ -87,7 +85,7 @@ namespace Victrola {
                         list_view2.set_visible (false);
                         list_view3.set_visible (true);
                         num3 = list_view3.get_model ().get_n_items ();
-                        search_entry.placeholder_text = num3.to_string() + " " + (_("songs"));
+                        search_entry.placeholder_text = num3.to_string () + " " + (_("songs"));
                         break;
                 }
             }
@@ -264,7 +262,7 @@ namespace Victrola {
         private Bis.Animation? fade_animation = null;
         private async void on_song_tag_parsed (Song song, Gst.Sample? image) {
             update_song_info (song);
-            
+
             var app = (Application) application;
             var pixbufs = new Gdk.Pixbuf?[1] {null};
 
@@ -289,7 +287,10 @@ namespace Victrola {
                     info_page.cover_art.opacity = value;
                 });
                 fade_animation?.pause ();
-                fade_animation = new Bis.TimedAnimation (info_page.cover_art, 0.1, info_page.cover_art.opacity + 0.1, 900, target);
+                fade_animation = new Bis.TimedAnimation (info_page.cover_art, 0.1,
+                                                         info_page.cover_art.opacity + 0.1,
+                                                         900,
+                                                         target);
                 ((!)fade_animation).done.connect (() => {
                     fade_animation = null;
                 });
@@ -340,7 +341,7 @@ namespace Victrola {
                         var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
                         if (newbuf != null)
                             return ((!)newbuf);
-                        buffer?.unmap((!) info);
+                        buffer?.unmap ((!) info);
                     }
                 } catch (Error e) {
                     // w/e lol lmao even
@@ -353,10 +354,6 @@ namespace Victrola {
             list_view1.activate_action ("list.scroll-to-item", "u", index);
             list_view2.activate_action ("list.scroll-to-item", "u", index);
             list_view3.activate_action ("list.scroll-to-item", "u", index);
-        }
-
-        private static string simple_html_encode (string text) {
-            return text.replace ("&", "&amp;").replace ("<",  "&lt;").replace (">", "&gt;");
         }
 
         private void update_song_info (Song song) {
