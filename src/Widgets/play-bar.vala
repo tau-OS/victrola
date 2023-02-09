@@ -31,7 +31,7 @@ namespace Victrola {
             var player = app.player;
 
             this.margin_top = 12;
-            this.spacing = 12;
+            this.spacing = 18;
             this.add_css_class ("bottom-bar");
 
             append (_repeat);
@@ -46,6 +46,7 @@ namespace Victrola {
             _repeat.hexpand = true;
             _repeat.tooltip_text = _("Repeat Song");
             _repeat.add_css_class ("iconic-button");
+            _repeat.add_css_class ("media-button");
             _repeat.add_css_class ("flat");
             _repeat.remove_css_class ("toggle");
             _repeat.toggled.connect (() => {
@@ -57,6 +58,7 @@ namespace Victrola {
             _prev.action_name = ACTION_APP + ACTION_PREV;
             _prev.icon_name = "media-skip-backward-symbolic";
             _prev.tooltip_text = _("Play Previous");
+            _prev.add_css_class ("media-button");
 
             _play.valign = Gtk.Align.CENTER;
             _play.action_name = ACTION_APP + ACTION_PLAY;
@@ -68,6 +70,7 @@ namespace Victrola {
             _next.action_name = ACTION_APP + ACTION_NEXT;
             _next.icon_name = "media-skip-forward-symbolic";
             _next.tooltip_text = _("Play Next");
+            _next.add_css_class ("media-button");
 
             _stop.valign = Gtk.Align.CENTER;
             _stop.halign = Gtk.Align.START;
@@ -75,6 +78,7 @@ namespace Victrola {
             _stop.action_name = ACTION_APP + ACTION_STOP;
             _stop.icon_name = "media-playback-stop-symbolic";
             _stop.tooltip_text = _("Stop");
+            _stop.add_css_class ("media-button");
 
             player.duration_changed.connect ((duration) => {
                 ((MainWindow)app.active_window).album.notify["folded"].connect (() => {
