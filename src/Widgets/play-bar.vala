@@ -16,7 +16,7 @@
  */
 
 namespace Victrola {
-    public class PlayBar : He.BottomBar {
+    public class PlayBar : Gtk.Box {
         private Gtk.ToggleButton _repeat = new Gtk.ToggleButton ();
         private He.IconicButton _prev = new He.IconicButton ("");
         private He.IconicButton _play = new He.IconicButton ("");
@@ -30,19 +30,24 @@ namespace Victrola {
             var builder = new Gtk.Builder ();
             var player = app.player;
 
-            this.collapse_actions = false;
             this.margin_top = 12;
+            this.spacing = 12;
+            this.add_css_class ("bottom-bar");
 
-            append_button ((He.IconicButton)_repeat, Position.LEFT);
-            append_button (_prev, Position.LEFT);
-            append_button (_play, Position.LEFT);
-            append_button (_next, Position.LEFT);
-            append_button (_stop, Position.LEFT);
+            append (_repeat);
+            append (_prev);
+            append (_play);
+            append (_next);
+            append (_stop);
 
             _repeat.icon_name = "media-playlist-repeat-symbolic";
             _repeat.valign = Gtk.Align.CENTER;
+            _repeat.halign = Gtk.Align.END;
+            _repeat.hexpand = true;
             _repeat.tooltip_text = _("Repeat Song");
+            _repeat.add_css_class ("iconic-button");
             _repeat.add_css_class ("flat");
+            _repeat.remove_css_class ("toggle");
             _repeat.toggled.connect (() => {
                 _repeat.icon_name = _repeat.active ? "media-playlist-repeat-song-symbolic" : "media-playlist-repeat-symbolic";
                 app.single_loop = ! app.single_loop;
@@ -52,25 +57,24 @@ namespace Victrola {
             _prev.action_name = ACTION_APP + ACTION_PREV;
             _prev.icon_name = "media-skip-backward-symbolic";
             _prev.tooltip_text = _("Play Previous");
-            _prev.add_css_class ("flat");
 
             _play.valign = Gtk.Align.CENTER;
             _play.action_name = ACTION_APP + ACTION_PLAY;
             _play.icon_name = "media-playback-start-symbolic";
             _play.tooltip_text = _("Play/Pause");
-            _play.add_css_class ("flat");
+            _play.add_css_class ("play-button");
 
             _next.valign = Gtk.Align.CENTER;
             _next.action_name = ACTION_APP + ACTION_NEXT;
             _next.icon_name = "media-skip-forward-symbolic";
             _next.tooltip_text = _("Play Next");
-            _next.add_css_class ("flat");
 
             _stop.valign = Gtk.Align.CENTER;
+            _stop.halign = Gtk.Align.START;
+            _stop.hexpand = true;
             _stop.action_name = ACTION_APP + ACTION_STOP;
             _stop.icon_name = "media-playback-stop-symbolic";
             _stop.tooltip_text = _("Stop");
-            _stop.add_css_class ("flat");
 
             player.duration_changed.connect ((duration) => {
                 ((MainWindow)app.active_window).album.notify["folded"].connect (() => {

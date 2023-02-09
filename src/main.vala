@@ -16,11 +16,11 @@
  */
 
 int main (string[] args) {
-    Intl.bindtextdomain ("co.tauos.Victrola", Config.LOCALEDIR);
-    Intl.bind_textdomain_codeset ("co.tauos.Victrola", "UTF-8");
-    Intl.textdomain ("co.tauos.Victrola");
+    Intl.bindtextdomain ("com.fyralabs.Victrola", Config.LOCALEDIR);
+    Intl.bind_textdomain_codeset ("com.fyralabs.Victrola", "UTF-8");
+    Intl.textdomain ("com.fyralabs.Victrola");
 
-    Environment.set_prgname ("co.tauos.Victrola");
+    Environment.set_prgname ("com.fyralabs.Victrola");
     Environment.set_application_name (_("Victrola"));
 
     Victrola.GstPlayer.init (ref args);

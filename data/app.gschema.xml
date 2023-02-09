@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="victrola">
-  <schema id="@app_id@" path="/co/tauos/Victrola/">
+  <schema id="@app_id@" path="/com/fyralabs/Victrola/">
     <key name="music-dir" type="s">
       <default>''</default>
       <summary>Load music from folder</summary>

@@ -27,7 +27,7 @@ jobs:
       name: "Build"
       with:
         bundle: victrola.flatpak
-        manifest-path: co.tauos.Victrola.json
+        manifest-path: com.fyralabs.Victrola.json
         cache-key: flatpak-builder-${{ github.sha }}
         repository-name: catalogue
         repository-url: https://repo.tauos.co/catalogue.flatpakrepo

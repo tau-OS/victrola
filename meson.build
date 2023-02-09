@@ -1,4 +1,4 @@
-project('co.tauos.Victrola',
+project('com.fyralabs.Victrola',
   ['c', 'vala'],
   version: '0.1.0',
   meson_version: '>= 0.59.0',
@@ -9,10 +9,10 @@ gnome = import('gnome')
 i18n = import('i18n')
 
 if get_option('development')
-  app_id = 'co.tauos.Victrola.Devel'
+  app_id = 'com.fyralabs.Victrola.Devel'
   name_suffix = ' (Nightly)'
 else
-  app_id = 'co.tauos.Victrola'
+  app_id = 'com.fyralabs.Victrola'
   name_suffix = ''
 endif
 
@@ -79,7 +79,7 @@ subdir('data')
 subdir('po')
 
 executable(
-  'co.tauos.Victrola',
+  'com.fyralabs.Victrola',
   asresources,
   sources: sources,
   vala_args: [

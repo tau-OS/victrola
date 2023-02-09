@@ -24,6 +24,8 @@ namespace Victrola {
             picon.pixel_size = 24;
             picon.visible = false;
             picon.set_parent (this);
+
+            add_css_class ("song-entry");
         }
 
         public bool playing {
@@ -48,12 +50,6 @@ namespace Victrola {
                 case SortMode.ARTIST:
                     title = song.artist;
                     subtitle = song.title;
-                    break;
-
-                case SortMode.RECENT:
-                    var date = new DateTime.from_unix_local (song.modified_time);
-                    title = song.title;
-                    subtitle = date.format ("%x %H:%M");
                     break;
 
                 case SortMode.ALL:

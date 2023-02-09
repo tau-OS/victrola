@@ -1,17 +1,17 @@
 conf = configuration_data()
-conf.set('app_id', 'co.tauos.Victrola')
+conf.set('app_id', 'com.fyralabs.Victrola')
 conf.set('version', version)
 conf.set('bindir', get_option('prefix') / get_option('bindir'))
 
 desktop_conf = configure_file(
   input: 'app.desktop.in',
-  output: '@0@.desktop.in'.format('co.tauos.Victrola'),
+  output: '@0@.desktop.in'.format('com.fyralabs.Victrola'),
   configuration: conf
 )
 
 desktop_file = i18n.merge_file(
   input: desktop_conf,
-  output: '@0@.desktop'.format('co.tauos.Victrola'),
+  output: '@0@.desktop'.format('com.fyralabs.Victrola'),
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -27,7 +27,7 @@ endif
 
 service_file = configure_file(
   input: 'app.service.in',
-  output: '@0@.service'.format('co.tauos.Victrola'),
+  output: '@0@.service'.format('com.fyralabs.Victrola'),
   configuration: conf,
 )
 
@@ -38,13 +38,13 @@ install_data(
 
 appstream_conf = configure_file(
   input: 'app.appdata.xml.in',
-  output: '@0@.appdata.xml.in'.format('co.tauos.Victrola'),
+  output: '@0@.appdata.xml.in'.format('com.fyralabs.Victrola'),
   configuration: conf
 )
 
 appstream_file = i18n.merge_file(
   input: appstream_conf,
-  output: '@0@.appdata.xml'.format('co.tauos.Victrola'),
+  output: '@0@.appdata.xml'.format('com.fyralabs.Victrola'),
   po_dir: '../po',
   install: true,
   install_dir: get_option('datadir') / 'metainfo'
@@ -59,7 +59,7 @@ endif
 
 gschema_file = configure_file(
   input: 'app.gschema.xml',
-  output: 'co.tauos.Victrola' + '.gschema.xml',
+  output: 'com.fyralabs.Victrola' + '.gschema.xml',
   configuration: conf,
 )
 
@@ -86,7 +86,7 @@ blueprints = custom_target(
 
 asresources = gnome.compile_resources(
 	'as-resources',
-  'co.tauos.Victrola.gresource.xml',
+  'app.gresource.xml',
 	source_dir: meson.current_build_dir(),
   dependencies: blueprints,
 	c_name: 'as',

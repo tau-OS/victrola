@@ -1,10 +1,10 @@
 {
-    "app-id": "co.tauos.Victrola",
-    "runtime" : "co.tauos.Platform",
-    "runtime-version" : "daily",
-    "sdk" : "co.tauos.Sdk",
-    "command": "co.tauos.Victrola",
-    "desktop-file-name-suffix" : " (Development)",
+    "rename-icon" : "com.fyralabs.Victrola",
+    "app-id": "com.fyralabs.Victrola",
+    "runtime" : "com.fyralabs.Platform",
+    "runtime-version" : "stable",
+    "sdk" : "com.fyralabs.Sdk",
+    "command": "com.fyralabs.Victrola",
     "finish-args": [
         "--device=dri",
         "--share=ipc",
@@ -18,7 +18,7 @@
         "--talk-name=org.freedesktop.ScreenSaver",
         "--talk-name=org.gnome.SettingsDaemon.MediaKeys",
         "--talk-name=org.mpris.MediaPlayer2",
-        "--own-name=org.mpris.MediaPlayer2.co.tauos.Victrola"
+        "--own-name=org.mpris.MediaPlayer2.com.fyralabs.Victrola"
     ],
     "cleanup": [
         "/include",
@@ -37,9 +37,6 @@
             "name" : "victrola",
             "builddir" : true,
             "buildsystem" : "meson",
-            "config-opts" : [
-                "-Ddevelopment=true"
-            ],
             "sources" : [
                 {
                     "type" : "dir",

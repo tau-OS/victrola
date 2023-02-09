@@ -38,7 +38,7 @@ namespace Victrola {
         private GstPlayer _player = new GstPlayer ();
         private Gtk.FilterListModel _song_list = new Gtk.FilterListModel (null, null);
         private SongStore _song_store = new SongStore ();
-        private Settings _settings = new Settings ("co.tauos.Victrola");
+        private Settings _settings = new Settings ("com.fyralabs.Victrola");
         private MprisPlayer? _mpris = null;
         private uint _mpris_id = 0;
 
@@ -57,7 +57,7 @@ namespace Victrola {
         }
 
         public Application () {
-            Object (application_id: "co.tauos.Victrola", flags: ApplicationFlags.HANDLES_OPEN);
+            Object (application_id: "com.fyralabs.Victrola", flags: ApplicationFlags.HANDLES_OPEN);
 
             ActionEntry[] action_entries = {
                 { ACTION_ABOUT, show_about },
@@ -119,7 +119,7 @@ namespace Victrola {
             accent_color.parse("#F7812B");
             default_accent_color = He.Color.from_gdk_rgba(accent_color);
 
-            resource_base_path = "/co/tauos/Victrola";
+            resource_base_path = "/com/fyralabs/Victrola";
 
             base.startup ();
 
@@ -343,7 +343,7 @@ namespace Victrola {
                 Config.APP_ID,
                 "https://github.com/tau-OS/victrola/tree/main/po",
                 "https://github.com/tau-OS/victrola/issues",
-                "catalogue://co.tauos.Victrola",
+                "catalogue://com.fyralabs.Victrola",
                 {},
                 {"Lains","Lea"},
                 2022,

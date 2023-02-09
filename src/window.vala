@@ -24,7 +24,7 @@ namespace Victrola {
         TITLE
     }
 
-    [GtkTemplate (ui = "/co/tauos/Victrola/window.ui")]
+    [GtkTemplate (ui = "/com/fyralabs/Victrola/window.ui")]
     public class MainWindow : He.ApplicationWindow {
         [GtkChild]
         public unowned Bis.Album album;
@@ -46,6 +46,8 @@ namespace Victrola {
         public unowned Gtk.ToggleButton search_btn;
         [GtkChild]
         private unowned Gtk.Button music_dir_btn;
+        [GtkChild]
+        private unowned Gtk.SearchBar search_bar;
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
         [GtkChild]
@@ -184,7 +186,7 @@ namespace Victrola {
             app.index_changed.connect (on_index_changed);
             app.song_tag_parsed.connect (on_song_tag_parsed);
 
-            Settings settings = new Settings ("co.tauos.Victrola");
+            Settings settings = new Settings ("com.fyralabs.Victrola");
             stack.notify["visible-child-name"].connect (() => {
                 if (stack.visible_child_name == "album") {
                     app.sort_mode = SortMode.ALBUM;
@@ -298,7 +300,7 @@ namespace Victrola {
         private static Gdk.Texture? update_cover_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
             var rect = (!)Graphene.Rect ().init (0, 0, 300, 300);
-            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 18);
+            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 26);
             snapshot.push_rounded_clip (rounded);
             paintable.snapshot (snapshot, 300, 300);
             snapshot.pop ();
@@ -311,7 +313,7 @@ namespace Victrola {
         private static Gdk.Texture? update_blur_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
             var rect = (!)Graphene.Rect ().init (0, 0, 300, 300);
-            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 18);
+            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 26);
             snapshot.push_rounded_clip (rounded);
             paintable.snapshot (snapshot, 300, 300);
             snapshot.pop ();

@@ -72,12 +72,14 @@ namespace Victrola {
             var bottom_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
             scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
+            scale.margin_bottom = 12;
             scale.width_request = 300;
             scale.halign = Gtk.Align.CENTER;
             scale.set_range (0, _duration);
 
             var song_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
-            song_box.margin_top = 24;
+            song_box.margin_top = 12;
+            song_box.margin_bottom = 12;
             song_title = new Gtk.Label ("");
             song_title.add_css_class ("cb-title");
             song_artist = new Gtk.Label ("");
@@ -86,6 +88,7 @@ namespace Victrola {
             song_box.append (song_artist);
 
             var duration_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            duration_box.margin_top = 6;
             duration_box.homogeneous = true;
             duration_box.width_request = 300;
             duration_box.halign = Gtk.Align.CENTER;
@@ -100,10 +103,9 @@ namespace Victrola {
             bottom_box.append (scale);
             bottom_box.append (duration_box);
 
-            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
             main_box.vexpand = main_box.hexpand = true;
             main_box.valign = Gtk.Align.CENTER;
-            main_box.margin_start = main_box.margin_end = 18;
             main_box.append(cover_box);
             main_box.append(bottom_box);
 

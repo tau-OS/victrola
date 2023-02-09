@@ -2,7 +2,7 @@
 Name=Victrola
 GenericName=Music Player
 Comment=Play your music, in an elegant way
-Exec=co.tauos.Victrola %U
+Exec=com.fyralabs.Victrola %U
 Icon=@app_id@
 Terminal=false
 Type=Application

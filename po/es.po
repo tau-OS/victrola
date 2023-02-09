@@ -1,11 +1,11 @@
-# Spanish translations for co.tauos.Victrola package.
-# Copyright (C) 2023 THE co.tauos.Victrola'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the co.tauos.Victrola package.
+# Spanish translations for com.fyralabs.Victrola package.
+# Copyright (C) 2023 THE com.fyralabs.Victrola'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.fyralabs.Victrola package.
 # Automatically generated, 2023.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: co.tauos.Victrola\n"
+"Project-Id-Version: com.fyralabs.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
 "PO-Revision-Date: 2023-01-23 01:48+0000\n"

@@ -35,7 +35,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
             [titlebar-button]
             ToggleButton search_btn {
               icon-name: "edit-find-symbolic";
-              active: bind search_entry.visible no-sync-create bidirectional;
+              active: bind search_bar.search-mode-enabled no-sync-create bidirectional;
               tooltip-text: _("Search music");
             }
 
@@ -52,22 +52,25 @@ template VictrolaMainWindow : He.ApplicationWindow {
               menu-model: primary_menu;
             }
 
-            SearchEntry search_entry {
-              hexpand: true;
-              visible: false;
-              halign: start;
-              margin-start: 18;
-              margin-end: 18;
-              placeholder-text: "";
+            SearchBar search_bar {
+              key-capture-widget: VictrolaMainWindow;
+              child: SearchEntry search_entry {
+                hexpand: true;
+                halign: start;
+                placeholder-text: "";
+
+                styles [
+                  "search",
+                ]
+              };
 
               styles [
-                  "search",
+                "search-bar",
               ]
             }
 
             Bis.Latch {
               maximum-size: 360;
-              tightening-threshold: 300;
 
               ScrolledWindow scroll_view {
                 hscrollbar-policy: never;
@@ -136,7 +139,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
           Box infogrid {
             orientation: vertical;
             hexpand: true;
-            width-request: 400;
+            width-request: 360;
 
             styles [
                   "main-view",
