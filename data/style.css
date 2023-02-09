@@ -1,16 +1,6 @@
-.song-entry label.cb-title {
-  font-size: 11pt;
-}
-.song-entry label.cb-subtitle {
-  font-size: 10.5pt;
-}
 .song-entry:not(:hover):not(:active):not(.playing) {
   background: none;
 }
-.song-entry {
-  padding: 12px 16px;
-}
-
 .playing {
   background: alpha(@accent_bg_color, 0.15);
   color: @accent_color;
@@ -37,7 +27,4 @@
   min-height: 32px;
   -gtk-icon-size: 24px;
   padding: 6px;
-}
-.music-list .mini-content-block {
-  margin: 2px 0 0 0;
 }
