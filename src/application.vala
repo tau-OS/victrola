@@ -343,10 +343,10 @@ namespace Victrola {
                 Config.APP_ID,
                 "https://github.com/tau-OS/victrola/tree/main/po",
                 "https://github.com/tau-OS/victrola/issues",
-                "catalogue://com.fyralabs.Victrola",
+                "https://github.com/tau-OS/victrola/",
                 {},
                 {"Fyra Labs"},
-                2022,
+                2023,
                 He.AboutWindow.Licenses.GPLv3,
                 He.Colors.ORANGE
             );
