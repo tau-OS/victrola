@@ -46,8 +46,8 @@ msgstr "Přehrávejte svoji hudbu se stylem"
 #: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
 msgstr ""
-"music;sound;player;media;audio;playlist;hudba;gramofon;fonograf;zvuk;přehráva"
-"č;prehravac;média;phonograph;"
+"music;sound;player;media;audio;playlist;hudba;gramofon;zvuk;přehrávač;"
+"prehravac;média;gramofón;"
 
 #: data/ui/window.blp:39
 msgid "Search music"
