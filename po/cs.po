@@ -19,76 +19,58 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.15.1\n"
 
-#: data/app.appdata.xml.in:4 data/app.desktop.in:3 src/main.vala:24
 msgid "Victrola"
 msgstr "Victrola"
 
-#: data/app.appdata.xml.in:7
 msgid "Play your music, in an elegant way."
 msgstr "Přehrávejte svoji hudbu se stylem."
 
-#: data/app.appdata.xml.in:16
 msgid "A fast and lightweight music player."
 msgstr "Rychlý a lehký hudební přehrávač."
 
-#: data/app.appdata.xml.in:28
 msgid "First release."
 msgstr "První vydání."
 
-#: data/app.desktop.in:4
 msgid "Music Player"
 msgstr "Hudební Přehrávač"
 
-#: data/app.desktop.in:5
 msgid "Play your music, in an elegant way"
 msgstr "Přehrávejte svoji hudbu se stylem"
 
-#: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
 msgstr ""
 "music;sound;player;media;audio;playlist;hudba;gramofon;zvuk;přehrávač;"
 "prehravac;média;gramofón;"
 
-#: data/ui/window.blp:39
 msgid "Search music"
 msgstr "Hledat hudbu"
 
-#: data/ui/window.blp:45
 msgid "Choose music folder"
 msgstr "Zvolte složku s hudbou"
 
-#: data/ui/window.blp:164
 msgid "About Victrola"
 msgstr "O Victrole"
 
-#: src/Utils/song-store.vala:19
 msgid "Unknown Artist"
 msgstr "Neznámý Umělec"
 
-#: src/Utils/song-store.vala:20
 msgid "Unknown Album"
 msgstr "Neznámé Album"
 
-#: src/Widgets/play-bar.vala:44
 msgid "Repeat Song"
 msgstr "Opakovat Skladbu"
 
-#: src/Widgets/play-bar.vala:54
 msgid "Play Previous"
 msgstr "Přehrát Předchozí"
 
-#: src/Widgets/play-bar.vala:60
 msgid "Play/Pause"
 msgstr "Přehrát/Pozastavit"
 
-#: src/Widgets/play-bar.vala:66
 msgid "Play Next"
 msgstr "Přehrát Další"
 
-#: src/Widgets/play-bar.vala:72
 msgid "Stop"
 msgstr "Zastavit"
 
-#: src/window.vala:71 src/window.vala:78 src/window.vala:88
 msgid "songs"
 msgstr "skladby"
