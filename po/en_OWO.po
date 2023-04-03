@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: com.fyralabs.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2023-03-29 17:38+0000\n"
+"PO-Revision-Date: 2023-04-03 01:38+0000\n"
 "Last-Translator: Jaiden Riordan <jade@fyralabs.com>\n"
 "Language-Team: English <https://weblate.fyralabs.com/projects/tauOS/victrola/"
-"en_OWO/>\n"
+"en_owo/>\n"
 "Language: en_OWO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,68 +25,68 @@ msgstr "Victrola"
 
 #: data/app.appdata.xml.in:7
 msgid "Play your music, in an elegant way."
-msgstr ""
+msgstr "Pway nyur mewsic, in an ewegant way."
 
 #: data/app.appdata.xml.in:16
 msgid "A fast and lightweight music player."
-msgstr ""
+msgstr "A fast and lightweight mewsic player."
 
 #: data/app.appdata.xml.in:28
 msgid "First release."
-msgstr ""
+msgstr "Fiwst welease."
 
 #: data/app.desktop.in:4
 msgid "Music Player"
-msgstr ""
+msgstr "Mewsic Pwayer"
 
 #: data/app.desktop.in:5
 msgid "Play your music, in an elegant way"
-msgstr ""
+msgstr "Pway nyur mewsic, in an ewegant way"
 
 #: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
-msgstr ""
+msgstr "music;sound;player;media;audio;playlist;mewsic;pwayer;pwaywist;"
 
 #: data/ui/window.blp:39
 msgid "Search music"
-msgstr ""
+msgstr "Seawch mewsic"
 
 #: data/ui/window.blp:45
 msgid "Choose music folder"
-msgstr ""
+msgstr "Choose mewsic fowder"
 
 #: data/ui/window.blp:164
 msgid "About Victrola"
-msgstr ""
+msgstr "About Victrola"
 
 #: src/Utils/song-store.vala:19
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Unknown Awtist"
 
 #: src/Utils/song-store.vala:20
 msgid "Unknown Album"
-msgstr ""
+msgstr "Unknown Awbum"
 
 #: src/Widgets/play-bar.vala:44
 msgid "Repeat Song"
-msgstr ""
+msgstr "Wepeat Meow"
 
 #: src/Widgets/play-bar.vala:54
 msgid "Play Previous"
-msgstr ""
+msgstr "Pway Pwevious"
 
 #: src/Widgets/play-bar.vala:60
 msgid "Play/Pause"
-msgstr ""
+msgstr "Pway/Paws"
 
 #: src/Widgets/play-bar.vala:66
 msgid "Play Next"
-msgstr ""
+msgstr "Pway Next"
 
 #: src/Widgets/play-bar.vala:72
 msgid "Stop"
-msgstr ""
+msgstr "Stop"
 
 #: src/window.vala:71 src/window.vala:78 src/window.vala:88
 msgid "songs"
-msgstr ""
+msgstr "meows"
