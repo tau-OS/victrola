@@ -347,7 +347,7 @@ namespace Victrola {
                 {},
                 {"Fyra Labs"},
                 2023,
-                He.AboutWindow.Licenses.GPLv3,
+                He.AboutWindow.Licenses.GPLV3,
                 He.Colors.ORANGE
             );
             about.present ();
