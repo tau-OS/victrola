@@ -37,9 +37,9 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.Stack stack;
         [GtkChild]
-        private unowned Gtk.ListView list_view1;
+        private unowned Gtk.GridView list_view1;
         [GtkChild]
-        private unowned Gtk.ListView list_view2;
+        private unowned Gtk.GridView list_view2;
         [GtkChild]
         private unowned Gtk.ListView list_view3;
         [GtkChild]
@@ -137,7 +137,7 @@ namespace Victrola {
 
             var factory = new Gtk.SignalListItemFactory ();
             factory.setup.connect ((item) => {
-                item.child = new SongEntry ();
+                ((Gtk.ListItem)item).child = new SongEntry ();
             });
             factory.bind.connect (on_bind_item);
             list_view1.factory = factory;
@@ -152,7 +152,7 @@ namespace Victrola {
 
             var factory2 = new Gtk.SignalListItemFactory ();
             factory2.setup.connect ((item) => {
-                item.child = new SongEntry ();
+                ((Gtk.ListItem)item).child = new SongEntry ();
             });
             factory2.bind.connect (on_bind_item);
             list_view2.factory = factory2;
@@ -167,7 +167,7 @@ namespace Victrola {
 
             var factory3 = new Gtk.SignalListItemFactory ();
             factory3.setup.connect ((item) => {
-                item.child = new SongEntry ();
+                ((Gtk.ListItem)item).child = new SongEntry ();
             });
             factory3.bind.connect (on_bind_item);
             list_view3.factory = factory3;
@@ -216,16 +216,18 @@ namespace Victrola {
                     album.set_visible_child (listgrid);
                 }
             });
+
+            listgrid.remove_css_class ("sidebar-view");
         }
 
-        private async void on_bind_item (Gtk.ListItem item) {
+        private async void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
             var app = (Application) application;
-            var entry = (SongEntry) item.child;
-            var song = (Song) item.item;
-            entry.playing = item.position == app.current_item;
+            var entry = (SongEntry) ((Gtk.ListItem)item).child;
+            var song = (Song) ((Gtk.ListItem)item).item;
+            entry.playing = ((Gtk.ListItem)item).position == app.current_item;
             entry.update (song, app.sort_mode);
-            var saved_pos = item.position;
-            if (saved_pos != item.position) {
+            var saved_pos = ((Gtk.ListItem)item).position;
+            if (saved_pos != ((Gtk.ListItem)item).position) {
                 Idle.add (() => {
                     app.song_list.items_changed (saved_pos, 0, 0);
                     return false;

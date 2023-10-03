@@ -21,16 +21,20 @@ template VictrolaMainWindow : He.ApplicationWindow {
         child:
           He.SideBar listgrid {
             vexpand: true;
-            show-buttons: bind album.folded;
+            hexpand: true;
+            show-buttons: true;
             show-back: false;
             has-margins: false;
-            width-request: 250;
             scroller: scroll_view;
             titlewidget:
               He.ViewChooser {
                 stack: stack;
               }
             ;
+
+            styles [
+                  "main-view"
+            ]
 
             [titlebar-button]
             ToggleButton search_btn {
@@ -43,6 +47,9 @@ template VictrolaMainWindow : He.ApplicationWindow {
             Button music_dir_btn {
               icon-name: "document-open-symbolic";
               tooltip-text: _("Choose music folder");
+              styles [
+                  "image-button"
+              ]
             }
 
             [titlebar-button]
@@ -52,10 +59,18 @@ template VictrolaMainWindow : He.ApplicationWindow {
               menu-model: primary_menu;
             }
 
+            [titlebar-button]
+            ToggleButton info_btn {
+              icon-name: "sidebar-show-right-symbolic";
+              tooltip-text: _("Show music info");
+              active: true;
+            }
+
             SearchBar search_bar {
               key-capture-widget: VictrolaMainWindow;
               child: SearchEntry search_entry {
                 hexpand: true;
+                margin-start: 18;
                 halign: start;
                 placeholder-text: "";
 
@@ -69,9 +84,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
               ]
             }
 
-            Bis.Latch {
-              maximum-size: 360;
-
               ScrolledWindow scroll_view {
                 hscrollbar-policy: never;
                 vexpand: true;
@@ -79,18 +91,21 @@ template VictrolaMainWindow : He.ApplicationWindow {
                 Stack stack {
                   margin-start: 18;
                   margin-end: 18;
+                  margin-bottom: 18;
+                  margin-top: 12;
 
                   StackPage {
                     icon-name: "media-optical-cd-audio-symbolic";
                     title: "Album";
                     name: "album";
                     child:
-                    ListView list_view1 {
+                    GridView list_view1 {
                       single-click-activate: true;
+                      max-columns: 5;
+                      min-columns: 1;
 
                       styles [
-                        "content-list",
-                        "music-list"
+                        "music-grid"
                       ]
                     }
                     ;
@@ -101,12 +116,13 @@ template VictrolaMainWindow : He.ApplicationWindow {
                     title: "Artist";
                     name: "artist";
                     child:
-                    ListView list_view2 {
+                    GridView list_view2 {
                       single-click-activate: true;
+                      max-columns: 5;
+                      min-columns: 1;
 
                       styles [
-                        "content-list",
-                        "music-list"
+                        "music-grid"
                       ]
                     }
                     ;
@@ -129,7 +145,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
                   }
                 }
               }
-            }
           }
         ;
       }
@@ -138,16 +153,18 @@ template VictrolaMainWindow : He.ApplicationWindow {
         child:
           Box infogrid {
             orientation: vertical;
-            hexpand: true;
+            hexpand-set: true;
             width-request: 360;
+            visible: bind info_btn.active no-sync-create bidirectional;
 
             styles [
-                  "main-view",
+                  "sidebar-view",
+                  "side-pane"
             ]
 
             He.AppBar info_title {
               show-back: bind album.folded;
-              show-buttons: true;
+              show-buttons: bind album.folded;
             }
 
             Box info_box {

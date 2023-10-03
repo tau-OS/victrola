@@ -13,15 +13,16 @@
   box-shadow: none;
 }
 .play-button {
-  min-width: 48px;
-  min-height: 48px;
-  -gtk-icon-size: 35px;
-  padding: 8px;
+  -gtk-icon-size: 24px;
   box-shadow: inset 0 0 0 1px @outline;
 }
-.media-button {
-  min-width: 32px;
-  min-height: 32px;
-  -gtk-icon-size: 24px;
-  padding: 6px;
+.music-grid {
+  background: none;
+}
+.music-grid child:hover {
+  color: @view_fg_color;
+}
+.side-pane {
+  border-radius: 26px 0 0 26px;
+  box-shadow: inset 1px 0 0 0 alpha(@outline, 0.38);
 }
