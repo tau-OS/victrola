@@ -95,6 +95,9 @@ namespace Victrola {
             Object (application: app);
             this.icon_name = app.application_id;
 
+            var theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
+            theme.add_resource_path ("/com/fyralabs/Victrola/");
+
             search_btn.toggled.connect (() => {
                 if (search_btn.active)
                     search_entry.grab_focus ();

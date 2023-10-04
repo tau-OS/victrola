@@ -4,10 +4,10 @@ using Bis 1;
 
 template VictrolaMainWindow : He.ApplicationWindow {
   visible: true;
-  default-width: 820;
+  default-width: 1024;
   default-height: 600;
   width-request: 360;
-  height-request: 266;
+  height-request: 280;
 
   Box {
     orientation: vertical;
@@ -19,18 +19,75 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
       Bis.AlbumPage {
         child:
-          He.SideBar listgrid {
+          He.SideBar navgrid {
             vexpand: true;
-            hexpand: true;
             show-buttons: true;
             show-back: false;
             has-margins: false;
-            scroller: scroll_view;
+            width-request: 213;
+
+            titlewidget: 
+              Label {
+                margin-end: 12;
+                halign: start;
+                label: "Victrola";
+
+                styles [
+                  "heading"
+                ]
+              };
+
+            [titlebar-button]
+            MenuButton {
+              valign: center;
+              icon-name: "open-menu-symbolic";
+              menu-model: primary_menu;
+            }
+
+            He.NavigationSection viewchooser {
+              stack: stack;
+              valign: start;
+              margin-top: 8;
+              vexpand: false;
+              vexpand-set: true;
+            }
+
+            He.Divider {
+              is-inset: true;
+            }
+
+            Label {
+              margin-start: 18;
+              margin-bottom: 6;
+              halign: start;
+              label: "Playlists";
+
+              styles [
+                "heading",
+                "dim-label"
+              ]
+            }
+          };
+      }
+
+      Bis.AlbumPage {
+        child:
+          He.SideBar listgrid {
+            vexpand: true;
+            hexpand: true;
+            show-buttons: bind album.folded;
+            show-back: false;
+            has-margins: false;
             titlewidget:
-              He.ViewChooser {
-                stack: stack;
-              }
-            ;
+              Label title {
+                margin-end: 12;
+                halign: start;
+                label: "Albums";
+
+                styles [
+                  "view-title"
+                ]
+              };
 
             styles [
                   "main-view"
@@ -50,13 +107,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
               styles [
                   "image-button"
               ]
-            }
-
-            [titlebar-button]
-            MenuButton {
-              valign: center;
-              icon-name: "open-menu-symbolic";
-              menu-model: primary_menu;
             }
 
             [titlebar-button]
@@ -96,7 +146,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
                   StackPage {
                     icon-name: "media-optical-cd-audio-symbolic";
-                    title: "Album";
+                    title: "Albums";
                     name: "album";
                     child:
                     GridView list_view1 {
@@ -113,7 +163,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
                   StackPage {
                     icon-name: "system-users-symbolic";
-                    title: "Artist";
+                    title: "Artists";
                     name: "artist";
                     child:
                     GridView list_view2 {
@@ -130,7 +180,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
                   StackPage {
                     icon-name: "audio-x-generic-symbolic";
-                    title: "Title";
+                    title: "Titles";
                     name: "title";
                     child:
                     ListView list_view3 {
