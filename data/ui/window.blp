@@ -21,7 +21,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
         child:
           He.SideBar navgrid {
             vexpand: true;
-            show-buttons: true;
+            show-left-title-buttons: true;
             show-back: false;
             has-margins: false;
             width-request: 213;
@@ -59,7 +59,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
           He.SideBar listgrid {
             vexpand: true;
             hexpand: true;
-            show-buttons: bind album.folded;
+            show-left-title-buttons: bind album.folded;
             show-back: false;
             has-margins: false;
             titlewidget:
@@ -198,7 +198,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
             He.AppBar info_title {
               show-back: bind album.folded;
-              show-buttons: bind album.folded;
+              show-left-title-buttons: bind album.folded;
+              show-right-title-buttons: true;
             }
 
             Box info_box {
