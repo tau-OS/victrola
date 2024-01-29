@@ -114,6 +114,7 @@ namespace Victrola {
             main_box.set_parent (this);
 
             this.vexpand = this.hexpand = true;
+            this.remove_css_class ("sidebar-view");
 
             player.duration_changed.connect ((duration) => {
                 this.duration = GstPlayer.to_second (duration);

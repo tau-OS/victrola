@@ -3,7 +3,7 @@
   color: @accent_color;
 }
 .cover-art-blur {
-  filter: opacity(0.75) blur(250px);
+  filter: opacity(0.8) blur(6px);
 }
 .search {
   border-radius: 999px;
@@ -21,4 +21,8 @@
 }
 .music-grid child:hover {
   color: @view_fg_color;
+}
+.side-pane {
+  border-radius: 8px 0 0 8px;
+  background: @surface_container_bg_color;
 }
