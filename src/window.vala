@@ -92,7 +92,9 @@ namespace Victrola {
         }
 
         public MainWindow (Application app) {
-            Object (application: app);
+            Object (
+                application: app
+            );
             this.icon_name = app.application_id;
 
             var theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
@@ -281,6 +283,8 @@ namespace Victrola {
                     paintable = Gdk.Texture.for_pixbuf ((!)pixbufs[0]);
                 }
 
+                accent_set ((!)pixbufs[0]);
+
                 var art = update_cover_paintable (song, info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
                 print ("Update cover\n");
@@ -363,6 +367,32 @@ namespace Victrola {
 
         private void update_song_info (Song song) {
             info_page.update (song);
+        }
+        public async void accent_set (Gdk.Pixbuf? pixbuf) {
+            var app = (Application) application;
+            try {
+                var loop = new MainLoop ();
+                He.Ensor.accent_from_pixels_async.begin (pixbuf.get_pixels_with_length (), pixbuf.get_has_alpha (), (obj, res) => {
+                    GLib.Array<int?> result = He.Ensor.accent_from_pixels_async.end (res);
+                    int top = result.index (0);
+                    print ("FIRST VICTROLA ARGB RESULT (should be the same as Ensor's): %d\n".printf (top));
+    
+                    if (top != 0) {
+                        Gdk.RGBA accent_color = { 0 };
+                        accent_color.parse(He.Color.hexcode_argb (top));
+                        app.default_accent_color = He.Color.from_gdk_rgba(accent_color);
+                    } else {
+                        Gdk.RGBA accent_color = { 0 };
+                        accent_color.parse("#F7812B");
+                        app.default_accent_color = He.Color.from_gdk_rgba(accent_color);
+                    }
+                    loop.quit ();
+                });
+                loop.run ();
+    
+            } catch (Error e) {
+                print (e.message);
+            }
         }
 
         private void update_song_filter () {
