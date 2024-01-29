@@ -22,6 +22,3 @@
 .music-grid child:hover {
   color: @view_fg_color;
 }
-.side-pane {
-  border-radius: 8px 0 0 8px;
-}
