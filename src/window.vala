@@ -283,7 +283,7 @@ namespace Victrola {
                     paintable = Gdk.Texture.for_pixbuf ((!)pixbufs[0]);
                 }
 
-                accent_set ((!)pixbufs[0]);
+                accent_set.begin ((!)pixbufs[0]);
 
                 var art = update_cover_paintable (song, info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
