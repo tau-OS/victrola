@@ -3,7 +3,7 @@
   color: @accent_color;
 }
 .cover-art-blur {
-  filter: opacity(0.7) blur(10px);
+  filter: opacity(0.75) blur(250px);
 }
 .search {
   border-radius: 999px;
@@ -23,6 +23,5 @@
   color: @view_fg_color;
 }
 .side-pane {
-  border-radius: 26px 0 0 26px;
-  box-shadow: inset 1px 0 0 0 alpha(@outline, 0.38);
+  border-radius: 8px 0 0 8px;
 }

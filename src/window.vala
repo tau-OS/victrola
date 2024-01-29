@@ -310,7 +310,7 @@ namespace Victrola {
         private static Gdk.Texture? update_cover_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
             var rect = (!)Graphene.Rect ().init (0, 0, 300, 300);
-            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 26);
+            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 12);
             snapshot.push_rounded_clip (rounded);
             paintable.snapshot (snapshot, 300, 300);
             snapshot.pop ();
@@ -323,7 +323,7 @@ namespace Victrola {
         private static Gdk.Texture? update_blur_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
             var rect = (!)Graphene.Rect ().init (0, 0, 300, 300);
-            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 26);
+            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 12);
             snapshot.push_rounded_clip (rounded);
             paintable.snapshot (snapshot, 300, 300);
             snapshot.pop ();
