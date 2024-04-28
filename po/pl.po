@@ -8,13 +8,17 @@ msgstr ""
 "Project-Id-Version: com.fyralabs.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2024-04-28 20:49+0000\n"
+"Last-Translator: Alicja Michalska <ahplka19@gmail.com>\n"
+"Language-Team: Polish <https://weblate.fyralabs.com/projects/tauOS/victrola/"
+"pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.4.2\n"
 
 #: data/app.appdata.xml.in:4 data/app.desktop.in:3 src/main.vala:24
 msgid "Victrola"
@@ -22,68 +26,68 @@ msgstr ""
 
 #: data/app.appdata.xml.in:7
 msgid "Play your music, in an elegant way."
-msgstr ""
+msgstr "Słuchaj muzyki w eleganckim stylu."
 
 #: data/app.appdata.xml.in:16
 msgid "A fast and lightweight music player."
-msgstr ""
+msgstr "Szybki i lekki odtwarzacz muzyki."
 
 #: data/app.appdata.xml.in:28
 msgid "First release."
-msgstr ""
+msgstr "Pierwsze wydanie."
 
 #: data/app.desktop.in:4
 msgid "Music Player"
-msgstr ""
+msgstr "Odtwarzacz Muzyki"
 
 #: data/app.desktop.in:5
 msgid "Play your music, in an elegant way"
-msgstr ""
+msgstr "Słuchaj muzyki w eleganckim stylu"
 
 #: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
-msgstr ""
+msgstr "muzyka;dźwięk;odtwarzacz;media;audio;playlista;"
 
 #: data/ui/window.blp:39
 msgid "Search music"
-msgstr ""
+msgstr "Szukaj muzyki"
 
 #: data/ui/window.blp:45
 msgid "Choose music folder"
-msgstr ""
+msgstr "Wybierz folder z muzyką"
 
 #: data/ui/window.blp:164
 msgid "About Victrola"
-msgstr ""
+msgstr "O Victroli"
 
 #: src/Utils/song-store.vala:19
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Nieznany artysta"
 
 #: src/Utils/song-store.vala:20
 msgid "Unknown Album"
-msgstr ""
+msgstr "Nieznany Album"
 
 #: src/Widgets/play-bar.vala:44
 msgid "Repeat Song"
-msgstr ""
+msgstr "Powtórz utwór"
 
 #: src/Widgets/play-bar.vala:54
 msgid "Play Previous"
-msgstr ""
+msgstr "Odtwórz poprzedni"
 
 #: src/Widgets/play-bar.vala:60
 msgid "Play/Pause"
-msgstr ""
+msgstr "Odtwarzaj/Wstrzymaj"
 
 #: src/Widgets/play-bar.vala:66
 msgid "Play Next"
-msgstr ""
+msgstr "Odtwórz następny"
 
 #: src/Widgets/play-bar.vala:72
 msgid "Stop"
-msgstr ""
+msgstr "Zatrzymaj"
 
 #: src/window.vala:71 src/window.vala:78 src/window.vala:88
 msgid "songs"
-msgstr ""
+msgstr "utwory"
