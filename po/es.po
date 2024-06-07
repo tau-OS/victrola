@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: com.fyralabs.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2023-12-04 20:12+0000\n"
-"Last-Translator: Pan <panpantepan@skiff.com>\n"
+"PO-Revision-Date: 2024-06-09 00:29+0000\n"
+"Last-Translator: Mauricio Ordoñez <maurial593@gmail.com>\n"
 "Language-Team: Spanish <https://weblate.fyralabs.com/projects/tauOS/victrola/"
 "es/>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.0\n"
+"X-Generator: Weblate 5.5\n"
 
 #: data/app.appdata.xml.in:4 data/app.desktop.in:3 src/main.vala:24
 msgid "Victrola"
@@ -45,14 +45,13 @@ msgstr "Escucha tu música de una forma elegante"
 
 #: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
-msgstr ""
+msgstr "musica;sonido;reproductor;media;audio;playlist;"
 
 #: data/ui/window.blp:39
 msgid "Search music"
 msgstr "Buscar música"
 
 #: data/ui/window.blp:45
-#, fuzzy
 msgid "Choose music folder"
 msgstr "Escoger el directorio de tu música"
 
