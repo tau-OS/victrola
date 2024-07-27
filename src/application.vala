@@ -119,6 +119,7 @@ namespace Victrola {
             accent_color.parse("#F7812B");
             default_accent_color = He.Color.from_gdk_rgba(accent_color);
             override_accent_color = true;
+            scheme_factory = new He.ContentScheme ();
 
             resource_base_path = "/com/fyralabs/Victrola";
 
