@@ -45,7 +45,9 @@ namespace Victrola {
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
         [GtkChild]
-        private unowned Gtk.Button music_dir_btn;
+        private unowned He.DisclosureButton music_dir_btn;
+        [GtkChild]
+        private unowned Gtk.MenuButton menu_btn;
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
         [GtkChild]
@@ -96,6 +98,8 @@ namespace Victrola {
                 application: app
             );
             this.icon_name = app.application_id;
+
+            menu_btn.get_popover ().has_arrow = false;
 
             var theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
             theme.add_resource_path ("/com/fyralabs/Victrola/");

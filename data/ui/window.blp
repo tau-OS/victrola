@@ -38,8 +38,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
                 ]
               };
 
-            [titlebar-button]
-            MenuButton {
+            [titlebar-menu]
+            MenuButton menu_btn {
               valign: center;
               icon-name: "open-menu-symbolic";
               menu-model: primary_menu;
@@ -79,7 +79,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
                   "main-view"
             ]
 
-            [titlebar-button]
+            [titlebar-toggle]
             ToggleButton search_btn {
               icon-name: "edit-find-symbolic";
               active: bind search_bar.search-mode-enabled no-sync-create bidirectional;
@@ -87,15 +87,12 @@ template VictrolaMainWindow : He.ApplicationWindow {
             }
 
             [titlebar-button]
-            Button music_dir_btn {
+            He.DisclosureButton music_dir_btn {
               icon-name: "document-open-symbolic";
               tooltip-text: _("Choose music folder");
-              styles [
-                  "image-button"
-              ]
             }
 
-            [titlebar-button]
+            [titlebar-toggle]
             ToggleButton info_btn {
               icon-name: "sidebar-show-right-symbolic";
               tooltip-text: _("Show music info");
@@ -112,6 +109,8 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
                 styles [
                   "search",
+                  "text-field",
+                  "outline"
                 ]
               };
 
