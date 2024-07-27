@@ -82,6 +82,12 @@ namespace Victrola {
             song_box.margin_bottom = 12;
             song_title = new Gtk.Label ("");
             song_title.add_css_class ("cb-title");
+            song_title.max_width_chars = 1;
+            song_title.max_width_chars = 20;
+            song_title.wrap = true;
+            song_title.ellipsize = Pango.EllipsizeMode.MIDDLE;
+            song_title.margin_start = 32;
+            song_title.margin_end = 32;
             song_artist = new Gtk.Label ("");
             song_artist.add_css_class ("cb-subtitle");
             song_box.append (song_title);

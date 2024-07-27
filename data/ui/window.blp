@@ -19,61 +19,20 @@ template VictrolaMainWindow : He.ApplicationWindow {
 
       Bis.AlbumPage {
         child:
-          He.SideBar navgrid {
+          He.SideBar listgrid {
             vexpand: true;
+            hexpand: true;
             show-left-title-buttons: true;
             show-right-title-buttons: bind album.folded;
             show-back: false;
             has-margins: false;
-            width-request: 213;
-
-            titlewidget: 
-              Label {
-                margin-end: 12;
-                halign: start;
-                label: "Victrola";
-
-                styles [
-                  "heading"
-                ]
-              };
-
-            [titlebar-menu]
-            MenuButton menu_btn {
-              valign: center;
-              icon-name: "open-menu-symbolic";
-              menu-model: primary_menu;
-            }
-
-            He.NavigationSection viewchooser {
+            titlewidget:
+            He.ViewChooser viewchooser {
               stack: stack;
               valign: start;
-              margin-top: 8;
               vexpand: false;
               vexpand-set: true;
-            }
-          };
-      }
-
-      Bis.AlbumPage {
-        child:
-          He.SideBar listgrid {
-            vexpand: true;
-            hexpand: true;
-            show-left-title-buttons: bind album.folded;
-            show-right-title-buttons: bind album.folded;
-            show-back: false;
-            has-margins: false;
-            titlewidget:
-              Label title {
-                margin-end: 12;
-                halign: start;
-                label: "Albums";
-
-                styles [
-                  "view-title"
-                ]
-              };
+            };
 
             styles [
                   "main-view"
@@ -97,6 +56,13 @@ template VictrolaMainWindow : He.ApplicationWindow {
               icon-name: "sidebar-show-right-symbolic";
               tooltip-text: _("Show music info");
               active: true;
+            }
+
+            [titlebar-menu]
+            MenuButton menu_btn {
+              valign: center;
+              icon-name: "open-menu-symbolic";
+              menu-model: primary_menu;
             }
 
             SearchBar search_bar {
