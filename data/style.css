@@ -23,6 +23,10 @@
   color: @view_fg_color;
 }
 .side-pane {
-  border-radius: 8px 0 0 8px;
+  border-radius: 24px 0 0 24px;
   background: @surface_container_bg_color;
+}
+
+.bottom-bar {
+  border-radius: 0 0 0 24px;
 }
