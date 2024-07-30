@@ -18,10 +18,10 @@
 namespace Victrola {
     public class PlayBar : Gtk.Box {
         private Gtk.ToggleButton _repeat = new Gtk.ToggleButton ();
-        private He.IconicButton _prev = new He.IconicButton ("");
-        private He.IconicButton _play = new He.IconicButton ("");
-        private He.IconicButton _next = new He.IconicButton ("");
-        private He.IconicButton _stop = new He.IconicButton ("");
+        private He.Button _prev = new He.Button (null, "");
+        private He.Button _play = new He.Button (null, "");
+        private He.Button _next = new He.Button (null, "");
+        private He.Button _stop = new He.Button (null, "");
         private int _duration = 1;
         private int _position = 0;
         Application app = (Application) GLib.Application.get_default ();

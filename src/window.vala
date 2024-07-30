@@ -45,13 +45,15 @@ namespace Victrola {
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
         [GtkChild]
-        private unowned He.DisclosureButton music_dir_btn;
+        private unowned He.Button music_dir_btn;
         [GtkChild]
         private unowned Gtk.MenuButton menu_btn;
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
         [GtkChild]
         private unowned He.AppBar info_title;
+        [GtkChild]
+        private unowned He.BottomSheet sheet;
 
         private string _search_text = "";
         private string _search_property = "";
@@ -270,7 +272,7 @@ namespace Victrola {
             action_set_enabled (ACTION_APP + ACTION_PLAY, true);
         }
 
-        private Bis.Animation? fade_animation = null;
+        private He.Animation? fade_animation = null;
         private async void on_song_tag_parsed (Song song, Gst.Sample? image) {
             update_song_info (song);
 
@@ -296,11 +298,11 @@ namespace Victrola {
                 info_page.cover_blur.paintable = blur;
                 print ("Update blur\n");
 
-                var target = new Bis.CallbackAnimationTarget ((value) => {
+                var target = new He.CallbackAnimationTarget ((value) => {
                     info_page.cover_art.opacity = value;
                 });
                 fade_animation?.pause ();
-                fade_animation = new Bis.TimedAnimation (info_page.cover_art, 0.1,
+                fade_animation = new He.TimedAnimation (info_page.cover_art, 0.1,
                                                          info_page.cover_art.opacity + 0.1,
                                                          900,
                                                          target);
