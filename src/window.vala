@@ -227,13 +227,16 @@ namespace Victrola {
 
             listgrid.remove_css_class ("sidebar-view");
 
+            if (album.folded) {
+                infogrid.remove_css_class ("side-pane");
+            } else {
+                infogrid.add_css_class ("side-pane");
+            }
             album.notify["folded"].connect (() => {
                 if (album.folded) {
                     infogrid.remove_css_class ("side-pane");
-                    info_btn.icon_name = "media-view-subtitles-symbolic";
                 } else {
                     infogrid.add_css_class ("side-pane");
-                    info_btn.icon_name = "sidebar-show-right-symbolic";
                 }
             });
         }
