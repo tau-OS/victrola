@@ -45,6 +45,8 @@ namespace Victrola {
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
         [GtkChild]
+        public unowned Gtk.ToggleButton info_btn;
+        [GtkChild]
         private unowned He.Button music_dir_btn;
         [GtkChild]
         private unowned Gtk.MenuButton menu_btn;
@@ -228,8 +230,10 @@ namespace Victrola {
             album.notify["folded"].connect (() => {
                 if (album.folded) {
                     infogrid.remove_css_class ("side-pane");
+                    info_btn.icon_name = "media-view-subtitles-symbolic";
                 } else {
                     infogrid.add_css_class ("side-pane");
+                    info_btn.icon_name = "sidebar-show-right-symbolic";
                 }
             });
         }

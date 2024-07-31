@@ -73,7 +73,7 @@ namespace Victrola {
 
             scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
             scale.margin_bottom = 12;
-            scale.width_request = 300;
+            scale.width_request = 320;
             scale.halign = Gtk.Align.CENTER;
             scale.set_range (0, _duration);
 
@@ -95,8 +95,9 @@ namespace Victrola {
 
             var duration_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             duration_box.margin_top = 6;
+            duration_box.margin_bottom = 18;
             duration_box.homogeneous = true;
-            duration_box.width_request = 300;
+            duration_box.width_request = 320;
             duration_box.halign = Gtk.Align.CENTER;
             start_duration = new Gtk.Label ("0:00");
             end_duration = new Gtk.Label ("0:00");

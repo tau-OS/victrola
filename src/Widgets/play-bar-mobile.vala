@@ -23,7 +23,6 @@ namespace Victrola {
         Gtk.Label end_duration;
         Gtk.Label song_title;
         Gtk.Label song_artist;
-        Gtk.Scale scale;
         public Gtk.Image cover_art;
         public Gtk.Image cover_blur;
         private int _duration = 1;
@@ -63,13 +62,9 @@ namespace Victrola {
             cover_box.add_overlay (cover_art);
             cover_box.set_child (cover_blur);
 
-            scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
-            scale.width_request = 300;
-            scale.margin_top = 12;
-            scale.halign = Gtk.Align.CENTER;
-            scale.set_range (0, _duration);
-
             var song_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
+            song_box.halign = Gtk.Align.CENTER;
+            song_box.valign = Gtk.Align.CENTER;
             song_title = new Gtk.Label ("");
             song_title.add_css_class ("title");
             song_title.max_width_chars = 1;
@@ -84,21 +79,19 @@ namespace Victrola {
             song_box.append (song_artist);
 
             var duration_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-            duration_box.homogeneous = true;
-            duration_box.width_request = 300;
             duration_box.halign = Gtk.Align.CENTER;
+            duration_box.valign = Gtk.Align.CENTER;
             start_duration = new Gtk.Label ("0:00");
+            var sep_duration = new Gtk.Label ("/");
             end_duration = new Gtk.Label ("0:00");
-            start_duration.halign = Gtk.Align.START;
-            end_duration.halign = Gtk.Align.END;
             duration_box.append (start_duration);
+            duration_box.append (sep_duration);
             duration_box.append (end_duration);
 
             var bottom_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6) {
                 hexpand = true
             };
             bottom_box.append (song_box);
-            bottom_box.append (scale);
             bottom_box.append (duration_box);
 
             this.spacing = 18;
@@ -123,10 +116,6 @@ namespace Victrola {
                 var playing = state == Gst.State.PLAYING;
                 _play.icon_name = playing ? "media-playback-pause-symbolic" : "media-playback-start-symbolic";
             });
-
-            scale.adjust_bounds.connect ((value) => {
-                player.seek (GstPlayer.from_second (value));
-            });
         }
 
         public void update (Song song) {
@@ -137,9 +126,8 @@ namespace Victrola {
         public double duration {
             get { return _duration; }
             set {
-                _duration = (int) (value + 0.5);
+                _duration = (int) (value);
                 this.end_duration.label = format_time (_duration);
-                scale.set_range (0, _duration);
             }
         }
 
@@ -149,7 +137,6 @@ namespace Victrola {
                 if (_position != (int) value) {
                     _position = (int) value;
                     this.start_duration.label = format_time (_position);
-                    scale.set_value (value);
                 }
             }
         }
