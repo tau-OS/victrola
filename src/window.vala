@@ -47,8 +47,6 @@ namespace Victrola {
         [GtkChild]
         public unowned Gtk.ToggleButton info_btn;
         [GtkChild]
-        private unowned He.Button music_dir_btn;
-        [GtkChild]
         private unowned Gtk.MenuButton menu_btn;
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
@@ -115,27 +113,6 @@ namespace Victrola {
                 update_song_filter ();
             });
             search_entry.search_changed.connect (on_search_text_changed);
-
-            var music_dir = app.get_music_folder ();
-            music_dir_btn.clicked.connect (() => {
-                var chooser = new Gtk.FileChooserNative (null, this,
-                                Gtk.FileChooserAction.SELECT_FOLDER, null, null);
-                try {
-                    chooser.set_file (music_dir);
-                } catch (Error e) {
-                }
-                chooser.modal = true;
-                chooser.response.connect ((id) => {
-                    if (id == Gtk.ResponseType.ACCEPT) {
-                        var dir = chooser.get_file ();
-                        if (dir != null && dir != music_dir) {
-                            app.settings.set_string ("music-dir", ((!)dir).get_uri ());
-                            app.reload_song_store ();
-                        }
-                    }
-                });
-                chooser.show ();
-            });
 
             play_bar = new PlayBar ();
             play_bar_mobile = new PlayBarMobile ();

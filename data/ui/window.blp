@@ -45,13 +45,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
               tooltip-text: _("Search music");
             }
 
-            [titlebar-button]
-            He.Button music_dir_btn {
-              is-disclosure: true;
-              icon-name: "document-open-symbolic";
-              tooltip-text: _("Choose music folder");
-            }
-
             [titlebar-toggle]
             ToggleButton info_btn {
               icon-name: "media-view-subtitles-symbolic";
@@ -188,6 +181,12 @@ template VictrolaMainWindow : He.ApplicationWindow {
 }
 
 menu primary_menu {
+  section {
+    item {
+      label: _("Open Music Folder…");
+      action: "app.open";
+    }
+  }
   section {
     item {
       label: _("About Victrola");

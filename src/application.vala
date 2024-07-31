@@ -18,6 +18,7 @@
 namespace Victrola {
     public const string ACTION_APP = "app.";
     public const string ACTION_ABOUT = "about";
+    public const string ACTION_OPEN = "open";
     public const string ACTION_PLAY = "play";
     public const string ACTION_PREV = "prev";
     public const string ACTION_NEXT = "next";
@@ -61,6 +62,7 @@ namespace Victrola {
 
             ActionEntry[] action_entries = {
                 { ACTION_ABOUT, show_about },
+                { ACTION_OPEN, on_open },
                 { ACTION_PLAY, play_pause },
                 { ACTION_PREV, play_previous },
                 { ACTION_NEXT, play_next },
@@ -172,6 +174,27 @@ namespace Victrola {
             });
 
             new MainWindow (this);
+        }
+
+        public void on_open () {
+            var music_dir = get_music_folder ();
+            var chooser = new Gtk.FileChooserNative (null, active_window,
+                Gtk.FileChooserAction.SELECT_FOLDER, null, null);
+            try {
+                chooser.set_file (music_dir);
+            } catch (Error e) {
+            }
+            chooser.modal = true;
+            chooser.response.connect ((id) => {
+                if (id == Gtk.ResponseType.ACCEPT) {
+                    var dir = chooser.get_file ();
+                    if (dir != null && dir != music_dir) {
+                        settings.set_string ("music-dir", ((!)dir).get_uri ());
+                        reload_song_store ();
+                    }
+                }
+            });
+            chooser.show ();
         }
 
         public int current_item {
