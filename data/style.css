@@ -30,3 +30,27 @@
 .side-pane .bottom-bar {
   border-radius: 0 0 0 24px;
 }
+
+.music-main-navrail button:hover {
+  background: shade(@surface_container_bg_color, 0.98);
+  box-shadow: none;
+}
+
+.music-main-navrail button:checked {
+  background: shade(@surface_container_bg_color, 0.95);
+  box-shadow: none;
+}
+
+.music-navrail {
+  background: shade(@accent_container_bg_color, 0.98);
+}
+
+.music-navrail button:hover {
+  background: shade(@accent_container_bg_color, 0.95);
+  box-shadow: none;
+}
+
+.music-navrail button:checked {
+  background: shade(@accent_container_bg_color, 0.90);
+  box-shadow: none;
+}

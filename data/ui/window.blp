@@ -18,135 +18,159 @@ template VictrolaMainWindow : He.ApplicationWindow {
       visible-child: listgrid;
 
       Bis.AlbumPage {
-        child:
-          He.SideBar listgrid {
-            vexpand: true;
-            hexpand: true;
+        navigatable: false;
+        child: Box {
+          orientation: vertical;
+          He.AppBar {
             show-left-title-buttons: true;
-            show-right-title-buttons: bind album.folded;
-            show-back: false;
-            has-margins: false;
-            titlewidget:
-            He.ViewChooser viewchooser {
-              stack: stack;
-              valign: start;
-              vexpand: false;
-              vexpand-set: true;
+            show-right-title-buttons: false;
+            width-request: 113; // Chunky enough for the rail
+          }
+          He.NavigationRail {
+            stack: stack;
+            styles [
+              "music-main-navrail"
+            ]
+          }
+          styles [
+                "sidebar-view"
+          ]
+        };
+      }
+
+      Bis.AlbumPage {
+        child: He.SideBar listgrid {
+          vexpand: true;
+          hexpand: true;
+          show-left-title-buttons: bind album.folded;
+          show-right-title-buttons: bind album.folded;
+          show-back: false;
+          has-margins: false;
+          titlewidget: He.ViewTitle {
+            label: _("Music");
+          };
+
+          styles [
+                "main-view"
+          ]
+
+          [titlebar-toggle]
+          ToggleButton search_btn {
+            icon-name: "edit-find-symbolic";
+            active: bind search_bar.search-mode-enabled no-sync-create bidirectional;
+            tooltip-text: _("Search music");
+          }
+
+          [titlebar-toggle]
+          ToggleButton info_btn {
+            icon-name: "media-view-subtitles-symbolic";
+            tooltip-text: _("Show music info");
+            active: true;
+            visible: bind album.folded inverted;
+          }
+
+          [titlebar-menu]
+          MenuButton menu_btn {
+            valign: center;
+            icon-name: "open-menu-symbolic";
+            menu-model: primary_menu;
+          }
+
+          SearchBar search_bar {
+            key-capture-widget: VictrolaMainWindow;
+            child: SearchEntry search_entry {
+              hexpand: true;
+              margin-start: 18;
+              halign: start;
+              placeholder-text: "";
+
+              styles [
+                "search",
+                "text-field",
+                "outline"
+              ]
             };
 
             styles [
-                  "main-view"
+              "search-bar",
             ]
+          }
 
-            [titlebar-toggle]
-            ToggleButton search_btn {
-              icon-name: "edit-find-symbolic";
-              active: bind search_bar.search-mode-enabled no-sync-create bidirectional;
-              tooltip-text: _("Search music");
-            }
+            ScrolledWindow scroll_view {
+              hscrollbar-policy: never;
+              vexpand: true;
 
-            [titlebar-toggle]
-            ToggleButton info_btn {
-              icon-name: "media-view-subtitles-symbolic";
-              tooltip-text: _("Show music info");
-              active: true;
-            }
-
-            [titlebar-menu]
-            MenuButton menu_btn {
-              valign: center;
-              icon-name: "open-menu-symbolic";
-              menu-model: primary_menu;
-            }
-
-            SearchBar search_bar {
-              key-capture-widget: VictrolaMainWindow;
-              child: SearchEntry search_entry {
-                hexpand: true;
+              Stack stack {
                 margin-start: 18;
-                halign: start;
-                placeholder-text: "";
+                margin-end: 18;
+                margin-bottom: 18;
+                margin-top: 12;
 
-                styles [
-                  "search",
-                  "text-field",
-                  "outline"
-                ]
-              };
+                StackPage {
+                  icon-name: "media-optical-cd-audio-symbolic";
+                  title: "Albums";
+                  name: "album";
+                  child:
+                  GridView list_view1 {
+                    single-click-activate: true;
+                    max-columns: 5;
+                    min-columns: 1;
 
-              styles [
-                "search-bar",
-              ]
-            }
-
-              ScrolledWindow scroll_view {
-                hscrollbar-policy: never;
-                vexpand: true;
-
-                Stack stack {
-                  margin-start: 18;
-                  margin-end: 18;
-                  margin-bottom: 18;
-                  margin-top: 12;
-
-                  StackPage {
-                    icon-name: "media-optical-cd-audio-symbolic";
-                    title: "Albums";
-                    name: "album";
-                    child:
-                    GridView list_view1 {
-                      single-click-activate: true;
-                      max-columns: 5;
-                      min-columns: 1;
-
-                      styles [
-                        "music-grid"
-                      ]
-                    }
-                    ;
+                    styles [
+                      "music-grid"
+                    ]
                   }
+                  ;
+                }
 
-                  StackPage {
-                    icon-name: "system-users-symbolic";
-                    title: "Artists";
-                    name: "artist";
-                    child:
-                    GridView list_view2 {
-                      single-click-activate: true;
-                      max-columns: 5;
-                      min-columns: 1;
+                StackPage {
+                  icon-name: "system-users-symbolic";
+                  title: "Artists";
+                  name: "artist";
+                  child:
+                  GridView list_view2 {
+                    single-click-activate: true;
+                    max-columns: 5;
+                    min-columns: 1;
 
-                      styles [
-                        "music-grid"
-                      ]
-                    }
-                    ;
+                    styles [
+                      "music-grid"
+                    ]
                   }
+                  ;
+                }
 
-                  StackPage {
-                    icon-name: "audio-x-generic-symbolic";
-                    title: "Titles";
-                    name: "title";
-                    child:
-                    ListView list_view3 {
-                      single-click-activate: true;
+                StackPage {
+                  icon-name: "audio-x-generic-symbolic";
+                  title: "Titles";
+                  name: "title";
+                  child:
+                  ListView list_view3 {
+                    single-click-activate: true;
 
-                      styles [
-                        "content-list",
-                        "music-list"
-                      ]
-                    }
-                    ;
+                    styles [
+                      "content-list",
+                      "music-list"
+                    ]
                   }
+                  ;
                 }
               }
-
-            Box info_box_mobile {
-              orientation: vertical;
-              visible: bind album.folded;
             }
+
+          Box info_box_mobile {
+            orientation: vertical;
+            visible: bind album.folded;
           }
-        ;
+          He.NavigationRail {
+            stack: stack;
+            orientation: horizontal;
+            visible: bind album.folded;
+            styles [
+              "music-navrail"
+            ]
+          }
+        };
       }
 
       Bis.AlbumPage {
@@ -186,8 +210,6 @@ menu primary_menu {
       label: _("Open Music Folder…");
       action: "app.open";
     }
-  }
-  section {
     item {
       label: _("About Victrola");
       action: "app.about";
