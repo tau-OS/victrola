@@ -31,7 +31,7 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.Box info_box;
         [GtkChild]
-        private unowned Gtk.Box infogrid;
+        public unowned Gtk.Box infogrid;
         [GtkChild]
         private unowned He.SideBar listgrid;
         [GtkChild]
@@ -53,12 +53,13 @@ namespace Victrola {
         [GtkChild]
         private unowned He.AppBar info_title;
         [GtkChild]
-        private unowned He.BottomSheet sheet;
+        private unowned Gtk.Box info_box_mobile;
 
         private string _search_text = "";
         private string _search_property = "";
         private SearchType _search_type = SearchType.ALL;
         private PlayBar play_bar;
+        private PlayBarMobile play_bar_mobile;
         private InfoPage info_page;
         uint num1;
         uint num2;
@@ -135,9 +136,12 @@ namespace Victrola {
             });
 
             play_bar = new PlayBar ();
+            play_bar_mobile = new PlayBarMobile ();
             info_page = new InfoPage ();
             info_box.append (info_page);
             info_box.append (play_bar);
+
+            info_box_mobile.append (play_bar_mobile);
 
             action_set_enabled (ACTION_APP + ACTION_PREV, false);
             action_set_enabled (ACTION_APP + ACTION_PLAY, false);
@@ -155,9 +159,6 @@ namespace Victrola {
             list_view1.model = new Gtk.NoSelection (app.song_list);
             list_view1.activate.connect ((index) => {
                 app.current_item = (int) index;
-                if (album.folded) {
-                    album.set_visible_child (infogrid);
-                }
             });
             num1 = list_view1.get_model ().get_n_items ();
 
@@ -170,9 +171,6 @@ namespace Victrola {
             list_view2.model = new Gtk.NoSelection (app.song_list);
             list_view2.activate.connect ((index) => {
                 app.current_item = (int) index;
-                if (album.folded) {
-                    album.set_visible_child (infogrid);
-                }
             });
             num2 = list_view2.get_model ().get_n_items ();
 
@@ -185,9 +183,6 @@ namespace Victrola {
             list_view3.model = new Gtk.NoSelection (app.song_list);
             list_view3.activate.connect ((index) => {
                 app.current_item = (int) index;
-                if (album.folded) {
-                    album.set_visible_child (infogrid);
-                }
             });
             num3 = list_view3.get_model ().get_n_items ();
 
@@ -229,6 +224,14 @@ namespace Victrola {
             });
 
             listgrid.remove_css_class ("sidebar-view");
+
+            album.notify["folded"].connect (() => {
+                if (album.folded) {
+                    infogrid.remove_css_class ("side-pane");
+                } else {
+                    infogrid.add_css_class ("side-pane");
+                }
+            });
         }
 
         private async void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
@@ -293,13 +296,16 @@ namespace Victrola {
 
                 var art = update_cover_paintable (song, info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
+                play_bar_mobile.cover_art.paintable = art;
                 print ("Update cover\n");
                 var blur = update_blur_paintable (song, info_page.cover_blur, paintable);
                 info_page.cover_blur.paintable = blur;
+                play_bar_mobile.cover_blur.paintable = art;
                 print ("Update blur\n");
 
                 var target = new He.CallbackAnimationTarget ((value) => {
                     info_page.cover_art.opacity = value;
+                    play_bar_mobile.cover_art.opacity = value;
                 });
                 fade_animation?.pause ();
                 fade_animation = new He.TimedAnimation (info_page.cover_art, 0.1,
@@ -373,6 +379,7 @@ namespace Victrola {
 
         private void update_song_info (Song song) {
             info_page.update (song);
+            play_bar_mobile.update (song);
         }
         public async void accent_set (Gdk.Pixbuf? pixbuf) {
             var app = (Application) application;

@@ -27,6 +27,6 @@
   background: @surface_container_bg_color;
 }
 
-.bottom-bar {
+.side-pane .bottom-bar {
   border-radius: 0 0 0 24px;
 }

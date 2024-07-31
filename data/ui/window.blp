@@ -148,10 +148,9 @@ template VictrolaMainWindow : He.ApplicationWindow {
                 }
               }
 
-            He.BottomSheet sheet {
-              show-sheet: bind album.folded;
-              modal: false;
-              sheet: Box info_box_mobile {};
+            Box info_box_mobile {
+              orientation: vertical;
+              visible: bind album.folded;
             }
           }
         ;
@@ -174,6 +173,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
               show-back: bind album.folded;
               show-left-title-buttons: bind album.folded;
               show-right-title-buttons: true;
+              viewtitle-label: "";
             }
 
             Box info_box {

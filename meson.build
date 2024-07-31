@@ -72,6 +72,7 @@ sources = [
   'src/Utils/tag-parser.vala',
   'src/Widgets/info-page.vala',
   'src/Widgets/play-bar.vala',
+  'src/Widgets/play-bar-mobile.vala',
   'src/Widgets/song-entry.vala',
 ]
 
