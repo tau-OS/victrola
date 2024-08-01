@@ -298,10 +298,10 @@ namespace Victrola {
 
         private static Gdk.Texture? update_cover_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
-            var rect = (!)Graphene.Rect ().init (0, 0, 320, 320);
+            var rect = (!)Graphene.Rect ().init (0, 0, 256, 256);
             var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 12);
             snapshot.push_rounded_clip (rounded);
-            paintable.snapshot (snapshot, 320, 320);
+            paintable.snapshot (snapshot, 256, 256);
             snapshot.pop ();
             var node = snapshot.free_to_node ();
             if (node is Gsk.RenderNode) {
@@ -311,10 +311,10 @@ namespace Victrola {
         }
         private static Gdk.Texture? update_blur_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
-            var rect = (!)Graphene.Rect ().init (0, 0, 320, 320);
+            var rect = (!)Graphene.Rect ().init (0, 0, 256, 256);
             var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 12);
             snapshot.push_rounded_clip (rounded);
-            paintable.snapshot (snapshot, 320, 320);
+            paintable.snapshot (snapshot, 256, 256);
             snapshot.pop ();
             var node = snapshot.free_to_node ();
             if (node is Gsk.RenderNode) {
