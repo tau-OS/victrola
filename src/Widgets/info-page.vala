@@ -65,15 +65,20 @@ namespace Victrola {
             cover_blur.valign = Gtk.Align.CENTER;
             cover_blur.add_css_class ("cover-art-blur");
 
-            var cover_box  = new Gtk.Overlay ();
+            var cover_box  = new Gtk.Overlay () {
+                margin_top = 24,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER
+            };
             cover_box.add_overlay (cover_art);
             cover_box.set_child (cover_blur);
 
             var bottom_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
             scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
+            scale.margin_top = 12;
             scale.margin_bottom = 12;
-            scale.width_request = 320;
+            scale.width_request = 300;
             scale.halign = Gtk.Align.CENTER;
             scale.set_range (0, _duration);
 
@@ -81,23 +86,23 @@ namespace Victrola {
             song_box.margin_top = 12;
             song_box.margin_bottom = 12;
             song_title = new Gtk.Label ("");
-            song_title.add_css_class ("cb-title");
+            song_title.add_css_class ("view-subtitle");
             song_title.max_width_chars = 1;
             song_title.max_width_chars = 20;
             song_title.wrap = true;
             song_title.ellipsize = Pango.EllipsizeMode.MIDDLE;
-            song_title.margin_start = 32;
-            song_title.margin_end = 32;
+            song_title.margin_start = 24;
+            song_title.margin_end = 24;
             song_artist = new Gtk.Label ("");
-            song_artist.add_css_class ("cb-subtitle");
+            song_artist.add_css_class ("cb-title");
             song_box.append (song_title);
             song_box.append (song_artist);
 
             var duration_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            duration_box.margin_top = 6;
-            duration_box.margin_bottom = 18;
+            duration_box.margin_top = 12;
+            duration_box.margin_bottom = 12;
             duration_box.homogeneous = true;
-            duration_box.width_request = 320;
+            duration_box.width_request = 300;
             duration_box.halign = Gtk.Align.CENTER;
             start_duration = new Gtk.Label ("0:00");
             end_duration = new Gtk.Label ("0:00");
