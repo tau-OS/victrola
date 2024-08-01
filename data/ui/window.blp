@@ -61,14 +61,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
             tooltip-text: _("Search music");
           }
 
-          [titlebar-toggle]
-          ToggleButton info_btn {
-            icon-name: "media-view-subtitles-symbolic";
-            tooltip-text: _("Show music info");
-            active: true;
-            visible: bind album.folded inverted;
-          }
-
           [titlebar-menu]
           MenuButton menu_btn {
             valign: center;
@@ -179,12 +171,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
             orientation: vertical;
             hexpand-set: true;
             width-request: 360;
-            visible: bind info_btn.active no-sync-create bidirectional;
-
-            styles [
-                  "sidebar-view",
-                  "side-pane"
-            ]
 
             He.AppBar info_title {
               show-back: bind album.folded;
@@ -196,6 +182,10 @@ template VictrolaMainWindow : He.ApplicationWindow {
             Box info_box {
               orientation: vertical;
               vexpand: true;
+
+              styles [
+                  "side-pane"
+              ]
             }
           }
         ;

@@ -45,8 +45,6 @@ namespace Victrola {
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
         [GtkChild]
-        public unowned Gtk.ToggleButton info_btn;
-        [GtkChild]
         private unowned Gtk.MenuButton menu_btn;
         [GtkChild]
         private unowned Gtk.SearchEntry search_entry;
@@ -204,16 +202,11 @@ namespace Victrola {
 
             listgrid.remove_css_class ("sidebar-view");
 
-            if (album.folded) {
-                infogrid.remove_css_class ("side-pane");
-            } else {
-                infogrid.add_css_class ("side-pane");
-            }
             album.notify["folded"].connect (() => {
                 if (album.folded) {
-                    infogrid.remove_css_class ("side-pane");
+                    info_box.remove_css_class ("side-pane");
                 } else {
-                    infogrid.add_css_class ("side-pane");
+                    info_box.add_css_class ("side-pane");
                 }
             });
         }

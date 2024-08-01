@@ -23,12 +23,14 @@
   color: @view_fg_color;
 }
 .side-pane {
-  border-radius: 24px 0 0 24px;
-  background: @surface_container_bg_color;
+  border-radius: 12px;
+  margin: 0 8px 8px 8px;
+  box-shadow: 0 0 0 1px @borders;
 }
 
 .side-pane .bottom-bar {
-  border-radius: 0 0 0 24px;
+  border-radius: 0 0 12px 12px;
+  margin: 0 1px 1px 1px;
 }
 
 .music-main-navrail button:hover {
