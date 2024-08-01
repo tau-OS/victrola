@@ -7,7 +7,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
   default-width: 1024;
   default-height: 600;
   width-request: 360;
-  height-request: 280;
+  height-request: 294;
 
   Box {
     orientation: vertical;
@@ -96,7 +96,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
                 margin-start: 18;
                 margin-end: 18;
                 margin-bottom: 18;
-                margin-top: 12;
 
                 StackPage {
                   icon-name: "media-optical-cd-audio-symbolic";
@@ -170,7 +169,6 @@ template VictrolaMainWindow : He.ApplicationWindow {
           Box infogrid {
             orientation: vertical;
             hexpand-set: true;
-            width-request: 360;
 
             He.AppBar info_title {
               show-back: bind album.folded;

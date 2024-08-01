@@ -56,3 +56,14 @@
   background: shade(@accent_container_bg_color, 0.90);
   box-shadow: none;
 }
+
+.light {
+  background: alpha(@scrim, 0.32);
+  border-radius: 999px;
+  padding: 8px;
+}
+
+.light image {
+  -gtk-icon-size: 24px;
+  color: @view_bg_color;
+}
