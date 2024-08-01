@@ -52,21 +52,20 @@ namespace Victrola {
             var player = app.player;
 
             cover_art = new Gtk.Image ();
-            cover_art.width_request = 300;
-            cover_art.height_request = 300;
+            cover_art.width_request = 320;
+            cover_art.height_request = 320;
             cover_art.halign = Gtk.Align.CENTER;
             cover_art.valign = Gtk.Align.CENTER;
             cover_art.add_css_class ("cover-art");
 
             cover_blur = new Gtk.Image ();
-            cover_blur.width_request = 300;
-            cover_blur.height_request = 300;
+            cover_blur.width_request = 320;
+            cover_blur.height_request = 320;
             cover_blur.halign = Gtk.Align.CENTER;
             cover_blur.valign = Gtk.Align.CENTER;
             cover_blur.add_css_class ("cover-art-blur");
 
             var cover_box  = new Gtk.Overlay () {
-                margin_top = 24,
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER
             };
@@ -91,8 +90,8 @@ namespace Victrola {
             song_title.max_width_chars = 20;
             song_title.wrap = true;
             song_title.ellipsize = Pango.EllipsizeMode.MIDDLE;
-            song_title.margin_start = 24;
-            song_title.margin_end = 24;
+            song_title.margin_start = 18;
+            song_title.margin_end = 18;
             song_artist = new Gtk.Label ("");
             song_artist.add_css_class ("cb-title");
             song_box.append (song_title);
@@ -118,15 +117,12 @@ namespace Victrola {
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
             main_box.vexpand = main_box.hexpand = true;
             main_box.valign = Gtk.Align.CENTER;
+            main_box.margin_top = 24;
             main_box.append(cover_box);
             main_box.append(bottom_box);
 
-            child = main_box;
-
-            main_box.set_parent (this);
-
+            this.child = main_box;
             this.vexpand = this.hexpand = true;
-            this.remove_css_class ("sidebar-view");
 
             player.duration_changed.connect ((duration) => {
                 this.duration = GstPlayer.to_second (duration);
