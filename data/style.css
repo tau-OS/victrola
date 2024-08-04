@@ -34,7 +34,7 @@
 }
 
 .music-navrail {
-    background: shade(@accent_container_bg_color, 0.99);
+    background: shade(@accent_container_bg_color, 0.95);
 }
 
 .music-navrail button image {
