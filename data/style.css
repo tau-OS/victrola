@@ -1,69 +1,57 @@
 .playing {
-  background: alpha(@accent_bg_color, 0.15);
-  color: @accent_color;
+    background: alpha(@accent_bg_color, 0.15);
+    color: @accent_color;
 }
 .cover-art-blur {
-  filter: opacity(0.8) blur(6px);
+    filter: opacity(0.8) blur(6px);
 }
 .search {
-  border-radius: 999px;
+    border-radius: 999px;
 }
 .search-bar box {
-  background:none;
-  box-shadow: none;
+    background: none;
+    box-shadow: none;
 }
 .play-button {
-  -gtk-icon-size: 24px;
-  box-shadow: inset 0 0 0 1px @outline;
+    -gtk-icon-size: 24px;
+    box-shadow: inset 0 0 0 1px @outline;
 }
 .music-grid {
-  background: none;
+    background: none;
 }
 .music-grid child:hover {
-  color: @view_fg_color;
+    color: @view_fg_color;
 }
 .side-pane {
-  border-radius: 12px;
-  margin: 0 8px 8px 8px;
-  box-shadow: 0 0 0 1px @borders;
+    border-radius: 12px;
+    margin: 0 8px 8px 8px;
+    box-shadow: 0 0 0 1px @borders;
 }
 
 .side-pane .bottom-bar {
-  border-radius: 0 0 12px 12px;
-  margin: 0 1px 1px 1px;
+    border-radius: 0 0 12px 12px;
+    margin: 0 1px 1px 1px;
 }
 
-.music-main-navrail button:hover {
-  background: shade(@surface_container_bg_color, 0.98);
-  box-shadow: none;
+.music-navrail button image {
+    background: shade(@accent_container_bg_color, 0.98);
 }
 
-.music-main-navrail button:checked {
-  background: shade(@surface_container_bg_color, 0.95);
-  box-shadow: none;
+.music-navrail button:hover image {
+    background: shade(@accent_container_bg_color, 0.95);
 }
 
-.music-navrail {
-  background: shade(@accent_container_bg_color, 0.98);
-}
-
-.music-navrail button:hover {
-  background: shade(@accent_container_bg_color, 0.95);
-  box-shadow: none;
-}
-
-.music-navrail button:checked {
-  background: shade(@accent_container_bg_color, 0.90);
-  box-shadow: none;
+.music-navrail button:checked image {
+    background: shade(@accent_container_bg_color, 0.9);
 }
 
 .light {
-  background: alpha(@scrim, 0.32);
-  border-radius: 999px;
-  padding: 8px;
+    background: alpha(@scrim, 0.32);
+    border-radius: 999px;
+    padding: 8px;
 }
 
 .light image {
-  -gtk-icon-size: 24px;
-  color: @view_bg_color;
+    -gtk-icon-size: 24px;
+    color: @view_bg_color;
 }
