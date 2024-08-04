@@ -33,16 +33,20 @@
     margin: 0 1px 1px 1px;
 }
 
-.music-navrail button image {
-    background: shade(@accent_container_bg_color, 0.98);
+.music-navrail {
+    background: shade(@accent_container_bg_color, 0.99);
 }
 
-.music-navrail button:hover image {
+.music-navrail button image {
     background: shade(@accent_container_bg_color, 0.95);
 }
 
-.music-navrail button:checked image {
+.music-navrail button:hover image {
     background: shade(@accent_container_bg_color, 0.9);
+}
+
+.music-navrail button:checked image {
+    background: shade(@accent_container_bg_color, 0.8);
 }
 
 .light {
