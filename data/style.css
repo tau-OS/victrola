@@ -4,6 +4,7 @@
 }
 .cover-art {
     box-shadow: 0 0 0 1px @outline;
+    border-radius: 12px;
 }
 .cover-art-blur {
     filter: opacity(0.8) blur(6px);
