@@ -171,15 +171,42 @@ template VictrolaMainWindow : He.ApplicationWindow {
               show-back: bind album.folded;
               show-left-title-buttons: bind album.folded;
               show-right-title-buttons: true;
+
+              [titlebar-toggle]
+              ToggleButton lyrics_btn {
+                icon-name: "edit-find-symbolic";
+                tooltip-text: _("See Lyrics");
+              }
             }
 
-            Box info_box {
-              orientation: vertical;
-              vexpand: true;
+            Stack infostack {
+                StackPage {
+                  name: "info";
+                  child:
+                  Box info_box {
+                    orientation: vertical;
+                    vexpand: true;
 
-              styles [
-                  "side-pane"
-              ]
+                    styles [
+                        "side-pane"
+                    ]
+                  }
+                  ;
+                }
+
+                StackPage {
+                  name: "lyrics";
+                  child:
+                  Box lyrics_box {
+                    orientation: vertical;
+                    vexpand: true;
+
+                    styles [
+                        "side-pane"
+                    ]
+                  }
+                  ;
+                }
             }
           }
         ;

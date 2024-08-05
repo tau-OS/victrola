@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Fyra Labs
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,11 +31,15 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.Box info_box;
         [GtkChild]
+        private unowned Gtk.Box lyrics_box;
+        [GtkChild]
         public unowned Gtk.Box infogrid;
         [GtkChild]
         private unowned He.SideBar listgrid;
         [GtkChild]
         private unowned Gtk.Stack stack;
+        [GtkChild]
+        private unowned Gtk.Stack infostack;
         [GtkChild]
         private unowned Gtk.GridView list_view1;
         [GtkChild]
@@ -44,6 +48,8 @@ namespace Victrola {
         private unowned Gtk.ListView list_view3;
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
+        [GtkChild]
+        public unowned Gtk.ToggleButton lyrics_btn;
         [GtkChild]
         private unowned Gtk.MenuButton menu_btn;
         [GtkChild]
@@ -66,37 +72,37 @@ namespace Victrola {
         public SortMode sort_mode {
             set {
                 switch (value) {
-                    case SortMode.ALBUM:
-                        list_view1.set_visible (true);
-                        list_view2.set_visible (false);
-                        list_view3.set_visible (false);
-                        num1 = list_view1.get_model ().get_n_items ();
-                        search_entry.placeholder_text = num1.to_string () + " " + (_("songs"));
-                        break;
-                    case SortMode.ARTIST:
-                        list_view1.set_visible (false);
-                        list_view2.set_visible (true);
-                        list_view3.set_visible (false);
-                        num2 = list_view2.get_model ().get_n_items ();
-                        search_entry.placeholder_text = num2.to_string () + " " + (_("songs"));
-                        break;
-                    case SortMode.RECENT:
-                    case SortMode.SHUFFLE:
-                        break;
-                    default:
-                        list_view1.set_visible (false);
-                        list_view2.set_visible (false);
-                        list_view3.set_visible (true);
-                        num3 = list_view3.get_model ().get_n_items ();
-                        search_entry.placeholder_text = num3.to_string () + " " + (_("songs"));
-                        break;
+                case SortMode.ALBUM:
+                    list_view1.set_visible (true);
+                    list_view2.set_visible (false);
+                    list_view3.set_visible (false);
+                    num1 = list_view1.get_model ().get_n_items ();
+                    search_entry.placeholder_text = num1.to_string () + " " + (_("songs"));
+                    break;
+                case SortMode.ARTIST:
+                    list_view1.set_visible (false);
+                    list_view2.set_visible (true);
+                    list_view3.set_visible (false);
+                    num2 = list_view2.get_model ().get_n_items ();
+                    search_entry.placeholder_text = num2.to_string () + " " + (_("songs"));
+                    break;
+                case SortMode.RECENT:
+                case SortMode.SHUFFLE:
+                    break;
+                default:
+                    list_view1.set_visible (false);
+                    list_view2.set_visible (false);
+                    list_view3.set_visible (true);
+                    num3 = list_view3.get_model ().get_n_items ();
+                    search_entry.placeholder_text = num3.to_string () + " " + (_("songs"));
+                    break;
                 }
             }
         }
 
         public MainWindow (Application app) {
             Object (
-                application: app
+                    application: app
             );
             this.icon_name = app.application_id;
 
@@ -120,6 +126,17 @@ namespace Victrola {
 
             info_box_mobile.append (play_bar_mobile);
 
+            var lyric_page = new LyricPage (this);
+            lyrics_box.append (lyric_page);
+
+            lyrics_btn.toggled.connect (() => {
+                if (lyrics_btn.active) {
+                    infostack.set_visible_child_name ("lyrics");
+                } else {
+                    infostack.set_visible_child_name ("info");
+                }
+            });
+
             action_set_enabled (ACTION_APP + ACTION_PREV, false);
             action_set_enabled (ACTION_APP + ACTION_PLAY, false);
             action_set_enabled (ACTION_APP + ACTION_NEXT, false);
@@ -129,7 +146,7 @@ namespace Victrola {
 
             var factory = new Gtk.SignalListItemFactory ();
             factory.setup.connect ((item) => {
-                ((Gtk.ListItem)item).child = new SongEntry ();
+                ((Gtk.ListItem) item).child = new SongEntry ();
             });
             factory.bind.connect (on_bind_item);
             list_view1.factory = factory;
@@ -141,7 +158,7 @@ namespace Victrola {
 
             var factory2 = new Gtk.SignalListItemFactory ();
             factory2.setup.connect ((item) => {
-                ((Gtk.ListItem)item).child = new SongEntry ();
+                ((Gtk.ListItem) item).child = new SongEntry ();
             });
             factory2.bind.connect (on_bind_item);
             list_view2.factory = factory2;
@@ -153,7 +170,7 @@ namespace Victrola {
 
             var factory3 = new Gtk.SignalListItemFactory ();
             factory3.setup.connect ((item) => {
-                ((Gtk.ListItem)item).child = new SongEntry ();
+                ((Gtk.ListItem) item).child = new SongEntry ();
             });
             factory3.bind.connect (on_bind_item);
             list_view3.factory = factory3;
@@ -213,12 +230,12 @@ namespace Victrola {
 
         private async void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
             var app = (Application) application;
-            var entry = (SongEntry) ((Gtk.ListItem)item).child;
-            var song = (Song) ((Gtk.ListItem)item).item;
-            entry.playing = ((Gtk.ListItem)item).position == app.current_item;
+            var entry = (SongEntry) ((Gtk.ListItem) item).child;
+            var song = (Song) ((Gtk.ListItem) item).item;
+            entry.playing = ((Gtk.ListItem) item).position == app.current_item;
             entry.update (song, app.sort_mode);
-            var saved_pos = ((Gtk.ListItem)item).position;
-            if (saved_pos != ((Gtk.ListItem)item).position) {
+            var saved_pos = ((Gtk.ListItem) item).position;
+            if (saved_pos != ((Gtk.ListItem) item).position) {
                 Idle.add (() => {
                     app.song_list.items_changed (saved_pos, 0, 0);
                     return false;
@@ -257,19 +274,19 @@ namespace Victrola {
             update_song_info (song);
 
             var app = (Application) application;
-            var pixbufs = new Gdk.Pixbuf?[1] {null};
+            var pixbufs = new Gdk.Pixbuf ? [1] { null };
 
             if (song == app.current_song) {
                 Gdk.Paintable? paintable = null;
                 if (image != null) {
-                    pixbufs[0] = load_clamp_pixbuf_from_sample ((!)image, 300);
+                    pixbufs[0] = load_clamp_pixbuf_from_sample ((!) image, 300);
                 }
 
                 if (pixbufs[0] != null) {
-                    paintable = Gdk.Texture.for_pixbuf ((!)pixbufs[0]);
+                    paintable = Gdk.Texture.for_pixbuf ((!) pixbufs[0]);
                 }
 
-                accent_set.begin ((!)pixbufs[0]);
+                accent_set.begin ((!) pixbufs[0]);
 
                 var art = update_cover_paintable (song, info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
@@ -285,11 +302,12 @@ namespace Victrola {
                     play_bar_mobile.cover_art.opacity = value;
                 });
                 fade_animation?.pause ();
+
                 fade_animation = new He.TimedAnimation (info_page.cover_art, 0.1,
-                                                         info_page.cover_art.opacity + 0.1,
-                                                         900,
-                                                         target);
-                ((!)fade_animation).done.connect (() => {
+                                                        info_page.cover_art.opacity + 0.1,
+                                                        900,
+                                                        target);
+                ((!) fade_animation).done.connect (() => {
                     fade_animation = null;
                 });
                 fade_animation?.play ();
@@ -298,27 +316,27 @@ namespace Victrola {
 
         private static Gdk.Texture? update_cover_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
-            var rect = (!)Graphene.Rect ().init (0, 0, 256, 256);
-            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 12);
+            var rect = (!) Graphene.Rect ().init (0, 0, 256, 256);
+            var rounded = (!) Gsk.RoundedRect ().init_from_rect (rect, 12);
             snapshot.push_rounded_clip (rounded);
             paintable.snapshot (snapshot, 256, 256);
             snapshot.pop ();
             var node = snapshot.free_to_node ();
             if (node is Gsk.RenderNode) {
-                return widget.get_native ()?.get_renderer ()?.render_texture ((!)node, rect);
+                return widget.get_native () ? .get_renderer () ? .render_texture ((!) node, rect);
             }
             return null;
         }
         private static Gdk.Texture? update_blur_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
-            var rect = (!)Graphene.Rect ().init (0, 0, 256, 256);
-            var rounded = (!)Gsk.RoundedRect ().init_from_rect (rect, 12);
+            var rect = (!) Graphene.Rect ().init (0, 0, 256, 256);
+            var rounded = (!) Gsk.RoundedRect ().init_from_rect (rect, 12);
             snapshot.push_rounded_clip (rounded);
             paintable.snapshot (snapshot, 256, 256);
             snapshot.pop ();
             var node = snapshot.free_to_node ();
             if (node is Gsk.RenderNode) {
-                return widget.get_native ()?.get_renderer ()?.render_texture ((!)node, rect);
+                return widget.get_native () ? .get_renderer () ? .render_texture ((!) node, rect);
             }
             return null;
         }
@@ -327,8 +345,8 @@ namespace Victrola {
             var buffer = sample.get_buffer ();
             Gst.MapInfo? info = null;
 
-            if (buffer?.map (out info, Gst.MapFlags.READ) ?? false) {
-                var bytes = new Bytes.static (info?.data);
+            if (buffer ? .map (out info, Gst.MapFlags.READ) ?? false) {
+                var bytes = new Bytes.static (info ? .data);
                 var stream = new MemoryInputStream.from_bytes (bytes);
                 try {
                     var pixbuf = new Gdk.Pixbuf.from_stream (stream);
@@ -338,7 +356,7 @@ namespace Victrola {
                         var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
                         var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
                         if (newbuf != null)
-                            return ((!)newbuf);
+                            return ((!) newbuf);
                         buffer?.unmap ((!) info);
                     }
                 } catch (Error e) {
@@ -358,6 +376,7 @@ namespace Victrola {
             info_page.update (song);
             play_bar_mobile.update (song);
         }
+
         public async void accent_set (Gdk.Pixbuf? pixbuf) {
             var app = (Application) application;
             try {
@@ -366,20 +385,19 @@ namespace Victrola {
                     GLib.Array<int?> result = He.Ensor.accent_from_pixels_async.end (res);
                     int top = result.index (0);
                     print ("FIRST VICTROLA ARGB RESULT (should be the same as Ensor's): %d\n".printf (top));
-    
+
                     if (top != 0) {
                         Gdk.RGBA accent_color = { 0 };
-                        accent_color.parse(He.Color.hexcode_argb (top));
-                        app.default_accent_color = He.Color.from_gdk_rgba(accent_color);
+                        accent_color.parse (He.Color.hexcode_argb (top));
+                        app.default_accent_color = He.Color.from_gdk_rgba (accent_color);
                     } else {
                         Gdk.RGBA accent_color = { 0 };
-                        accent_color.parse("#F7812B");
-                        app.default_accent_color = He.Color.from_gdk_rgba(accent_color);
+                        accent_color.parse ("#F7812B");
+                        app.default_accent_color = He.Color.from_gdk_rgba (accent_color);
                     }
                     loop.quit ();
                 });
                 loop.run ();
-    
             } catch (Error e) {
                 print (e.message);
             }
@@ -391,13 +409,13 @@ namespace Victrola {
                 app.song_list.filter = new Gtk.CustomFilter ((obj) => {
                     var song = (Song) obj;
                     switch (_search_type) {
-                        case SearchType.ARTIST:
+                        case SearchType.ARTIST :
                             return song.artist == _search_property;
-                        case SearchType.TITLE:
+                        case SearchType.TITLE :
                             return song.title == _search_property;
-                        default:
+                            default :
                             return _search_text.match_string (song.artist, false)
-                                || _search_text.match_string (song.title, false);
+                            || _search_text.match_string (song.title, false);
                     }
                 });
             } else {
@@ -412,7 +430,9 @@ namespace Victrola {
     public static async void save_data_to_file (File file, Bytes data) {
         try {
             var stream = yield file.create_async (FileCreateFlags.NONE);
+
             yield stream.write_bytes_async (data);
+
             yield stream.close_async ();
         } catch (Error e) {
         }

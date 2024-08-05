@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Fyra Labs
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,7 +58,7 @@ namespace Victrola {
         }
 
         public Application () {
-            Object (application_id: "com.fyralabs.Victrola", flags: ApplicationFlags.HANDLES_OPEN);
+            Object (application_id : "com.fyralabs.Victrola", flags : ApplicationFlags.HANDLES_OPEN);
 
             ActionEntry[] action_entries = {
                 { ACTION_ABOUT, show_about },
@@ -89,11 +89,11 @@ namespace Victrola {
                 { ACTION_QUIT, "<primary>q" }
             };
             foreach (var item in action_keys) {
-                set_accels_for_action (ACTION_APP + item.name, {item.key});
+                set_accels_for_action (ACTION_APP + item.name, { item.key });
             }
 
             _song_list.model = _song_store.store;
-            _song_store.sort_mode = (SortMode) (_settings?.get_uint ("sort-mode") ?? SortMode.TITLE);
+            _song_store.sort_mode = (SortMode) (_settings ? .get_uint ("sort-mode") ?? SortMode.TITLE);
 
             _player.end_of_stream.connect (() => {
                 if (single_loop) {
@@ -107,10 +107,10 @@ namespace Victrola {
             _player.tag_parsed.connect (on_tag_parsed);
 
             var mpris_id = Bus.own_name (BusType.SESSION,
-                "org.mpris.MediaPlayer2." + application_id,
-                BusNameOwnerFlags.NONE,
-                on_bus_acquired,
-                null, null
+                                         "org.mpris.MediaPlayer2." + application_id,
+                                         BusNameOwnerFlags.NONE,
+                                         on_bus_acquired,
+                                         null, null
             );
             if (mpris_id == 0)
                 warning ("Initialize MPRIS session failed\n");
@@ -118,8 +118,8 @@ namespace Victrola {
 
         protected override void startup () {
             Gdk.RGBA accent_color = { 0 };
-            accent_color.parse("#F7812B");
-            default_accent_color = He.Color.from_gdk_rgba(accent_color);
+            accent_color.parse ("#F7812B");
+            default_accent_color = He.Color.from_gdk_rgba (accent_color);
             override_accent_color = true;
             scheme_factory = new He.ContentScheme ();
 
@@ -129,13 +129,13 @@ namespace Victrola {
 
             Bis.init ();
 
-            typeof(InfoPage).ensure ();
-            typeof(PlayBar).ensure ();
-            typeof(SongEntry).ensure ();
+            typeof (InfoPage).ensure ();
+            typeof (PlayBar).ensure ();
+            typeof (SongEntry).ensure ();
 
             new MainWindow (this);
 
-            //  Must load tag cache after the app register (GLib init), to make sort works
+            // Must load tag cache after the app register (GLib init), to make sort works
             _song_store.load_tag_cache_async.begin ((obj, res) => {
                 _song_store.load_tag_cache_async.end (res);
             });
@@ -179,7 +179,7 @@ namespace Victrola {
         public void on_open () {
             var music_dir = get_music_folder ();
             var chooser = new Gtk.FileChooserNative (null, active_window,
-                Gtk.FileChooserAction.SELECT_FOLDER, null, null);
+                                                     Gtk.FileChooserAction.SELECT_FOLDER, null, null);
             try {
                 chooser.set_file (music_dir);
             } catch (Error e) {
@@ -189,7 +189,7 @@ namespace Victrola {
                 if (id == Gtk.ResponseType.ACCEPT) {
                     var dir = chooser.get_file ();
                     if (dir != null && dir != music_dir) {
-                        settings.set_string ("music-dir", ((!)dir).get_uri ());
+                        settings.set_string ("music-dir", ((!) dir).get_uri ());
                         reload_song_store ();
                     }
                 }
@@ -208,8 +208,8 @@ namespace Victrola {
                 var song = _song_list.get_item (value) as Song;
                 if (song != null && _current_song != song) {
                     _current_song = song;
-                    _player.uri = ((!)song).uri;
-                    song_changed ((!)song);
+                    _player.uri = ((!) song).uri;
+                    song_changed ((!) song);
                 }
                 if (_current_item != value) {
                     var old_item = _current_item;
@@ -262,11 +262,11 @@ namespace Victrola {
             current_item = current_item + 1;
         }
 
-        public void play_pause() {
+        public void play_pause () {
             _player.playing = !_player.playing;
         }
 
-        public void stop() {
+        public void stop () {
             _player.playing = false;
         }
 
@@ -275,8 +275,9 @@ namespace Victrola {
         }
 
         public void sort_by (SimpleAction action, Variant? parameter) {
-            sort_mode = (SortMode) (parameter?.get_uint32 () ?? 2);
+            sort_mode = (SortMode) (parameter ? .get_uint32 () ?? 2);
             _settings?.set_uint ("sort-mode", sort_mode);
+
             find_current_item ();
         }
 
@@ -292,14 +293,14 @@ namespace Victrola {
         public void toggle_search () {
             var win = active_window as MainWindow;
             if (win != null)
-                ((!)win).search_btn.active = ! ((!)win).search_btn.active;
+                ((!) win).search_btn.active = !((!) win).search_btn.active;
         }
 
         public bool find_current_item () {
             if (_song_list.get_item (_current_item) == _current_song)
                 return false;
 
-            //  find current item
+            // find current item
             var old_item = _current_item;
             var count = _song_list.get_n_items ();
             _current_item = -1;
@@ -344,7 +345,7 @@ namespace Victrola {
             } else if (_current_song != null && _current_song == _song_list.get_item (_current_item)) {
                 play_item = _current_item;
             } else {
-                var uri = _current_song?.uri ?? _settings.get_string ("played-uri");
+                var uri = _current_song ? .uri ?? _settings.get_string ("played-uri");
                 if (uri.length > 0) {
                     var count = _song_list.get_n_items ();
                     for (var i = 0; i < count; i++) {
@@ -361,19 +362,19 @@ namespace Victrola {
 
         public void show_about () {
             var about = new He.AboutWindow (
-                active_window,
-                "Victrola" + Config.NAME_SUFFIX,
-                Config.APP_ID,
-                Config.VERSION,
-                Config.APP_ID,
-                "https://github.com/tau-OS/victrola/tree/main/po",
-                "https://github.com/tau-OS/victrola/issues",
-                "https://github.com/tau-OS/victrola/",
-                {},
-                {"Fyra Labs"},
-                2023,
-                He.AboutWindow.Licenses.GPLV3,
-                He.Colors.ORANGE
+                                            active_window,
+                                            "Victrola" + Config.NAME_SUFFIX,
+                                            Config.APP_ID,
+                                            Config.VERSION,
+                                            Config.APP_ID,
+                                            "https://github.com/tau-OS/victrola/tree/main/po",
+                                            "https://github.com/tau-OS/victrola/issues",
+                                            "https://github.com/tau-OS/victrola/",
+                                            {},
+                                            { "Fyra Labs" },
+                                            2023,
+                                            He.AboutWindow.Licenses.GPLV3,
+                                            He.Colors.ORANGE
             );
             about.present ();
         }
@@ -391,14 +392,15 @@ namespace Victrola {
         private async void on_tag_parsed (string? album, string? artist, string? title, Gst.Sample? image) {
             _cover_image = image;
             if (_current_song != null) {
-                var song = (!)current_song;
+                var song = (!) current_song;
                 song_tag_parsed (song, image);
 
                 string? cover_uri = null;
                 if (image != null) {
                     var file = File.new_build_filename (Environment.get_tmp_dir (), application_id + "_" + str_hash (song.cover_uri).to_string ("%x"));
-                    yield save_sample_to_file (file, (!)image);
+                    yield save_sample_to_file (file, (!) image);
                     yield delete_cover_tmp_file_async ();
+
                     _cover_tmp_file = file;
                     cover_uri = file.get_uri ();
                 }
@@ -411,23 +413,27 @@ namespace Victrola {
                 }
             }
         }
+
         public static async void save_sample_to_file (File file, Gst.Sample sample) {
             try {
                 var buffer = sample.get_buffer ();
                 Gst.MapInfo? info = null;
-                if (buffer?.map (out info, Gst.MapFlags.READ) ?? false) {
+                if (buffer ? .map (out info, Gst.MapFlags.READ) ?? false) {
                     var stream = yield file.create_async (FileCreateFlags.NONE);
+
                     yield stream.write_all_async (info?.data, Priority.DEFAULT, null, null);
-                    buffer?.unmap ((!)info);
+
+                    buffer?.unmap ((!) info);
                 }
             } catch (Error e) {
             }
         }
+
         private File? _cover_tmp_file = null;
         private async void delete_cover_tmp_file_async () {
             try {
                 if (_cover_tmp_file != null) {
-                    yield ((!)_cover_tmp_file).delete_async ();
+                    yield ((!) _cover_tmp_file).delete_async ();
                     _cover_tmp_file = null;
                 }
             } catch (Error e) {
