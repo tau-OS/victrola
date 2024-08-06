@@ -71,3 +71,12 @@
     -gtk-icon-size: 24px;
     color: @view_bg_color;
 }
+
+.view-lyric text {
+    background: none;
+    margin: 6px;
+    padding: 24px;
+}
+.view-lyric {
+    border-radius: 12px 12px 0 0;
+}

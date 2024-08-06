@@ -65,6 +65,7 @@ namespace Victrola {
         private PlayBar play_bar;
         private PlayBarMobile play_bar_mobile;
         private InfoPage info_page;
+        private LyricPage lyric_page;
         uint num1;
         uint num2;
         uint num3;
@@ -126,7 +127,7 @@ namespace Victrola {
 
             info_box_mobile.append (play_bar_mobile);
 
-            var lyric_page = new LyricPage (this);
+            lyric_page = new LyricPage (this);
             lyrics_box.append (lyric_page);
 
             lyrics_btn.toggled.connect (() => {
@@ -266,6 +267,7 @@ namespace Victrola {
 
         private void on_song_changed (Song song) {
             update_song_info (song);
+            lyric_page.update_cur_song (song);
             action_set_enabled (ACTION_APP + ACTION_PLAY, true);
         }
 
@@ -375,6 +377,7 @@ namespace Victrola {
         private void update_song_info (Song song) {
             info_page.update (song);
             play_bar_mobile.update (song);
+            lyric_page.update_cur_song (song);
         }
 
         public async void accent_set (Gdk.Pixbuf? pixbuf) {

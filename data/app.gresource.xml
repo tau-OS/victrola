@@ -7,6 +7,7 @@
     <file alias="style-dark.css">style-dark.css</file>
   </gresource>
   <gresource prefix="/com/fyralabs/Victrola/icons">
+    <file alias="scalable/actions/show-lyrics-symbolic.svg">icons/hicolor/symbolic/actions/show-lyrics-symbolic.svg</file>
     <file alias="scalable/actions/audio-x-generic-filled-symbolic.svg">icons/hicolor/symbolic/actions/audio-x-generic-filled-symbolic.svg</file>
     <file alias="scalable/actions/media-optical-cd-audio-filled-symbolic.svg">icons/hicolor/symbolic/actions/media-optical-cd-audio-filled-symbolic.svg</file>
     <file alias="scalable/actions/system-users-filled-symbolic.svg">icons/hicolor/symbolic/actions/system-users-filled-symbolic.svg</file>

@@ -19,22 +19,18 @@
 */
 
 namespace Victrola {
-
     public class LyricsAPI : GLib.Object {
-        public LyricsAPI  () {
-
-        }
-
+        public LyricsAPI  () {}
     }
 
     public class LyricsFetcher : GLib.Object {
-
         private string[] lyrics_apis = {};
 
         public LyricsFetcher () {
             lyrics_apis += "music_163";
             lyrics_apis += "letras_mus";
             lyrics_apis += "lyrics_wikia";
+            lyrics_apis += "random";
         }
 
         private Lyric? get_music_163(string title, string artist){
@@ -124,6 +120,33 @@ namespace Victrola {
                 return null;
             }
             return null;
+        }
+
+        private Lyric? get_random_lyric (string artist, string title){
+            var seeds_url = "https://www.azlyrics.com/lyrics/";
+            var session = new Soup.Session ();
+            session.timeout = 5;
+            var url = seeds_url + artist.replace(" ", "").down() + "/" + title.replace(" ", "").down() + ".html";
+            var message = new Soup.Message ("GET", url);
+
+            /* send a sync request */
+            session.send_message (message);
+
+            // parse html
+            var html_cntx = new Html.ParserCtxt();
+            html_cntx.use_options(Html.ParserOption.NOERROR + Html.ParserOption.NOWARNING);
+            var result_string = (string) message.response_body.flatten ().data;
+
+            var doc = html_cntx.read_doc(result_string.replace("<br />", "\n"), "");
+            var lyricbox = getValue(doc, "//div[contains(@class, 'row')]");
+
+            if(lyricbox == null){
+                return null;
+            }
+            var lyric = new Lyric();
+            lyric.lyric = lyricbox;
+            lyric.current_url = url;
+            return lyric;
         }
 
         private Lyric? get_lyrics_wikia(string title, string artist){
@@ -220,6 +243,8 @@ namespace Victrola {
                     r = get_lyrics_wikia(n_title, n_artist);
                 }else if(s_api == "letras_mus"){
                     r = get_letras_mus(n_title, n_artist);
+                }else if(s_api == "random"){
+                    r = get_random_lyric(n_title, n_artist);
                 }else{
                     return null;
                 }

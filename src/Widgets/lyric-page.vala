@@ -27,12 +27,11 @@ namespace Victrola {
         public string last_artist;
         private int64 last_position;
         private bool was_paused;
+        public Song? cur_song { get; set; }
 
         public LyricPage (Gtk.Window window) {
             Object (
-                    margin_start: 18,
-                    margin_end: 18,
-                    window: window
+                    window : window
             );
             last_title = "";
             last_artist = "";
@@ -45,68 +44,66 @@ namespace Victrola {
 
             fetcher = new LyricsFetcher ();
 
-            view = new Gtk.TextView ();
-            view.editable = false;
-            view.set_wrap_mode (Gtk.WrapMode.WORD);
-            view.vexpand = true;
+            view = new Gtk.TextView () {
+                editable = false,
+                wrap_mode = Gtk.WrapMode.WORD,
+                vexpand = true,
+                cursor_visible = false,
+                top_margin = 12,
+                left_margin = 12,
+                right_margin = 12
+            };
             view.add_css_class ("view-lyric");
+            view.remove_css_class ("view");
 
             scrolled = new Gtk.ScrolledWindow ();
-            scrolled.margin_bottom = 18;
             scrolled.set_child (view);
+
+            var get_lyrics_button = new He.Button ("", "Fetch Lyrics") {
+                halign = Gtk.Align.CENTER,
+                is_pill = true,
+                margin_bottom = 18
+            };
 
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
             main_box.vexpand = main_box.hexpand = true;
-            main_box.margin_top = 18;
             main_box.append (scrolled);
+            main_box.append (get_lyrics_button);
 
             this.child = main_box;
             this.vexpand = this.hexpand = true;
 
-            // update_lyric.begin (app);
+            get_lyrics_button.clicked.connect (() => {
+                update_lyric.begin ();
+            });
         }
 
-        private async void update_lyric (Application app) {
+        private async void update_lyric () {
             ThreadFunc<void*> run = () => {
-                var sub = "";
-                var title = "";
-                var url = "";
                 var lyric = "";
-                try {
-                    bool error = false;
-                    var r = fetcher.get_lyric (app.current_song.title, app.current_song.artist);
-                    if (r != null) {
-                        lyric = r.lyric;
-                        url = r.current_url;
-                        title = r.title;
-                        sub = r.lyric_sync;
-                        if (title != last_title) {
-                            return null;
-                        }
-                        Idle.add (() => {
-                            clean_text_buffer ();
-                            return false;
-                        });
+                bool error = false;
+                var r = fetcher.get_lyric (cur_song.title, cur_song.artist);
 
-                        if (lyric == "" || lyric == null) {
-                            error = true;
-                        }
-                        current_lyric = r;
-                    } else {
+                if (r != null) {
+                    lyric = r.lyric;
+                    if (lyric == "") {
                         error = true;
                     }
+                    current_lyric = r;
+                } else {
+                    error = true;
+                }
 
-                    if (error == true) {
-                        scrolled.hide ();
-                    } else {
-                        Idle.add (() => {
-                            insert_text (lyric);
-                            show_lyrics ();
-                            return false;
-                        });
-                    }
-                } catch (Error e) {
-                    warning ("Failed to get lyric: %s", e.message);
+                if (error == true) {
+                    clean_text_buffer ();
+                    insert_text (_("No lyrics found!"));
+                } else {
+                    Idle.add (() => {
+                        clean_text_buffer ();
+                        insert_text (lyric);
+                        show_lyrics ();
+                        return false;
+                    });
                 }
                 return null;
             };
@@ -139,6 +136,10 @@ namespace Victrola {
         private void show_lyrics () {
             scrolled.get_vadjustment ().set_value (0);
             scrolled.show ();
+        }
+
+        public void update_cur_song (Song song) {
+            cur_song = song;
         }
     }
 }
