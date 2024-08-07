@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: com.fyralabs.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2023-05-27 07:12+0000\n"
-"Last-Translator: Lains <lains@fyralabs.com>\n"
+"PO-Revision-Date: 2024-03-25 00:20+0000\n"
+"Last-Translator: \"A. Bento\" <kyweehz@pm.me>\n"
 "Language-Team: Portuguese (Brazil) <https://weblate.fyralabs.com/projects/"
 "tauOS/victrola/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.16.4\n"
+"X-Generator: Weblate 5.4.2\n"
 
 #: data/app.appdata.xml.in:4 data/app.desktop.in:3 src/main.vala:24
 msgid "Victrola"
@@ -49,7 +49,7 @@ msgstr "música;som;player;mídia;áudio;playlist;"
 
 #: data/ui/window.blp:39
 msgid "Search music"
-msgstr "Busque música"
+msgstr "Buscar música"
 
 #: data/ui/window.blp:45
 msgid "Choose music folder"
@@ -69,11 +69,11 @@ msgstr "Álbum Desconhecido"
 
 #: src/Widgets/play-bar.vala:44
 msgid "Repeat Song"
-msgstr "Repita Música"
+msgstr "Repetir Música"
 
 #: src/Widgets/play-bar.vala:54
 msgid "Play Previous"
-msgstr "Toque Anterior"
+msgstr "Tocar Anterior"
 
 #: src/Widgets/play-bar.vala:60
 msgid "Play/Pause"
@@ -81,7 +81,7 @@ msgstr "Tocar/Pausar"
 
 #: src/Widgets/play-bar.vala:66
 msgid "Play Next"
-msgstr "Toque Seguinte"
+msgstr "Tocar Seguinte"
 
 #: src/Widgets/play-bar.vala:72
 msgid "Stop"
