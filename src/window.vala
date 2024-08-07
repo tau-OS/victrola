@@ -384,7 +384,16 @@ namespace Victrola {
                         buffer?.unmap ((!) info);
                     }
                 } catch (Error e) {
-                    // w/e lol lmao even
+                    var pixbuf = new Gdk.Pixbuf.from_resource ("/com/fyralabs/Victrola/cover.png");
+                    var width = pixbuf.width; var height = pixbuf.height;
+                    if (size > 0 && width > size && height > size) {
+                        var scale = width > height ? (size / (double) height) : (size / (double) width);
+                        var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
+                        var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
+                        if (newbuf != null)
+                            return ((!) newbuf);
+                        buffer?.unmap ((!) info);
+                    }
                 }
             }
             return null;
@@ -401,7 +410,15 @@ namespace Victrola {
                         return ((!) newbuf);
                 }
             } catch (Error e) {
-                // w/e lol lmao even
+                var pixbuf = new Gdk.Pixbuf.from_resource ("/com/fyralabs/Victrola/cover.png");
+                var width = pixbuf.width; var height = pixbuf.height;
+                if (size > 0 && width > size && height > size) {
+                    var scale = width > height ? (size / (double) height) : (size / (double) width);
+                    var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
+                    var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
+                    if (newbuf != null)
+                        return ((!) newbuf);
+                }
             }
             return null;
         }

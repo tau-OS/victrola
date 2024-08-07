@@ -5,6 +5,8 @@
 
     <file alias="style.css">style.css</file>
     <file alias="style-dark.css">style-dark.css</file>
+
+    <file alias="cover.png">assets/cover.png</file>
   </gresource>
   <gresource prefix="/com/fyralabs/Victrola/icons">
     <file alias="scalable/actions/show-lyrics-symbolic.svg">icons/hicolor/symbolic/actions/show-lyrics-symbolic.svg</file>
