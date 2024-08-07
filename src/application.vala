@@ -39,6 +39,8 @@ namespace Victrola {
         private GstPlayer _player = new GstPlayer ();
         private Gtk.FilterListModel _song_list = new Gtk.FilterListModel (null, null);
         private SongStore _song_store = new SongStore ();
+        private Gtk.FilterListModel _album_list = new Gtk.FilterListModel (null, null);
+        private AlbumStore _album_store = new AlbumStore ();
         private Settings _settings = new Settings ("com.fyralabs.Victrola");
         private MprisPlayer? _mpris = null;
         private uint _mpris_id = 0;
@@ -54,6 +56,7 @@ namespace Victrola {
             }
             set {
                 _song_store.sort_mode = value;
+                _album_store.sort_mode = value;
             }
         }
 
@@ -94,6 +97,8 @@ namespace Victrola {
 
             _song_list.model = _song_store.store;
             _song_store.sort_mode = (SortMode) (_settings ? .get_uint ("sort-mode") ?? SortMode.TITLE);
+            _album_list.model = _album_store.store;
+            _album_store.sort_mode = SortMode.ALBUM;
 
             _player.end_of_stream.connect (() => {
                 if (single_loop) {
@@ -119,7 +124,7 @@ namespace Victrola {
         protected override void startup () {
             Gdk.RGBA accent_color = { 0 };
             accent_color.parse ("#F7812B");
-            default_accent_color = He.Color.from_gdk_rgba (accent_color);
+            default_accent_color = He.from_gdk_rgba (accent_color);
             override_accent_color = true;
             scheme_factory = new He.ContentScheme ();
 
@@ -139,6 +144,10 @@ namespace Victrola {
             _song_store.load_tag_cache_async.begin ((obj, res) => {
                 _song_store.load_tag_cache_async.end (res);
             });
+
+            _album_store.load_tag_cache_async.begin ((obj, res) => {
+                _album_store.load_tag_cache_async.end (res);
+            });
         }
 
         public override void shutdown () {
@@ -149,6 +158,10 @@ namespace Victrola {
 
             _song_store.save_tag_cache_async.begin ((obj, res) => {
                 _song_store.save_tag_cache_async.end (res);
+            });
+
+            _album_store.save_tag_cache_async.begin ((obj, res) => {
+                _album_store.save_tag_cache_async.end (res);
             });
 
             delete_cover_tmp_file_async.begin ((obj, res) => {
@@ -248,6 +261,12 @@ namespace Victrola {
             }
         }
 
+        public Gtk.FilterListModel album_list {
+            get {
+                return _album_list;
+            }
+        }
+
         public File get_music_folder () {
             var music_uri = _settings.get_string ("music-dir");
             if (music_uri.length > 0) {
@@ -283,6 +302,7 @@ namespace Victrola {
 
         public void reload_song_store () {
             _song_store.clear ();
+            _album_store.clear ();
             _current_item = -1;
             index_changed (-1, 0);
             load_songs_async.begin ({}, (obj, res) => {

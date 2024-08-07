@@ -80,6 +80,8 @@ sources = [
   'src/Widgets/play-bar.vala',
   'src/Widgets/play-bar-mobile.vala',
   'src/Widgets/song-entry.vala',
+  'src/Widgets/song-cell.vala',
+  'src/Widgets/song-widget.vala',
 ]
 
 subdir('data')

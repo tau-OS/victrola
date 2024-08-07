@@ -147,11 +147,11 @@ namespace Victrola {
 
             var factory = new Gtk.SignalListItemFactory ();
             factory.setup.connect ((item) => {
-                ((Gtk.ListItem) item).child = new SongEntry ();
+                ((Gtk.ListItem) item).child = new SongCell ();
             });
-            factory.bind.connect (on_bind_item);
+            factory.bind.connect (on_bind_cell);
             list_view1.factory = factory;
-            list_view1.model = new Gtk.NoSelection (app.song_list);
+            list_view1.model = new Gtk.NoSelection (app.album_list);
             list_view1.activate.connect ((index) => {
                 app.current_item = (int) index;
             });
@@ -227,6 +227,28 @@ namespace Victrola {
                     info_box.add_css_class ("side-pane");
                 }
             });
+        }
+
+        private async void on_bind_cell (Gtk.SignalListItemFactory factory, Object item) {
+            var app = (Application) application;
+            var i = (Gtk.ListItem) item;
+            var entry = (SongWidget) i.child;
+            var song = (Song) i.item;
+            entry.playing = ((Gtk.ListItem) item).position == app.current_item;
+            entry.update (song);
+
+            var pixbufs = new Gdk.Pixbuf ? [1] { null };
+            Gdk.Paintable? paintable = null;
+            if (song.cover_uri != null) {
+                pixbufs[0] = load_clamp_pixbuf_from_uri ((!) song.cover_uri, 300);
+            }
+
+            if (pixbufs[0] != null) {
+                paintable = Gdk.Texture.for_pixbuf ((!) pixbufs[0]);
+            }
+
+            var art = update_cover_paintable (song, entry, paintable);
+            entry.paintable = art;
         }
 
         private async void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
@@ -367,6 +389,22 @@ namespace Victrola {
             }
             return null;
         }
+        public static Gdk.Pixbuf? load_clamp_pixbuf_from_uri (string uri, int size) {
+            try {
+                var pixbuf = new Gdk.Pixbuf.from_file (uri);
+                var width = pixbuf.width; var height = pixbuf.height;
+                if (size > 0 && width > size && height > size) {
+                    var scale = width > height ? (size / (double) height) : (size / (double) width);
+                    var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
+                    var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
+                    if (newbuf != null)
+                        return ((!) newbuf);
+                }
+            } catch (Error e) {
+                // w/e lol lmao even
+            }
+            return null;
+        }
 
         private void scroll_to_item (int index) {
             list_view1.activate_action ("list.scroll-to-item", "u", index);
@@ -391,12 +429,12 @@ namespace Victrola {
 
                     if (top != 0) {
                         Gdk.RGBA accent_color = { 0 };
-                        accent_color.parse (He.Color.hexcode_argb (top));
-                        app.default_accent_color = He.Color.from_gdk_rgba (accent_color);
+                        accent_color.parse (He.hexcode_argb (top));
+                        app.default_accent_color = He.from_gdk_rgba (accent_color);
                     } else {
                         Gdk.RGBA accent_color = { 0 };
                         accent_color.parse ("#F7812B");
-                        app.default_accent_color = He.Color.from_gdk_rgba (accent_color);
+                        app.default_accent_color = He.from_gdk_rgba (accent_color);
                     }
                     loop.quit ();
                 });
