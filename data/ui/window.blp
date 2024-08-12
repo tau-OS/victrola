@@ -2,7 +2,7 @@ using Gtk 4.0;
 using He 1;
 using Bis 1;
 
-template VictrolaMainWindow : He.ApplicationWindow {
+template $VictrolaMainWindow : He.ApplicationWindow {
   visible: true;
   default-width: 1024;
   default-height: 600;
@@ -66,7 +66,7 @@ template VictrolaMainWindow : He.ApplicationWindow {
           }
 
           SearchBar search_bar {
-            key-capture-widget: VictrolaMainWindow;
+            key-capture-widget: template;
             child: SearchEntry search_entry {
               hexpand: true;
               margin-start: 18;

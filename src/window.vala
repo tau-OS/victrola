@@ -152,9 +152,9 @@ namespace Victrola {
             factory.bind.connect (on_bind_cell);
             list_view1.factory = factory;
             list_view1.model = new Gtk.NoSelection (app.album_list);
-            list_view1.activate.connect ((index) => {
-                app.current_item = (int) index;
-            });
+            //list_view1.activate.connect ((index) => {
+            //    app.current_item = (int) index;
+            //});
             num1 = list_view1.get_model ().get_n_items ();
 
             var factory2 = new Gtk.SignalListItemFactory ();
@@ -164,9 +164,9 @@ namespace Victrola {
             factory2.bind.connect (on_bind_item);
             list_view2.factory = factory2;
             list_view2.model = new Gtk.NoSelection (app.song_list);
-            list_view2.activate.connect ((index) => {
-                app.current_item = (int) index;
-            });
+            //  list_view2.activate.connect ((index) => {
+            //      app.current_item = (int) index;
+            //  });
             num2 = list_view2.get_model ().get_n_items ();
 
             var factory3 = new Gtk.SignalListItemFactory ();
