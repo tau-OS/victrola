@@ -442,16 +442,15 @@ namespace Victrola {
                 He.Ensor.accent_from_pixels_async.begin (pixbuf.get_pixels_with_length (), pixbuf.get_has_alpha (), (obj, res) => {
                     GLib.Array<int?> result = He.Ensor.accent_from_pixels_async.end (res);
                     int top = result.index (0);
-                    print ("FIRST VICTROLA ARGB RESULT (should be the same as Ensor's): %d\n".printf (top));
 
                     if (top != 0) {
                         Gdk.RGBA accent_color = { 0 };
                         accent_color.parse (He.hexcode_argb (top));
-                        app.default_accent_color = He.from_gdk_rgba (accent_color);
+                        app.default_accent_color = { accent_color.red * 255, accent_color.green * 255, accent_color.blue * 255 };
                     } else {
                         Gdk.RGBA accent_color = { 0 };
                         accent_color.parse ("#F7812B");
-                        app.default_accent_color = He.from_gdk_rgba (accent_color);
+                        app.default_accent_color = { accent_color.red * 255, accent_color.green * 255, accent_color.blue * 255 };
                     }
                     loop.quit ();
                 });

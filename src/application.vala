@@ -124,7 +124,7 @@ namespace Victrola {
         protected override void startup () {
             Gdk.RGBA accent_color = { 0 };
             accent_color.parse ("#F7812B");
-            default_accent_color = He.from_gdk_rgba (accent_color);
+            default_accent_color = { accent_color.red * 255, accent_color.green * 255, accent_color.blue * 255 };
             override_accent_color = true;
             default_scheme_variant = He.SchemeVariant.CONTENT;
 
