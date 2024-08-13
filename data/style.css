@@ -19,15 +19,15 @@
 }
 .play-button {
     -gtk-icon-size: 24px;
-    background: @success_container_bg_color;
-    color: @success_container_fg_color;
-    box-shadow: 0 0 0 1px @success_container_fg_color;
+    background: @success_container_fg_color;
+    color: @success_container_bg_color;
+    box-shadow: 0 0 0 1px @success_container_bg_color;
 }
 .play-button:hover {
-    background: mix(@success_container_bg_color, @view_fg_color, 0.05);
+    background: mix(@success_container_fg_color, @view_fg_color, 0.05);
 }
 .play-button:active {
-    background: mix(@success_container_bg_color, @view_fg_color, 0.08);
+    background: mix(@success_container_fg_color, @view_fg_color, 0.08);
 }
 .music-grid {
     background: none;
