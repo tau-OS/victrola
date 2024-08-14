@@ -267,9 +267,11 @@ namespace Victrola {
         }
 
         private void on_index_changed (int index, uint size) {
+            var app = (Application) application;
             action_set_enabled (ACTION_APP + ACTION_PREV, index > 0);
             action_set_enabled (ACTION_APP + ACTION_NEXT, index < (int) size - 1);
             scroll_to_item (index);
+            app.current_item = index;
         }
 
         private void on_search_text_changed () {

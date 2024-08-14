@@ -30,23 +30,30 @@ namespace Victrola {
             var builder = new Gtk.Builder ();
             var player = app.player;
 
-            this.spacing = 18;
-            this.add_css_class ("bottom-bar");
+            this.orientation = Gtk.Orientation.VERTICAL;
+            this.halign = Gtk.Align.CENTER;
+            this.spacing = 12;
+            this.add_css_class ("play-bar");
 
-            append (_repeat);
-            append (_prev);
-            append (_play);
-            append (_next);
-            append (_stop);
+            var top_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
+            var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
+
+            top_box.append (_prev);
+            top_box.append (_play);
+            top_box.append (_next);
+            bottom_box.append (_repeat);
+            bottom_box.append (_stop);
+
+            append(top_box);
+            append(bottom_box);
 
             _repeat.valign = Gtk.Align.CENTER;
             _repeat.icon_name = "media-playlist-repeat-symbolic";
-            _repeat.halign = Gtk.Align.END;
+            _repeat.halign = Gtk.Align.START;
             _repeat.hexpand = true;
             _repeat.tooltip_text = _("Repeat Song");
-            _repeat.add_css_class ("media-button");
             _repeat.add_css_class ("iconic-button");
-            _repeat.add_css_class ("flat");
+            _repeat.add_css_class ("media-toggle-button");
             _repeat.remove_css_class ("image-button");
             _repeat.toggled.connect (() => {
                 _repeat.icon_name = _repeat.active ? "media-playlist-repeat-song-symbolic" : "media-playlist-repeat-symbolic";
@@ -71,13 +78,13 @@ namespace Victrola {
             _next.is_iconic = true;
             _next.add_css_class ("media-button");
 
-            _stop.halign = Gtk.Align.START;
+            _stop.halign = Gtk.Align.END;
             _stop.hexpand = true;
             _stop.action_name = ACTION_APP + ACTION_STOP;
             _stop.icon_name = "media-playback-stop-symbolic";
+            _stop.add_css_class ("media-toggle-button");
             _stop.tooltip_text = _("Stop");
             _stop.is_iconic = true;
-            _stop.add_css_class ("media-button");
 
             player.duration_changed.connect ((duration) => {
                 ((MainWindow)app.active_window).album.notify["folded"].connect (() => {

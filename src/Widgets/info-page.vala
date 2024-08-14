@@ -118,6 +118,7 @@ namespace Victrola {
             main_box.vexpand = main_box.hexpand = true;
             main_box.valign = Gtk.Align.CENTER;
             main_box.margin_top = 24;
+            main_box.margin_start = main_box.margin_end = 18;
             main_box.append(cover_box);
             main_box.append(bottom_box);
 
