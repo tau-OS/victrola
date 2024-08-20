@@ -86,6 +86,11 @@
     background: shade(@accent_container_bg_color, 0.95);
 }
 
+.music-navrail button image,
+.music-navrail button label {
+    color: @accent_container_fg_color;
+}
+
 .music-navrail button image {
     background: shade(@accent_container_bg_color, 0.95);
 }
