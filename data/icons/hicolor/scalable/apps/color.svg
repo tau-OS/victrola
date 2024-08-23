@@ -1,14 +1,12 @@
 <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_812_2)">
 <g filter="url(#filter0_ii_812_2)">
-<path d="M98.4615 0H29.5385C13.2248 0 0 13.2248 0 29.5385V98.4615C0 114.775 13.2248 128 29.5385 128H98.4615C114.775 128 128 114.775 128 98.4615V29.5385C128 13.2248 114.775 0 98.4615 0Z" fill="url(#paint0_linear_812_2)"/>
+<path d="M92 12H36C22.7452 12 12 22.7452 12 36V92C12 105.255 22.7452 116 36 116H92C105.255 116 116 105.255 116 92V36C116 22.7452 105.255 12 92 12Z" fill="url(#paint0_linear_812_2)"/>
 </g>
 <g filter="url(#filter1_d_812_2)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M72 41.4997V81.3553V81.4322C72 81.4641 71.9997 81.4959 71.999 81.5277C71.9066 89.5374 65.3849 96.0019 57.3534 96.0019H54.6466C46.5575 96.0019 40 89.4444 40 81.3553C40 73.2662 46.5575 66.7087 54.6466 66.7087H57.3534C59.3547 66.7087 61.2623 67.1101 63 67.8367V37.3382C63 36.3215 63.3371 35.3837 63.9056 34.6302C64.6155 33.0783 66.1818 32 68 32C71.1024 32 75.7848 32.6865 79.8646 34.9418C84.1514 37.3115 88 41.6141 88 48.4004C88 50.8857 85.9853 52.9004 83.5 52.9004C81.0147 52.9004 79 50.8857 79 48.4004C79 45.6663 77.6819 44.0188 75.5104 42.8184C74.4296 42.2209 73.2066 41.791 72 41.4997Z" fill="#FAFAFA"/>
-</g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M70.2505 47.6087V76.1823L70.2506 76.2104V77.3756C70.2506 82.9677 65.7173 87.5009 60.1253 87.5009C54.5332 87.5009 50 82.9677 50 77.3756V76.2104C50 70.6183 54.5332 66.0851 60.1253 66.0851C61.7139 66.0851 63.217 66.4509 64.5551 67.1029V44.1706C64.5551 43.4771 64.803 42.8415 65.215 42.3476C65.7519 41.5356 66.673 41 67.7193 41C69.5327 41 72.186 41.5193 74.4722 43.1654C76.9114 44.9216 78.7193 47.8222 78.7193 52C78.7193 53.6569 77.3761 55 75.7193 55C74.0624 55 72.7193 53.6569 72.7193 52C72.7193 49.7778 71.8606 48.6784 70.9664 48.0346C70.7392 47.871 70.4979 47.7297 70.2505 47.6087Z" fill="#FAFAFA"/>
 </g>
 <defs>
-<filter id="filter0_ii_812_2" x="0" y="0" width="128" height="129" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_ii_812_2" x="12" y="12" width="104" height="105" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
@@ -23,7 +21,7 @@
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"/>
 <feBlend mode="normal" in2="effect1_innerShadow_812_2" result="effect2_innerShadow_812_2"/>
 </filter>
-<filter id="filter1_d_812_2" x="39" y="31" width="54" height="70.0019" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter1_d_812_2" x="49" y="40" width="34.7193" height="52.5009" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dx="2" dy="2"/>
@@ -33,12 +31,9 @@
 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_812_2"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_812_2" result="shape"/>
 </filter>
-<linearGradient id="paint0_linear_812_2" x1="28" y1="2.83122e-07" x2="104" y2="128" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_812_2" x1="34.75" y1="12" x2="96.5" y2="116" gradientUnits="userSpaceOnUse">
 <stop stop-color="#F7812B"/>
 <stop offset="1" stop-color="#EE4242"/>
 </linearGradient>
-<clipPath id="clip0_812_2">
-<rect width="128" height="128" rx="24" fill="white"/>
-</clipPath>
 </defs>
 </svg>
