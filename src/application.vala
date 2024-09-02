@@ -126,7 +126,7 @@ namespace Victrola {
             accent_color.parse ("#F7812B");
             default_accent_color = { accent_color.red * 255, accent_color.green * 255, accent_color.blue * 255 };
             override_accent_color = true;
-            default_scheme_variant = He.SchemeVariant.CONTENT;
+            is_content = true;
 
             resource_base_path = "/com/fyralabs/Victrola";
 
