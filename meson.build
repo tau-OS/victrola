@@ -28,6 +28,7 @@ conf.set10('DEVELOPMENT', get_option('development'))
 configure_file(output: 'config.h', configuration: conf)
 
 add_project_arguments('-DGETTEXT_PACKAGE="' + app_id + '"', language: 'c')
+add_project_arguments('-w', language: 'c')
 
 # Blueprint
 subproject('blueprint-compiler')
@@ -74,7 +75,6 @@ sources = [
   'src/Utils/song-store.vala',
   'src/Utils/tag-parser.vala',
   'src/Utils/lyric.vala',
-  'src/Utils/lyrics-catch.vala',
   'src/Widgets/info-page.vala',
   'src/Widgets/lyric-page.vala',
   'src/Widgets/play-bar.vala',

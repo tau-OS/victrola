@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Fyra Labs
+ * Copyright 2022-2025 Fyra Labs
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ namespace Victrola {
         Application app = (Application) GLib.Application.get_default ();
         public Gtk.Window window { get; construct; }
         LyricsFetcher fetcher;
-        Lyric current_lyric;
+        string current_lyric;
         Gtk.TextView view;
         Gtk.ScrolledWindow scrolled;
         public string last_title;
@@ -78,51 +78,38 @@ namespace Victrola {
             });
         }
 
-        private async void update_lyric () {
-            ThreadFunc<void*> run = () => {
-                var lyric = "";
-                bool error = false;
-                var r = fetcher.get_lyric (cur_song.title, cur_song.artist);
-
-                if (r != null) {
-                    lyric = r.lyric;
-                    if (lyric == "") {
-                        error = true;
-                    }
-                    current_lyric = r;
-                } else {
-                    error = true;
-                }
-
-                if (error == true) {
-                    clean_text_buffer ();
-                    insert_text (_("No lyrics found!"));
-                } else {
-                    Idle.add (() => {
-                        clean_text_buffer ();
-                        insert_text (lyric);
-                        show_lyrics ();
-                        return false;
-                    });
-                }
-                return null;
-            };
-
+        private async void update_lyric() {
             try {
-                new Thread<void*>.try (null, run);
+                clean_text_buffer();
+                insert_text(_("Searching for lyrics..."));
+        
+                warning ("Fetching lyrics for title: '%s', artist: '%s'", cur_song.title, cur_song.artist);
+                var lyrics = yield fetcher.fetch_lyrics(cur_song.title, cur_song.artist);
+                
+                if (lyrics == "") {
+                    warning ("Lyrics object is null");
+                    clean_text_buffer();
+                    insert_text(_("No lyrics found!"));
+                    return;
+                }
+        
+                warning ("Got lyrics object!");
+                current_lyric = lyrics;
+                clean_text_buffer();
+                insert_text(lyrics);
+                show_lyrics();
             } catch (Error e) {
-                warning (e.message);
+                warning("Unexpected error while fetching lyrics: %s", e.message);
             }
         }
 
-        private void insert_text (string text) {
+        private void insert_text (string? text) {
             Gtk.TextIter text_start;
             Gtk.TextIter text_end;
 
             view.buffer.get_start_iter (out text_start);
-            view.buffer.insert (ref text_start, text, text.length);
+            view.buffer.insert (ref text_start, text, -1);
             view.buffer.get_end_iter (out text_end);
-            view.buffer.apply_tag_by_name ("lyric", text_start, text_end);
         }
 
         private void clean_text_buffer () {
