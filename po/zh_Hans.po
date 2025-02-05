@@ -8,40 +8,40 @@ msgstr ""
 "Project-Id-Version: com.fyralabs.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2023-05-27 07:13+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Chinese (Simplified) <https://weblate.fyralabs.com/projects/"
-"tauOS/victrola/zh_Hans/>\n"
+"PO-Revision-Date: 2025-02-06 16:45+0000\n"
+"Last-Translator: CZPminecraft <yuiop369673@qq.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://weblate.fyralabs.com/"
+"projects/tauOS/victrola/zh_Hans/>\n"
 "Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.16.4\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: data/app.appdata.xml.in:4 data/app.desktop.in:3 src/main.vala:24
 msgid "Victrola"
-msgstr ""
+msgstr "Victrola"
 
 #: data/app.appdata.xml.in:7
 msgid "Play your music, in an elegant way."
-msgstr ""
+msgstr "以优雅的方式，播放你的音乐。"
 
 #: data/app.appdata.xml.in:16
 msgid "A fast and lightweight music player."
-msgstr ""
+msgstr "一个快速、轻量化的音乐播放器。"
 
 #: data/app.appdata.xml.in:28
 msgid "First release."
-msgstr ""
+msgstr "第一个发行版。"
 
 #: data/app.desktop.in:4
 msgid "Music Player"
-msgstr ""
+msgstr "音乐播放器"
 
 #: data/app.desktop.in:5
 msgid "Play your music, in an elegant way"
-msgstr ""
+msgstr "以优雅的方式，播放你的音乐"
 
 #: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
@@ -49,7 +49,7 @@ msgstr ""
 
 #: data/ui/window.blp:39
 msgid "Search music"
-msgstr ""
+msgstr "搜索音乐"
 
 #: data/ui/window.blp:45
 msgid "Choose music folder"
@@ -57,15 +57,15 @@ msgstr ""
 
 #: data/ui/window.blp:164
 msgid "About Victrola"
-msgstr ""
+msgstr "关于 Victrola"
 
 #: src/Utils/song-store.vala:19
 msgid "Unknown Artist"
-msgstr ""
+msgstr "未知艺术家"
 
 #: src/Utils/song-store.vala:20
 msgid "Unknown Album"
-msgstr ""
+msgstr "未知专辑"
 
 #: src/Widgets/play-bar.vala:44
 msgid "Repeat Song"
@@ -73,20 +73,20 @@ msgstr ""
 
 #: src/Widgets/play-bar.vala:54
 msgid "Play Previous"
-msgstr ""
+msgstr "播放上一首"
 
 #: src/Widgets/play-bar.vala:60
 msgid "Play/Pause"
-msgstr ""
+msgstr "播放/暂停"
 
 #: src/Widgets/play-bar.vala:66
 msgid "Play Next"
-msgstr ""
+msgstr "播放下一首"
 
 #: src/Widgets/play-bar.vala:72
 msgid "Stop"
-msgstr ""
+msgstr "停止"
 
 #: src/window.vala:71 src/window.vala:78 src/window.vala:88
 msgid "songs"
-msgstr ""
+msgstr "歌曲"
