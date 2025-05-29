@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Fyra Labs
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,21 +42,21 @@ namespace Victrola {
 
         public void update (Song song, SortMode sort) {
             switch (sort) {
-                case SortMode.ALBUM:
-                    title = song.album;
-                    subtitle = (0 < song.track < int.MAX) ? @"$(song.track). $(song.title)" : song.title;
-                    break;
+            case SortMode.ALBUM:
+                title = song.title;
+                subtitle = null;
+                break;
 
-                case SortMode.ARTIST:
-                    title = song.artist;
-                    subtitle = song.title;
-                    break;
+            case SortMode.ARTIST:
+                title = song.title;
+                subtitle = null;
+                break;
 
-                case SortMode.ALL:
-                default:
-                    title = song.title;
-                    subtitle = song.artist;
-                    break;
+            case SortMode.ALL:
+            default:
+                title = song.title;
+                subtitle = song.artist;
+                break;
             }
         }
     }

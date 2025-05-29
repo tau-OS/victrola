@@ -78,11 +78,8 @@ namespace Victrola {
             var factory = new Gtk.SignalListItemFactory ();
             factory.setup.connect ((item) => {
                 var list_item = (Gtk.ListItem) item;
-                var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-                box.margin_top = 8;
-                box.margin_bottom = 8;
-                box.margin_start = 18;
-                box.margin_end = 18;
+                var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+                box.add_css_class ("mini-content-block");
 
                 var name_label = new Gtk.Label ("");
                 name_label.halign = Gtk.Align.START;
@@ -90,8 +87,8 @@ namespace Victrola {
                 name_label.add_css_class ("cb-title");
 
                 var count_label = new Gtk.Label ("");
-                count_label.halign = Gtk.Align.END;
-                count_label.add_css_class ("dim-label");
+                count_label.halign = Gtk.Align.START;
+                count_label.add_css_class ("cb-subtitle");
 
                 box.append (name_label);
                 box.append (count_label);
@@ -161,7 +158,7 @@ namespace Victrola {
                 var entry = (SongEntry) list_item.child;
 
                 entry.playing = list_item.position == app.current_item;
-                entry.update (song, SortMode.TITLE);
+                entry.update (song, SortMode.ARTIST);
             });
 
             song_list_view = new Gtk.ListView (new Gtk.NoSelection (current_artist_songs), factory);

@@ -123,9 +123,9 @@ namespace Victrola {
             album_page = new AlbumPage ();
 
             // Add new pages to stack
-            stack.add_titled (artist_page, "artist", _("Artist"));
+            stack.add_titled (artist_page, "artist", _("Artists"));
             stack.get_page (artist_page).icon_name = "system-users-symbolic";
-            stack.add_titled (album_page, "album", _("Album"));
+            stack.add_titled (album_page, "album", _("Albums"));
             stack.get_page (album_page).icon_name = "media-optical-cd-audio-symbolic";
 
             lyrics_btn.toggled.connect (() => {
@@ -273,11 +273,11 @@ namespace Victrola {
 
                 accent_set.begin ((!) pixbufs[0].scale_simple (128, 128, Gdk.InterpType.NEAREST));
 
-                var art = update_cover_paintable (song, info_page.cover_art, paintable);
+                var art = update_cover_paintable (info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
                 play_bar_mobile.cover_art.paintable = art;
                 print ("Update cover\n");
-                var blur = update_blur_paintable (song, info_page.cover_blur, paintable);
+                var blur = update_blur_paintable (info_page.cover_blur, paintable);
                 info_page.cover_blur.paintable = blur;
                 play_bar_mobile.cover_blur.paintable = art;
                 print ("Update blur\n");
@@ -299,7 +299,7 @@ namespace Victrola {
             }
         }
 
-        private static Gdk.Texture? update_cover_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
+        public static Gdk.Texture? update_cover_paintable (Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
             var rect = (!) Graphene.Rect ().init (0, 0, 256, 256);
             var rounded = (!) Gsk.RoundedRect ().init_from_rect (rect, 12);
@@ -312,7 +312,7 @@ namespace Victrola {
             }
             return null;
         }
-        private static Gdk.Texture? update_blur_paintable (Song song, Gtk.Widget widget, Gdk.Paintable paintable) {
+        private static Gdk.Texture? update_blur_paintable (Gtk.Widget widget, Gdk.Paintable paintable) {
             var snapshot = new Gtk.Snapshot ();
             var rect = (!) Graphene.Rect ().init (0, 0, 256, 256);
             var rounded = (!) Gsk.RoundedRect ().init_from_rect (rect, 12);

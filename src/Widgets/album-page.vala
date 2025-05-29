@@ -90,15 +90,11 @@ namespace Victrola {
             factory.setup.connect ((item) => {
                 var list_item = (Gtk.ListItem) item;
                 var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 8);
-                box.margin_top = 10;
-                box.margin_bottom = 10;
-                box.margin_start = 8;
-                box.margin_end = 8;
+                box.add_css_class ("mini-content-block");
 
                 var cover_image = new Gtk.Image ();
                 cover_image.pixel_size = 160;
                 cover_image.halign = Gtk.Align.CENTER;
-                cover_image.add_css_class ("cover-art");
 
                 var album_label = new Gtk.Label ("");
                 album_label.halign = Gtk.Align.CENTER;
@@ -110,7 +106,7 @@ namespace Victrola {
                 artist_label.halign = Gtk.Align.CENTER;
                 artist_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
                 artist_label.max_width_chars = 20;
-                artist_label.add_css_class ("dim-label");
+                artist_label.add_css_class ("cb-subtitle");
 
                 var count_label = new Gtk.Label ("");
                 count_label.halign = Gtk.Align.CENTER;
@@ -181,7 +177,6 @@ namespace Victrola {
 
             album_cover = new Gtk.Image ();
             album_cover.pixel_size = 64;
-            album_cover.add_css_class ("cover-art");
 
             var text_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
             header_label = new Gtk.Label ("");
@@ -189,7 +184,7 @@ namespace Victrola {
             header_label.halign = Gtk.Align.START;
 
             artist_label = new Gtk.Label ("");
-            artist_label.add_css_class ("dim-label");
+            artist_label.add_css_class ("cb-title");
             artist_label.halign = Gtk.Align.START;
 
             text_box.append (header_label);
@@ -281,17 +276,27 @@ namespace Victrola {
         }
 
         private async void load_album_cover_async (string uri, Gtk.Image image) {
-            try {
-                var pixbuf = MainWindow.load_clamp_pixbuf_from_uri (uri, 160);
-                if (pixbuf != null) {
-                    var texture = Gdk.Texture.for_pixbuf (pixbuf);
-                    image.paintable = texture;
-                } else {
-                    image.icon_name = "folder-music-symbolic";
+            var file = File.new_for_uri (uri);
+            if (file.is_native ()) {
+                var tags = parse_gst_tags (file);
+                if (tags != null) {
+                    var sample = GstPlayer.parse_image_from_tag_list (tags);
+                    if (sample != null) {
+                        var pixbuf = MainWindow.load_clamp_pixbuf_from_sample (sample, 160);
+                        if (pixbuf != null) {
+                            var paintable = Gdk.Texture.for_pixbuf (pixbuf);
+                            var art = MainWindow.update_cover_paintable (image, paintable);
+                            if (art != null) {
+                                image.paintable = art;
+                            } else {
+                                image.paintable = paintable;
+                            }
+                            return;
+                        }
+                    }
                 }
-            } catch (Error e) {
-                image.icon_name = "folder-music-symbolic";
             }
+            image.icon_name = "folder-music-symbolic";
         }
 
         private void on_album_activated (uint position) {
