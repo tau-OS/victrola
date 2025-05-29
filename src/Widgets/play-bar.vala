@@ -38,6 +38,8 @@ namespace Victrola {
 
             // Create grouped main controls
             main_controls = new He.GroupedButton.with_names ("medium", "surface");
+            main_controls.margin_start = 0;
+            main_controls.margin_end = 0;
 
             // Setup main control buttons
             _prev.action_name = ACTION_APP + ACTION_PREV;
@@ -65,8 +67,8 @@ namespace Victrola {
 
             // Setup secondary controls
             var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
-            bottom_box.margin_start = 36;
-            bottom_box.margin_end = 36;
+            bottom_box.margin_start = 16;
+            bottom_box.margin_end = 16;
 
             _repeat.valign = Gtk.Align.CENTER;
             _repeat.icon_name = "media-playlist-repeat-symbolic";
