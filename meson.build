@@ -1,8 +1,11 @@
-project('com.fyralabs.Victrola',
+project(
+  'com.fyralabs.Victrola',
   ['c', 'vala'],
   version: '0.1.0',
   meson_version: '>= 0.59.0',
-  default_options: [ 'warning_level=2', ],
+  default_options: [
+    'warning_level=2',
+  ],
 )
 
 gnome = import('gnome')
@@ -32,10 +35,7 @@ add_project_arguments('-w', language: 'c')
 
 # Blueprint
 subproject('blueprint-compiler')
-add_project_arguments(
-    '--gresourcesdir', meson.current_build_dir() / 'data',
-    language: ['vala']
-)
+add_project_arguments('--gresourcesdir', meson.current_build_dir() / 'data', language: ['vala'])
 #
 
 libm_dep = meson.get_compiler('c').find_library('m', required: false)
@@ -56,7 +56,11 @@ dependencies = [
   dependency('libsoup-2.4'),
   dependency('json-glib-1.0'),
   dependency('libxml-2.0'),
-  dependency('libbismuth-1', fallback: [ 'libbismuth', 'libbismuth_dep' ], version: '>=1.0.0'),
+  dependency(
+    'libbismuth-1',
+    fallback: ['libbismuth', 'libbismuth_dep'],
+    version: '>=1.0.0',
+  ),
   libm_dep,
   posix_dep,
   taglib_c_dep,
@@ -77,6 +81,8 @@ sources = [
   'src/Utils/lyric.vala',
   'src/Widgets/info-page.vala',
   'src/Widgets/lyric-page.vala',
+  'src/Widgets/artist-page.vala',
+  'src/Widgets/album-page.vala',
   'src/Widgets/play-bar.vala',
   'src/Widgets/play-bar-mobile.vala',
   'src/Widgets/song-entry.vala',
@@ -92,8 +98,8 @@ executable(
   asresources,
   sources: sources,
   vala_args: [
-    meson.current_source_dir () + '/src/Utils' + '/config.vapi',
-    meson.current_source_dir () + '/src/Utils' + '/gst-ext.vapi',
+    meson.current_source_dir() + '/src/Utils' + '/config.vapi',
+    meson.current_source_dir() + '/src/Utils' + '/gst-ext.vapi',
   ],
   dependencies: dependencies,
   install: true,

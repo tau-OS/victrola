@@ -41,10 +41,6 @@ namespace Victrola {
         [GtkChild]
         private unowned Gtk.Stack infostack;
         [GtkChild]
-        private unowned Gtk.GridView list_view1;
-        [GtkChild]
-        private unowned Gtk.GridView list_view2;
-        [GtkChild]
         private unowned Gtk.ListView list_view3;
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
@@ -66,33 +62,25 @@ namespace Victrola {
         private PlayBarMobile play_bar_mobile;
         private InfoPage info_page;
         private LyricPage lyric_page;
-        uint num1;
-        uint num2;
+        private ArtistPage artist_page;
+        private AlbumPage album_page;
         uint num3;
 
         public SortMode sort_mode {
             set {
                 switch (value) {
                 case SortMode.ALBUM:
-                    list_view1.set_visible (true);
-                    list_view2.set_visible (false);
                     list_view3.set_visible (false);
-                    num1 = list_view1.get_model ().get_n_items ();
-                    search_entry.placeholder_text = num1.to_string () + " " + (_("songs"));
+                    search_entry.placeholder_text = "Search albums...";
                     break;
                 case SortMode.ARTIST:
-                    list_view1.set_visible (false);
-                    list_view2.set_visible (true);
                     list_view3.set_visible (false);
-                    num2 = list_view2.get_model ().get_n_items ();
-                    search_entry.placeholder_text = num2.to_string () + " " + (_("songs"));
+                    search_entry.placeholder_text = "Search artists...";
                     break;
                 case SortMode.RECENT:
                 case SortMode.SHUFFLE:
                     break;
                 default:
-                    list_view1.set_visible (false);
-                    list_view2.set_visible (false);
                     list_view3.set_visible (true);
                     num3 = list_view3.get_model ().get_n_items ();
                     search_entry.placeholder_text = num3.to_string () + " " + (_("songs"));
@@ -130,6 +118,16 @@ namespace Victrola {
             lyric_page = new LyricPage (this);
             lyrics_box.append (lyric_page);
 
+            // Initialize new pages
+            artist_page = new ArtistPage ();
+            album_page = new AlbumPage ();
+
+            // Add new pages to stack
+            stack.add_titled (artist_page, "artist", _("Artist"));
+            stack.get_page (artist_page).icon_name = "system-users-symbolic";
+            stack.add_titled (album_page, "album", _("Album"));
+            stack.get_page (album_page).icon_name = "media-optical-cd-audio-symbolic";
+
             lyrics_btn.toggled.connect (() => {
                 if (lyrics_btn.active) {
                     infostack.set_visible_child_name ("lyrics");
@@ -145,30 +143,7 @@ namespace Victrola {
             app.bind_property ("sort_mode", this, "sort_mode", BindingFlags.DEFAULT);
             sort_mode = app.sort_mode;
 
-            var factory = new Gtk.SignalListItemFactory ();
-            factory.setup.connect ((item) => {
-                ((Gtk.ListItem) item).child = new SongCell ();
-            });
-            factory.bind.connect (on_bind_cell);
-            list_view1.factory = factory;
-            list_view1.model = new Gtk.NoSelection (app.album_list);
-            //list_view1.activate.connect ((index) => {
-            //    app.current_item = (int) index;
-            //});
-            num1 = list_view1.get_model ().get_n_items ();
-
-            var factory2 = new Gtk.SignalListItemFactory ();
-            factory2.setup.connect ((item) => {
-                ((Gtk.ListItem) item).child = new SongEntry ();
-            });
-            factory2.bind.connect (on_bind_item);
-            list_view2.factory = factory2;
-            list_view2.model = new Gtk.NoSelection (app.song_list);
-            //  list_view2.activate.connect ((index) => {
-            //      app.current_item = (int) index;
-            //  });
-            num2 = list_view2.get_model ().get_n_items ();
-
+            // Setup only the remaining list view for "All Songs"
             var factory3 = new Gtk.SignalListItemFactory ();
             factory3.setup.connect ((item) => {
                 ((Gtk.ListItem) item).child = new SongEntry ();
@@ -188,10 +163,12 @@ namespace Victrola {
             Settings settings = new Settings ("com.fyralabs.Victrola");
             stack.notify["visible-child-name"].connect (() => {
                 if (stack.visible_child_name == "album") {
+                    album_page.refresh ();
                     app.sort_mode = SortMode.ALBUM;
                     app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ALBUM);
                 } else if (stack.visible_child_name == "artist") {
+                    artist_page.refresh ();
                     app.sort_mode = SortMode.ARTIST;
                     app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ARTIST);
@@ -210,6 +187,10 @@ namespace Victrola {
                 } else {
                     scroll_to_item (item);
                 }
+
+                // Refresh the new pages when songs are loaded
+                artist_page.refresh ();
+                album_page.refresh ();
             });
 
             info_title.back_button.clicked.connect (() => {
@@ -227,28 +208,6 @@ namespace Victrola {
                     info_box.add_css_class ("side-pane");
                 }
             });
-        }
-
-        private async void on_bind_cell (Gtk.SignalListItemFactory factory, Object item) {
-            var app = (Application) application;
-            var i = (Gtk.ListItem) item;
-            var entry = (SongWidget) i.child;
-            var song = (Song) i.item;
-            entry.playing = ((Gtk.ListItem) item).position == app.current_item;
-            entry.update (song);
-
-            var pixbufs = new Gdk.Pixbuf ? [1] { null };
-            Gdk.Paintable? paintable = null;
-            if (song.cover_uri != null) {
-                pixbufs[0] = load_clamp_pixbuf_from_uri ((!) song.cover_uri, 300);
-            }
-
-            if (pixbufs[0] != null) {
-                paintable = Gdk.Texture.for_pixbuf ((!) pixbufs[0]);
-            }
-
-            var art = update_cover_paintable (song, entry, paintable);
-            entry.paintable = art;
         }
 
         private async void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
@@ -312,7 +271,7 @@ namespace Victrola {
                     paintable = Gdk.Texture.for_pixbuf ((!) pixbufs[0]);
                 }
 
-                accent_set.begin ((!) pixbufs[0].scale_simple(128, 128, Gdk.InterpType.NEAREST));
+                accent_set.begin ((!) pixbufs[0].scale_simple (128, 128, Gdk.InterpType.NEAREST));
 
                 var art = update_cover_paintable (song, info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
@@ -426,8 +385,6 @@ namespace Victrola {
         }
 
         private void scroll_to_item (int index) {
-            list_view1.activate_action ("list.scroll-to-item", "u", index);
-            list_view2.activate_action ("list.scroll-to-item", "u", index);
             list_view3.activate_action ("list.scroll-to-item", "u", index);
         }
 
@@ -448,11 +405,11 @@ namespace Victrola {
                     if (top != 0) {
                         Gdk.RGBA accent_color = { 0 };
                         accent_color.parse (He.hexcode_argb (top));
-                        app.default_accent_color = { accent_color.red * 255, accent_color.green * 255, accent_color.blue * 255 };
+                        app.default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
                     } else {
                         Gdk.RGBA accent_color = { 0 };
                         accent_color.parse ("#F7812B");
-                        app.default_accent_color = { accent_color.red * 255, accent_color.green * 255, accent_color.blue * 255 };
+                        app.default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
                     }
                     loop.quit ();
                 });

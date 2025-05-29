@@ -95,40 +95,6 @@ template $VictrolaMainWindow : He.ApplicationWindow {
                 margin-bottom: 18;
 
                 StackPage {
-                  icon-name: "media-optical-cd-audio-symbolic";
-                  title: "Albums";
-                  name: "album";
-                  child:
-                  GridView list_view1 {
-                    single-click-activate: true;
-                    max-columns: 5;
-                    min-columns: 1;
-
-                    styles [
-                      "music-grid"
-                    ]
-                  }
-                  ;
-                }
-
-                StackPage {
-                  icon-name: "system-users-symbolic";
-                  title: "Artists";
-                  name: "artist";
-                  child:
-                  GridView list_view2 {
-                    single-click-activate: true;
-                    max-columns: 5;
-                    min-columns: 1;
-
-                    styles [
-                      "music-grid"
-                    ]
-                  }
-                  ;
-                }
-
-                StackPage {
                   icon-name: "audio-x-generic-symbolic";
                   title: "Titles";
                   name: "title";
