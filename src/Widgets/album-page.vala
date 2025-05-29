@@ -177,7 +177,7 @@ namespace Victrola {
 
             var info_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
             info_box.hexpand = true;
-            info_box.halign = Gtk.Align.CENTER;
+            info_box.halign = Gtk.Align.START;
 
             album_cover = new Gtk.Image ();
             album_cover.pixel_size = 64;

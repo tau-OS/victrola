@@ -141,7 +141,7 @@ namespace Victrola {
             header_label = new Gtk.Label ("");
             header_label.add_css_class ("view-subtitle");
             header_label.hexpand = true;
-            header_label.halign = Gtk.Align.CENTER;
+            header_label.halign = Gtk.Align.START;
 
             header_box.append (back_button);
             header_box.append (header_label);
