@@ -61,16 +61,16 @@
     box-shadow: none;
 }
 .media-toggle-button:hover {
-    background: mix(@suggested_container_bg_color, @view_fg_color, 0.08);
-    color: @suggested_container_fg_color;
+    background: mix(@accent_container_bg_color, @view_fg_color, 0.08);
+    color: @accent_container_fg_color;
 }
 .media-toggle-button:active {
-    background: mix(@suggested_container_bg_color, @view_fg_color, 0.1);
-    color: @suggested_container_fg_color;
+    background: mix(@accent_container_bg_color, @view_fg_color, 0.1);
+    color: @accent_container_fg_color;
 }
 .media-toggle-button:checked {
-    background: mix(@suggested_container_bg_color, @view_fg_color, 0.1);
-    color: @suggested_container_fg_color;
+    background: mix(@accent_container_bg_color, @view_fg_color, 0.1);
+    color: @accent_container_fg_color;
 }
 
 .music-grid {
