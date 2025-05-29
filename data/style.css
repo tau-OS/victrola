@@ -23,8 +23,7 @@
 .play-button {
     -gtk-icon-size: 32px;
     min-width: 95px;
-    min-height: 70px;
-    border-radius: 24px;
+    border-radius: 16px;
     background: @success_container_bg_color;
     color: @success_container_fg_color;
     box-shadow: none;
@@ -35,17 +34,25 @@
 .play-button:active {
     background: mix(@success_container_bg_color, @view_fg_color, 0.1);
 }
+.play-button.playing {
+    border-radius: 999px;
+    background: @success_bg_color;
+    color: @success_fg_color;
+}
 .media-button {
     -gtk-icon-size: 24px;
-    background: @accent_container_bg_color;
-    color: @accent_container_fg_color;
+    border-radius: 16px;
+    background: @suggested_container_bg_color;
+    color: @suggested_container_fg_color;
     box-shadow: none;
 }
 .media-button:hover {
-    background: mix(@accent_container_bg_color, @view_fg_color, 0.08);
+    background: mix(@suggested_container_bg_color, @view_fg_color, 0.08);
 }
 .media-button:active {
-    background: mix(@accent_container_bg_color, @view_fg_color, 0.1);
+    background: @suggested_bg_color;
+    color: @suggested_fg_color;
+    border-radius: 999px;
 }
 .media-toggle-button {
     -gtk-icon-size: 18px;

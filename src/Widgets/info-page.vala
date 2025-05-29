@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Fyra Labs
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ namespace Victrola {
             cover_blur.valign = Gtk.Align.CENTER;
             cover_blur.add_css_class ("cover-art-blur");
 
-            var cover_box  = new Gtk.Overlay () {
+            var cover_box = new Gtk.Overlay () {
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER
             };
@@ -99,7 +99,6 @@ namespace Victrola {
 
             var duration_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             duration_box.margin_top = 12;
-            duration_box.margin_bottom = 12;
             duration_box.homogeneous = true;
             duration_box.width_request = 300;
             duration_box.halign = Gtk.Align.CENTER;
@@ -119,8 +118,8 @@ namespace Victrola {
             main_box.valign = Gtk.Align.CENTER;
             main_box.margin_top = 24;
             main_box.margin_start = main_box.margin_end = 18;
-            main_box.append(cover_box);
-            main_box.append(bottom_box);
+            main_box.append (cover_box);
+            main_box.append (bottom_box);
 
             this.child = main_box;
             this.vexpand = this.hexpand = true;
