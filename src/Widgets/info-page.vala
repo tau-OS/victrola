@@ -76,8 +76,7 @@ namespace Victrola {
 
             scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
             scale.margin_top = 12;
-            scale.margin_bottom = 12;
-            scale.width_request = 300;
+            scale.width_request = 330;
             scale.halign = Gtk.Align.CENTER;
             scale.set_range (0, _duration);
 
