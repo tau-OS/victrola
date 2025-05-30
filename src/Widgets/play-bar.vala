@@ -37,7 +37,9 @@ namespace Victrola {
             this.add_css_class ("play-bar");
 
             // Create grouped main controls
-            main_controls = new He.GroupedButton.with_names ("medium");
+            main_controls = new He.GroupedButton.with_names ("small");
+            main_controls.margin_start = 0;
+            main_controls.margin_end = 0;
 
             // Setup main control buttons
             _prev.action_name = ACTION_APP + ACTION_PREV;
@@ -50,6 +52,7 @@ namespace Victrola {
             _play.icon_name = "media-playback-start-symbolic";
             _play.tooltip_text = _("Play/Pause");
             _play.is_fill = true;
+            _play.size = He.ButtonSize.MEDIUM;
             _play.add_css_class ("play-button");
 
             _next.action_name = ACTION_APP + ACTION_NEXT;
@@ -85,7 +88,7 @@ namespace Victrola {
             _stop.icon_name = "media-playback-stop-symbolic";
             _stop.add_css_class ("media-toggle-button");
             _stop.tooltip_text = _("Stop");
-            _stop.is_fill = true;
+            _stop.is_iconic = true;
 
             bottom_box.append (_repeat);
             bottom_box.append (_stop);
