@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2022 Fyra Labs
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,6 +34,10 @@ namespace Victrola {
         construct {
             var builder = new Gtk.Builder ();
             var player = app.player;
+            this.margin_start = 12;
+            this.margin_end = 12;
+            this.margin_top = 12;
+            this.margin_bottom = 12;
 
             _play.action_name = ACTION_APP + ACTION_PLAY;
             _play.icon_name = "media-playback-start-symbolic";
@@ -55,14 +59,14 @@ namespace Victrola {
             cover_blur.valign = Gtk.Align.CENTER;
             cover_blur.add_css_class ("cover-art-blur");
 
-            var cover_box  = new Gtk.Overlay () {
+            var cover_box = new Gtk.Overlay () {
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER
             };
             cover_box.add_overlay (cover_art);
             cover_box.set_child (cover_blur);
 
-            var cover_action = new Gtk.Stack() {
+            var cover_action = new Gtk.Stack () {
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER
             };
@@ -75,23 +79,23 @@ namespace Victrola {
             var motion = new Gtk.EventControllerMotion ();
             motion.enter.connect (() => {
                 cover_action.set_visible_child_full ("info", SLIDE_UP);
-                cover_action.add_css_class("light");
+                cover_action.add_css_class ("light");
                 enter ();
             });
             motion.leave.connect (() => {
                 cover_action.set_visible_child_full ("empty", SLIDE_DOWN);
-                cover_action.remove_css_class("light");
+                cover_action.remove_css_class ("light");
                 leave ();
             });
             cover_action.add_controller (motion);
 
             var click = new Gtk.GestureClick ();
             click.pressed.connect (() => {
-                ((MainWindow)app.active_window).album.set_visible_child (((MainWindow)app.active_window).infogrid);
+                ((MainWindow) app.active_window).album.set_visible_child (((MainWindow) app.active_window).infogrid);
             });
             cover_action.add_controller (click);
 
-            var cover_action_box  = new Gtk.Overlay ();
+            var cover_action_box = new Gtk.Overlay ();
             cover_action_box.add_overlay (cover_action);
             cover_action_box.set_child (cover_box);
 

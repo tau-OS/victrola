@@ -37,27 +37,25 @@ namespace Victrola {
             this.add_css_class ("play-bar");
 
             // Create grouped main controls
-            main_controls = new He.GroupedButton.with_names ("medium", "surface");
-            main_controls.margin_start = 0;
-            main_controls.margin_end = 0;
+            main_controls = new He.GroupedButton.with_names ("medium");
 
             // Setup main control buttons
             _prev.action_name = ACTION_APP + ACTION_PREV;
             _prev.icon_name = "media-skip-backward-symbolic";
             _prev.tooltip_text = _("Play Previous");
-            _prev.is_iconic = true;
+            _prev.is_fill = true;
             _prev.add_css_class ("media-button");
 
             _play.action_name = ACTION_APP + ACTION_PLAY;
             _play.icon_name = "media-playback-start-symbolic";
             _play.tooltip_text = _("Play/Pause");
-            _play.is_iconic = true;
+            _play.is_fill = true;
             _play.add_css_class ("play-button");
 
             _next.action_name = ACTION_APP + ACTION_NEXT;
             _next.icon_name = "media-skip-forward-symbolic";
             _next.tooltip_text = _("Play Next");
-            _next.is_iconic = true;
+            _next.is_fill = true;
             _next.add_css_class ("media-button");
 
             // Add main controls to grouped button
@@ -67,8 +65,6 @@ namespace Victrola {
 
             // Setup secondary controls
             var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 18);
-            bottom_box.margin_start = 16;
-            bottom_box.margin_end = 16;
 
             _repeat.valign = Gtk.Align.CENTER;
             _repeat.icon_name = "media-playlist-repeat-symbolic";
@@ -89,7 +85,7 @@ namespace Victrola {
             _stop.icon_name = "media-playback-stop-symbolic";
             _stop.add_css_class ("media-toggle-button");
             _stop.tooltip_text = _("Stop");
-            _stop.is_iconic = true;
+            _stop.is_fill = true;
 
             bottom_box.append (_repeat);
             bottom_box.append (_stop);
