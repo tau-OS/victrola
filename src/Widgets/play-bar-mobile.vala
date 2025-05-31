@@ -42,7 +42,8 @@ namespace Victrola {
             _play.action_name = ACTION_APP + ACTION_PLAY;
             _play.icon_name = "media-playback-start-symbolic";
             _play.tooltip_text = _("Play/Pause");
-            _play.is_iconic = true;
+            _play.is_fill = true;
+            _play.toggle_mode = true;
             _play.add_css_class ("play-button");
 
             cover_art = new Gtk.Image ();
@@ -151,6 +152,11 @@ namespace Victrola {
             player.state_changed.connect ((state) => {
                 var playing = state == Gst.State.PLAYING;
                 _play.icon_name = playing ? "media-playback-pause-symbolic" : "media-playback-start-symbolic";
+                if (playing) {
+                    _play.add_css_class ("playing");
+                } else {
+                    _play.remove_css_class ("playing");
+                }
             });
         }
 

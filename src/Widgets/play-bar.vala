@@ -46,12 +46,14 @@ namespace Victrola {
             _prev.icon_name = "media-skip-backward-symbolic";
             _prev.tooltip_text = _("Play Previous");
             _prev.is_fill = true;
+            _prev.width = He.ButtonWidth.NARROW;
             _prev.add_css_class ("media-button");
 
             _play.action_name = ACTION_APP + ACTION_PLAY;
             _play.icon_name = "media-playback-start-symbolic";
             _play.tooltip_text = _("Play/Pause");
             _play.is_fill = true;
+            _play.toggle_mode = true;
             _play.size = He.ButtonSize.MEDIUM;
             _play.add_css_class ("play-button");
 
@@ -59,6 +61,7 @@ namespace Victrola {
             _next.icon_name = "media-skip-forward-symbolic";
             _next.tooltip_text = _("Play Next");
             _next.is_fill = true;
+            _next.width = He.ButtonWidth.NARROW;
             _next.add_css_class ("media-button");
 
             // Add main controls to grouped button
