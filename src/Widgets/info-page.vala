@@ -22,7 +22,7 @@ namespace Victrola {
         Gtk.Label end_duration;
         Gtk.Label song_title;
         Gtk.Label song_artist;
-        Gtk.Scale scale;
+        He.Slider scale;
         public Gtk.Image cover_art;
         public Gtk.Image cover_blur;
 
@@ -33,7 +33,7 @@ namespace Victrola {
                 if (_position != (int) value) {
                     _position = (int) value;
                     this.start_duration.label = format_time (_position);
-                    scale.set_value (value);
+                    scale.value = value;
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace Victrola {
 
             var bottom_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-            scale = new Gtk.Scale (Gtk.Orientation.HORIZONTAL, null);
+            scale = new He.Slider ();
             scale.margin_top = 12;
             scale.width_request = 335;
             scale.halign = Gtk.Align.CENTER;
@@ -130,7 +130,7 @@ namespace Victrola {
                 this.position = GstPlayer.to_second (position);
             });
 
-            scale.adjust_bounds.connect ((value) => {
+            scale.scale.adjust_bounds.connect ((value) => {
                 player.seek (GstPlayer.from_second (value));
             });
         }
