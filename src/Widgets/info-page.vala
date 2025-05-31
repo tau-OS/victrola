@@ -34,6 +34,7 @@ namespace Victrola {
                     _position = (int) value;
                     this.start_duration.label = format_time (_position);
                     scale.value = value;
+                    scale.scale.set_value (value);
                 }
             }
         }
@@ -78,7 +79,7 @@ namespace Victrola {
             scale.margin_top = 12;
             scale.width_request = 335;
             scale.halign = Gtk.Align.CENTER;
-            scale.set_range (0, _duration);
+            scale.scale.set_range (0, _duration);
 
             var song_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
             song_box.margin_top = 12;
@@ -130,8 +131,8 @@ namespace Victrola {
                 this.position = GstPlayer.to_second (position);
             });
 
-            scale.scale.adjust_bounds.connect ((value) => {
-                player.seek (GstPlayer.from_second (value));
+            scale.value_changed.connect ((value) => {
+                player.seek (GstPlayer.from_second (scale.value));
             });
         }
 
