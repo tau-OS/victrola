@@ -76,6 +76,7 @@ namespace Victrola {
             var bottom_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
             scale = new He.Slider ();
+            scale.is_wavy = true;
             scale.margin_top = 12;
             scale.width_request = 335;
             scale.halign = Gtk.Align.CENTER;
