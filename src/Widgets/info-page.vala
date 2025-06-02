@@ -27,14 +27,19 @@ namespace Victrola {
         public Gtk.Image cover_blur;
 
         private int _position = 0;
+        private bool _updating_position = false;
+
         public double position {
             get { return _position; }
             set {
                 if (_position != (int) value) {
                     _position = (int) value;
                     this.start_duration.label = format_time (_position);
+
+                    // Prevent feedback loop when updating from player
+                    _updating_position = true;
                     scale.value = value;
-                    scale.scale.set_value (value);
+                    _updating_position = false;
                 }
             }
         }
@@ -132,8 +137,16 @@ namespace Victrola {
                 this.position = GstPlayer.to_second (position);
             });
 
-            scale.value_changed.connect ((value) => {
-                player.seek (GstPlayer.from_second (scale.value));
+            // Control animation based on player state
+            player.state_changed.connect ((state) => {
+                scale.animate = (state == Gst.State.PLAYING);
+            });
+
+            scale.value_changed.connect (() => {
+                // Only seek if the change came from user interaction, not position updates
+                if (!_updating_position) {
+                    player.seek (GstPlayer.from_second (scale.value));
+                }
             });
         }
 
