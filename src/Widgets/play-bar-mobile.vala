@@ -34,16 +34,15 @@ namespace Victrola {
         construct {
             var builder = new Gtk.Builder ();
             var player = app.player;
-            this.margin_start = 12;
-            this.margin_end = 12;
-            this.margin_top = 12;
-            this.margin_bottom = 12;
 
             _play.action_name = ACTION_APP + ACTION_PLAY;
             _play.icon_name = "media-playback-start-symbolic";
             _play.tooltip_text = _("Play/Pause");
             _play.is_fill = true;
             _play.toggle_mode = true;
+            _play.margin_end = 12;
+            _play.margin_top = 12;
+            _play.margin_bottom = 12;
             _play.add_css_class ("play-button");
 
             cover_art = new Gtk.Image ();
@@ -99,6 +98,7 @@ namespace Victrola {
             var cover_action_box = new Gtk.Overlay ();
             cover_action_box.add_overlay (cover_action);
             cover_action_box.set_child (cover_box);
+            cover_action_box.margin_start = 12;
 
             var song_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
             song_box.halign = Gtk.Align.CENTER;
@@ -135,9 +135,11 @@ namespace Victrola {
             };
             bottom_box.append (song_box);
             bottom_box.append (duration_box);
+            bottom_box.valign = Gtk.Align.CENTER;
 
             this.spacing = 18;
             this.add_css_class ("bottom-bar");
+            this.add_css_class ("play-bar-mobile");
 
             append (cover_action_box);
             append (bottom_box);

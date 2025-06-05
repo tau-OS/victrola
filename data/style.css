@@ -3,12 +3,12 @@
     color: @accent_color;
 }
 .cover-art {
-    box-shadow: 0 0 0 1px @borders;
-    border-radius: 12px;
+    box-shadow: 0 0 0 1px @border;
+    border-radius: 6px;
     background: @suggested_container_bg_color;
 }
 .cover-art-blur {
-    filter: opacity(0.8) blur(6px);
+    filter: opacity(0.88) blur(6px);
 }
 .search {
     border-radius: 999px;
@@ -19,6 +19,9 @@
 }
 .play-bar {
     padding: 18px 24px;
+}
+.play-bar-mobile {
+    background: @surface_container_bg_color;
 }
 .play-button {
     background: @accent_container_bg_color;
@@ -75,7 +78,7 @@
 .side-pane {
     border-radius: 12px;
     margin: 0 8px 8px 8px;
-    box-shadow: 0 0 0 1px @borders;
+    box-shadow: 0 0 0 1px @outline;
 }
 
 .side-pane .bottom-bar {
@@ -83,7 +86,7 @@
 }
 
 .music-navrail {
-    background: shade(@accent_container_bg_color, 0.95);
+    background: @surface_container_high_bg_color;
 }
 
 .music-navrail button image,
@@ -92,15 +95,15 @@
 }
 
 .music-navrail button image {
-    background: shade(@accent_container_bg_color, 0.95);
+    background: none;
 }
 
 .music-navrail button:hover image {
-    background: shade(@accent_container_bg_color, 0.9);
+    background: @accent_container_bg_color;
 }
 
 .music-navrail button:checked image {
-    background: shade(@accent_container_bg_color, 0.8);
+    background: shade(@accent_container_bg_color, 0.95);
 }
 
 .light {
