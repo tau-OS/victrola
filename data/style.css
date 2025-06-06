@@ -1,6 +1,6 @@
 .playing {
-    background: @accent_fg_color;
-    color: @accent_bg_color;
+    background: @accent_color;
+    color: @accent_fg_color;
 }
 .cover-art {
     box-shadow: 0 0 0 1px @border;
@@ -36,8 +36,8 @@
     background: mix(@accent_container_bg_color, @view_fg_color, 0.1);
 }
 .play-button.playing {
-    background: @accent_fg_color;
-    color: @accent_bg_color;
+    background: @accent_color;
+    color: @accent_fg_color;
 }
 .media-button {
     background: @suggested_container_bg_color;
