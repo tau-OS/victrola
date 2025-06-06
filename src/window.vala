@@ -345,15 +345,19 @@ namespace Victrola {
                         buffer?.unmap ((!) info);
                     }
                 } catch (Error e) {
-                    var pixbuf = new Gdk.Pixbuf.from_resource ("/com/fyralabs/Victrola/cover.png");
-                    var width = pixbuf.width; var height = pixbuf.height;
-                    if (size > 0 && width > size && height > size) {
-                        var scale = width > height ? (size / (double) height) : (size / (double) width);
-                        var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
-                        var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
-                        if (newbuf != null)
-                            return ((!) newbuf);
-                        buffer?.unmap ((!) info);
+                    try {
+                        var pixbuf = new Gdk.Pixbuf.from_resource ("/com/fyralabs/Victrola/cover.png");
+                        var width = pixbuf.width; var height = pixbuf.height;
+                        if (size > 0 && width > size && height > size) {
+                            var scale = width > height ? (size / (double) height) : (size / (double) width);
+                            var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
+                            var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
+                            if (newbuf != null)
+                                return ((!) newbuf);
+                            buffer?.unmap ((!) info);
+                        }
+                    } catch (Error e2) {
+                        print ("Failed to load pixbuf from resource: %s\n", e2.message);
                     }
                 }
             }
@@ -371,14 +375,18 @@ namespace Victrola {
                         return ((!) newbuf);
                 }
             } catch (Error e) {
-                var pixbuf = new Gdk.Pixbuf.from_resource ("/com/fyralabs/Victrola/cover.png");
-                var width = pixbuf.width; var height = pixbuf.height;
-                if (size > 0 && width > size && height > size) {
-                    var scale = width > height ? (size / (double) height) : (size / (double) width);
-                    var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
-                    var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
-                    if (newbuf != null)
-                        return ((!) newbuf);
+                try {
+                    var pixbuf = new Gdk.Pixbuf.from_resource ("/com/fyralabs/Victrola/cover.png");
+                    var width = pixbuf.width; var height = pixbuf.height;
+                    if (size > 0 && width > size && height > size) {
+                        var scale = width > height ? (size / (double) height) : (size / (double) width);
+                        var dx = (int) (width * scale + 0.5); var dy = (int) (height * scale + 0.5);
+                        var newbuf = pixbuf.scale_simple (dx, dy, Gdk.InterpType.TILES);
+                        if (newbuf != null)
+                            return ((!) newbuf);
+                    }
+                } catch (Error e2) {
+                    print ("Failed to load pixbuf from resource: %s\n", e2.message);
                 }
             }
             return null;
@@ -396,27 +404,23 @@ namespace Victrola {
 
         public async void accent_set (Gdk.Pixbuf? pixbuf) {
             var app = (Application) application;
-            try {
-                var loop = new MainLoop ();
-                He.Ensor.accent_from_pixels_async.begin (pixbuf.get_pixels_with_length (), pixbuf.get_has_alpha (), (obj, res) => {
-                    GLib.Array<int?> result = He.Ensor.accent_from_pixels_async.end (res);
-                    int top = result.index (0);
+            var loop = new MainLoop ();
+            He.Ensor.accent_from_pixels_async.begin (pixbuf.get_pixels_with_length (), pixbuf.get_has_alpha (), (obj, res) => {
+                GLib.Array<int64?> result = He.Ensor.accent_from_pixels_async.end (res);
+                int64 top = result.index (0);
 
-                    if (top != 0) {
-                        Gdk.RGBA accent_color = { 0 };
-                        accent_color.parse (He.hexcode_argb (top));
-                        app.default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
-                    } else {
-                        Gdk.RGBA accent_color = { 0 };
-                        accent_color.parse ("#F7812B");
-                        app.default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
-                    }
-                    loop.quit ();
-                });
-                loop.run ();
-            } catch (Error e) {
-                print (e.message);
-            }
+                if (top != 0) {
+                    Gdk.RGBA accent_color = { 0 };
+                    accent_color.parse (He.hexcode_argb ((int) top));
+                    app.default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
+                } else {
+                    Gdk.RGBA accent_color = { 0 };
+                    accent_color.parse ("#F7812B");
+                    app.default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
+                }
+                loop.quit ();
+            });
+            loop.run ();
         }
 
         private void update_song_filter () {
