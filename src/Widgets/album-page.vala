@@ -147,6 +147,7 @@ namespace Victrola {
             album_grid_view.min_columns = 2;
             album_grid_view.single_click_activate = true;
             album_grid_view.activate.connect (on_album_activated);
+            album_grid_view.add_css_class ("content-grid");
 
             var scrolled = new Gtk.ScrolledWindow ();
             scrolled.child = album_grid_view;
@@ -217,6 +218,7 @@ namespace Victrola {
             song_list_view = new Gtk.ListView (new Gtk.NoSelection (current_album_songs), factory);
             song_list_view.single_click_activate = true;
             song_list_view.activate.connect (on_song_activated);
+            song_list_view.add_css_class ("content-list");
 
             var scrolled = new Gtk.ScrolledWindow ();
             scrolled.child = song_list_view;

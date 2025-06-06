@@ -111,6 +111,7 @@ namespace Victrola {
             artist_list_view = new Gtk.ListView (new Gtk.NoSelection (artist_store), factory);
             artist_list_view.single_click_activate = true;
             artist_list_view.activate.connect (on_artist_activated);
+            artist_list_view.add_css_class ("content-list");
 
             var scrolled = new Gtk.ScrolledWindow ();
             scrolled.child = artist_list_view;
@@ -164,6 +165,7 @@ namespace Victrola {
             song_list_view = new Gtk.ListView (new Gtk.NoSelection (current_artist_songs), factory);
             song_list_view.single_click_activate = true;
             song_list_view.activate.connect (on_song_activated);
+            song_list_view.add_css_class ("content-list");
 
             var scrolled = new Gtk.ScrolledWindow ();
             scrolled.child = song_list_view;
