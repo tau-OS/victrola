@@ -406,12 +406,12 @@ namespace Victrola {
             var app = (Application) application;
             var loop = new MainLoop ();
             He.Ensor.accent_from_pixels_async.begin (pixbuf.get_pixels_with_length (), pixbuf.get_has_alpha (), (obj, res) => {
-                GLib.Array<int64?> result = He.Ensor.accent_from_pixels_async.end (res);
+                GLib.Array<int> result = He.Ensor.accent_from_pixels_async.end (res);
                 int64 top = result.index (0);
 
                 if (top != 0) {
                     Gdk.RGBA accent_color = { 0 };
-                    accent_color.parse (He.hexcode_argb ((int) top));
+                    accent_color.parse (He.hexcode_argb (top));
                     app.default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
                 } else {
                     Gdk.RGBA accent_color = { 0 };
