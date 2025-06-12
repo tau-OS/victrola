@@ -44,6 +44,7 @@ namespace Victrola {
         private Settings _settings = new Settings ("com.fyralabs.Victrola");
         private MprisPlayer? _mpris = null;
         private uint _mpris_id = 0;
+        private MainWindow window;
 
         public signal void loading_changed (bool loading, uint size);
         public signal void index_changed (int index, uint size);
@@ -138,7 +139,7 @@ namespace Victrola {
             typeof (PlayBar).ensure ();
             typeof (SongEntry).ensure ();
 
-            new MainWindow (this);
+            window = new MainWindow (this);
 
             // Must load tag cache after the app register (GLib init), to make sort works
             _song_store.load_tag_cache_async.begin ((obj, res) => {
@@ -382,8 +383,8 @@ namespace Victrola {
 
         public void show_about () {
             var about = new He.AboutWindow (
-                                            active_window,
-                                            "Victrola" + Config.NAME_SUFFIX,
+                                            window,
+                                            "Victrola",
                                             Config.APP_ID,
                                             Config.VERSION,
                                             Config.APP_ID,
@@ -396,6 +397,7 @@ namespace Victrola {
                                             He.AboutWindow.Licenses.GPLV3,
                                             He.Colors.ORANGE
             );
+            window.about_overlay.add_overlay (about);
             about.present ();
         }
 

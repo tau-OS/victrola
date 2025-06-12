@@ -54,6 +54,8 @@ namespace Victrola {
         private unowned He.AppBar info_title;
         [GtkChild]
         private unowned Gtk.Box info_box_mobile;
+        [GtkChild]
+        public unowned Gtk.Overlay about_overlay;
 
         private string _search_text = "";
         private string _search_property = "";

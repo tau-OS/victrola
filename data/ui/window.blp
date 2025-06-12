@@ -12,168 +12,170 @@ template $VictrolaMainWindow : He.ApplicationWindow {
   Box {
     orientation: vertical;
 
-    Bis.Album album {
-      can-navigate-back: true;
-      can-navigate-forward: true;
-      visible-child: listgrid;
+    Overlay about_overlay {
+      child: Bis.Album album {
+        can-navigate-back: true;
+        can-navigate-forward: true;
+        visible-child: listgrid;
 
-      Bis.AlbumPage {
-        navigatable: false;
-        child: Box {
-          orientation: vertical;
-          He.AppBar {
-            show-left-title-buttons: true;
-            show-right-title-buttons: false;
-            width-request: 113; // Chunky enough for the rail
-          }
-          He.NavigationRail {
-            stack: stack;
-          }
-        };
-      }
-
-      Bis.AlbumPage {
-        child: He.SideBar listgrid {
-          vexpand: true;
-          hexpand: true;
-          show-left-title-buttons: bind album.folded;
-          show-right-title-buttons: bind album.folded;
-          show-back: false;
-          has-margins: false;
-          titlewidget: He.ViewTitle {
-            label: _("Music");
+        Bis.AlbumPage {
+          navigatable: false;
+          child: Box {
+            orientation: vertical;
+            He.AppBar {
+              show-left-title-buttons: true;
+              show-right-title-buttons: false;
+              width-request: 113; // Chunky enough for the rail
+            }
+            He.NavigationRail {
+              stack: stack;
+            }
           };
+        }
 
-          styles [
-                "main-view"
-          ]
-
-          [titlebar-toggle]
-          ToggleButton search_btn {
-            icon-name: "edit-find-symbolic";
-            active: bind search_bar.search-mode-enabled no-sync-create bidirectional;
-            tooltip-text: _("Search music");
-          }
-
-          [titlebar-menu]
-          MenuButton menu_btn {
-            valign: center;
-            icon-name: "open-menu-symbolic";
-            menu-model: primary_menu;
-          }
-
-          SearchBar search_bar {
-            key-capture-widget: template;
-            child: SearchEntry search_entry {
-              hexpand: true;
-              margin-start: 18;
-              halign: start;
-              placeholder-text: "";
-
-              styles [
-                "search",
-                "text-field",
-                "outline"
-              ]
+        Bis.AlbumPage {
+          child: He.SideBar listgrid {
+            vexpand: true;
+            hexpand: true;
+            show-left-title-buttons: bind album.folded;
+            show-right-title-buttons: bind album.folded;
+            show-back: false;
+            has-margins: false;
+            titlewidget: He.ViewTitle {
+              label: _("Music");
             };
 
             styles [
-              "search-bar",
+                  "main-view"
             ]
-          }
 
-            ScrolledWindow scroll_view {
-              hscrollbar-policy: never;
-              vexpand: true;
+            [titlebar-toggle]
+            ToggleButton search_btn {
+              icon-name: "edit-find-symbolic";
+              active: bind search_bar.search-mode-enabled no-sync-create bidirectional;
+              tooltip-text: _("Search music");
+            }
 
-              Stack stack {
+            [titlebar-menu]
+            MenuButton menu_btn {
+              valign: center;
+              icon-name: "open-menu-symbolic";
+              menu-model: primary_menu;
+            }
+
+            SearchBar search_bar {
+              key-capture-widget: template;
+              child: SearchEntry search_entry {
+                hexpand: true;
                 margin-start: 18;
-                margin-end: 18;
-                margin-bottom: 18;
+                halign: start;
+                placeholder-text: "";
 
-                StackPage {
-                  icon-name: "audio-x-generic-symbolic";
-                  title: "Titles";
-                  name: "title";
-                  child:
-                  ListView list_view3 {
-                    single-click-activate: true;
+                styles [
+                  "search",
+                  "text-field",
+                  "outline"
+                ]
+              };
 
-                    styles [
-                      "content-list",
-                      "music-list"
-                    ]
+              styles [
+                "search-bar",
+              ]
+            }
+
+              ScrolledWindow scroll_view {
+                hscrollbar-policy: never;
+                vexpand: true;
+
+                Stack stack {
+                  margin-start: 18;
+                  margin-end: 18;
+                  margin-bottom: 18;
+
+                  StackPage {
+                    icon-name: "audio-x-generic-symbolic";
+                    title: "Titles";
+                    name: "title";
+                    child:
+                    ListView list_view3 {
+                      single-click-activate: true;
+
+                      styles [
+                        "content-list",
+                        "music-list"
+                      ]
+                    }
+                    ;
                   }
-                  ;
                 }
               }
+
+            Box info_box_mobile {
+              orientation: vertical;
+              visible: bind album.folded;
             }
+            He.NavigationRail {
+              stack: stack;
+              orientation: horizontal;
+              visible: bind album.folded;
+              styles [
+                "music-navrail"
+              ]
+            }
+          };
+        }
 
-          Box info_box_mobile {
-            orientation: vertical;
-            visible: bind album.folded;
-          }
-          He.NavigationRail {
-            stack: stack;
-            orientation: horizontal;
-            visible: bind album.folded;
-            styles [
-              "music-navrail"
-            ]
-          }
-        };
-      }
+        Bis.AlbumPage {
+          child:
+            Box infogrid {
+              orientation: vertical;
+              hexpand-set: true;
 
-      Bis.AlbumPage {
-        child:
-          Box infogrid {
-            orientation: vertical;
-            hexpand-set: true;
+              He.AppBar info_title {
+                show-back: bind album.folded;
+                show-left-title-buttons: bind album.folded;
+                show-right-title-buttons: true;
 
-            He.AppBar info_title {
-              show-back: bind album.folded;
-              show-left-title-buttons: bind album.folded;
-              show-right-title-buttons: true;
+                [titlebar-toggle]
+                ToggleButton lyrics_btn {
+                  icon-name: "show-lyrics-symbolic";
+                  tooltip-text: _("Show Lyrics");
+                }
+              }
 
-              [titlebar-toggle]
-              ToggleButton lyrics_btn {
-                icon-name: "show-lyrics-symbolic";
-                tooltip-text: _("Show Lyrics");
+              Stack infostack {
+                  StackPage {
+                    name: "info";
+                    child:
+                    Box info_box {
+                      orientation: vertical;
+                      vexpand: true;
+
+                      styles [
+                          "side-pane"
+                      ]
+                    }
+                    ;
+                  }
+
+                  StackPage {
+                    name: "lyrics";
+                    child:
+                    Box lyrics_box {
+                      orientation: vertical;
+                      vexpand: true;
+
+                      styles [
+                          "side-pane"
+                      ]
+                    }
+                    ;
+                  }
               }
             }
-
-            Stack infostack {
-                StackPage {
-                  name: "info";
-                  child:
-                  Box info_box {
-                    orientation: vertical;
-                    vexpand: true;
-
-                    styles [
-                        "side-pane"
-                    ]
-                  }
-                  ;
-                }
-
-                StackPage {
-                  name: "lyrics";
-                  child:
-                  Box lyrics_box {
-                    orientation: vertical;
-                    vexpand: true;
-
-                    styles [
-                        "side-pane"
-                    ]
-                  }
-                  ;
-                }
-            }
-          }
-        ;
-      }
+          ;
+        }
+      };
     }
   }
 }
