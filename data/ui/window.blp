@@ -127,51 +127,54 @@ template $VictrolaMainWindow : He.ApplicationWindow {
 
         Bis.AlbumPage {
           child:
-            Box infogrid {
-              orientation: vertical;
-              hexpand-set: true;
+              Box infogrid {
+                orientation: vertical;
+                hexpand-set: true;
 
-              He.AppBar info_title {
-                show-back: bind album.folded;
-                show-left-title-buttons: bind album.folded;
-                show-right-title-buttons: true;
+                He.AppBar info_title {
+                  show-back: bind album.folded;
+                  show-left-title-buttons: bind album.folded;
+                  show-right-title-buttons: true;
 
-                [titlebar-toggle]
-                ToggleButton lyrics_btn {
-                  icon-name: "show-lyrics-symbolic";
-                  tooltip-text: _("Show Lyrics");
+                  [titlebar-toggle]
+                  ToggleButton lyrics_btn {
+                    icon-name: "show-lyrics-symbolic";
+                    tooltip-text: _("Show Lyrics");
+                  }
                 }
-              }
 
-              Stack infostack {
-                  StackPage {
-                    name: "info";
-                    child:
-                    Box info_box {
-                      orientation: vertical;
-                      vexpand: true;
+                He.Bin infobin {
+                  child: Stack infostack {
+                    StackPage {
+                      name: "info";
+                      child:
+                      Box info_box {
+                        orientation: vertical;
+                        vexpand: true;
 
-                      styles [
-                          "side-pane"
-                      ]
+                        styles [
+                            "side-pane"
+                        ]
+                      }
+                      ;
                     }
-                    ;
-                  }
 
-                  StackPage {
-                    name: "lyrics";
-                    child:
-                    Box lyrics_box {
-                      orientation: vertical;
-                      vexpand: true;
+                    StackPage {
+                      name: "lyrics";
+                      child:
+                      Box lyrics_box {
+                        orientation: vertical;
+                        vexpand: true;
 
-                      styles [
-                          "side-pane"
-                      ]
+                        styles [
+                            "side-pane"
+                        ]
+                      }
+                      ;
                     }
-                    ;
                   }
-              }
+                  ;
+                }
             }
           ;
         }

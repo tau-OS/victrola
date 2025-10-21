@@ -124,10 +124,8 @@ namespace Victrola {
 
         protected override void startup () {
             Gdk.RGBA accent_color = { 0 };
-            accent_color.parse ("#F7812B");
-            default_accent_color = { accent_color.red* 255, accent_color.green* 255, accent_color.blue* 255 };
-            override_accent_color = true;
-            is_content = true;
+            accent_color.parse ("#f99e5c");
+            default_accent_color = { accent_color.red, accent_color.green, accent_color.blue };
 
             resource_base_path = "/com/fyralabs/Victrola";
 
