@@ -48,6 +48,7 @@ namespace Victrola {
             cover_art = new Gtk.Image ();
             cover_art.width_request = 64;
             cover_art.height_request = 64;
+            cover_art.pixel_size = 64;
             cover_art.halign = Gtk.Align.CENTER;
             cover_art.valign = Gtk.Align.CENTER;
             cover_art.add_css_class ("cover-art");
@@ -55,6 +56,7 @@ namespace Victrola {
             cover_blur = new Gtk.Image ();
             cover_blur.width_request = 64;
             cover_blur.height_request = 64;
+            cover_blur.pixel_size = 64;
             cover_blur.halign = Gtk.Align.CENTER;
             cover_blur.valign = Gtk.Align.CENTER;
             cover_blur.add_css_class ("cover-art-blur");

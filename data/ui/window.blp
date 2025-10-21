@@ -110,17 +110,25 @@ template $VictrolaMainWindow : He.ApplicationWindow {
                 }
               }
 
-            Box info_box_mobile {
-              orientation: vertical;
-              visible: bind album.folded;
-            }
-            He.NavigationRail {
-              stack: stack;
-              orientation: horizontal;
-              visible: bind album.folded;
-              styles [
-                "music-navrail"
-              ]
+            He.Bin mobile_infobin {
+              child:
+                Box {
+                  orientation: vertical;
+
+                  Box info_box_mobile {
+                    orientation: vertical;
+                    visible: bind album.folded;
+                  }
+                  He.NavigationRail {
+                    stack: stack;
+                    orientation: horizontal;
+                    visible: bind album.folded;
+                    styles [
+                      "music-navrail"
+                    ]
+                  }
+                }
+              ;
             }
           };
         }

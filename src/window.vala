@@ -58,6 +58,8 @@ namespace Victrola {
         public unowned Gtk.Overlay about_overlay;
         [GtkChild]
         public unowned He.Bin infobin;
+        [GtkChild]
+        public unowned He.Bin mobile_infobin;
 
         private string _search_text = "";
         private string _search_property = "";
@@ -214,6 +216,7 @@ namespace Victrola {
             });
 
             infobin.content_color_override = true;
+            mobile_infobin.content_color_override = true;
         }
 
         private async void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
@@ -419,10 +422,12 @@ namespace Victrola {
                     Gdk.RGBA accent_color = { 0 };
                     accent_color.parse (He.hexcode_argb (top));
                     infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
+                    mobile_infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                 } else {
                     Gdk.RGBA accent_color = { 0 };
                     accent_color.parse ("#f99e5c");
                     infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
+                    mobile_infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                 }
                 loop.quit ();
             });
