@@ -190,23 +190,18 @@ namespace Victrola {
 
         public void on_open () {
             var music_dir = get_music_folder ();
-            var chooser = new Gtk.FileChooserNative (null, active_window,
-                                                     Gtk.FileChooserAction.SELECT_FOLDER, null, null);
-            try {
-                chooser.set_file (music_dir);
-            } catch (Error e) {
-            }
-            chooser.modal = true;
-            chooser.response.connect ((id) => {
-                if (id == Gtk.ResponseType.ACCEPT) {
-                    var dir = chooser.get_file ();
+            var dialog = new Gtk.FileDialog ();
+            dialog.set_initial_folder (music_dir);
+            dialog.select_folder.begin (active_window, null, (obj, res) => {
+                try {
+                    var dir = dialog.select_folder.end (res);
                     if (dir != null && dir != music_dir) {
                         settings.set_string ("music-dir", ((!) dir).get_uri ());
                         reload_song_store ();
                     }
+                } catch (Error e) {
                 }
             });
-            chooser.show ();
         }
 
         public int current_item {

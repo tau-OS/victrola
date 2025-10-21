@@ -412,7 +412,6 @@ namespace Victrola {
         }
 
         public async void accent_set (Gdk.Pixbuf? pixbuf) {
-            var app = (Application) application;
             var loop = new MainLoop ();
             He.Ensor.accent_from_pixels_async.begin (pixbuf.get_pixels_with_length (), pixbuf.get_has_alpha (), (obj, res) => {
                 GLib.Array<int> result = He.Ensor.accent_from_pixels_async.end (res);
