@@ -70,9 +70,10 @@ namespace Victrola {
         private LyricPage lyric_page;
         private ArtistPage artist_page;
         private AlbumPage album_page;
-        uint num3;
-
-        public SortMode sort_mode {
+    private int all_songs_highlight = -1;
+    private bool suppress_scroll = false;
+    private HashTable<int, SongEntry> song_entries;
+        uint num3;        public SortMode sort_mode {
             set {
                 switch (value) {
                 case SortMode.ALBUM:
@@ -100,6 +101,8 @@ namespace Victrola {
                     application: app
             );
             this.icon_name = app.application_id;
+
+            song_entries = new HashTable<int, SongEntry> (direct_hash, direct_equal);
 
             menu_btn.get_popover ().has_arrow = false;
 
@@ -155,16 +158,29 @@ namespace Victrola {
                 ((Gtk.ListItem) item).child = new SongEntry ();
             });
             factory3.bind.connect (on_bind_item);
+            factory3.unbind.connect ((item) => {
+                var list_item = (Gtk.ListItem) item;
+                var entry = (SongEntry) list_item.child;
+                entry.playing = false;
+                song_entries.remove ((int) list_item.position);
+            });
             list_view3.factory = factory3;
             list_view3.model = new Gtk.NoSelection (app.song_list);
+            
             list_view3.activate.connect ((index) => {
-                app.current_item = (int) index;
+                suppress_scroll = true;
+                app.play_item ((int) index);
+                Idle.add (() => {
+                    suppress_scroll = false;
+                    return false;
+                });
             });
             num3 = list_view3.get_model ().get_n_items ();
 
             app.song_changed.connect (on_song_changed);
             app.index_changed.connect (on_index_changed);
             app.song_tag_parsed.connect (on_song_tag_parsed);
+            refresh_all_songs_highlight (app.current_item);
 
             Settings settings = new Settings ("com.fyralabs.Victrola");
             stack.notify["visible-child-name"].connect (() => {
@@ -173,15 +189,20 @@ namespace Victrola {
                     app.sort_mode = SortMode.ALBUM;
                     app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ALBUM);
+                    album_page.update_playing_indicators ();
                 } else if (stack.visible_child_name == "artist") {
                     artist_page.refresh ();
                     app.sort_mode = SortMode.ARTIST;
                     app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ARTIST);
+                    artist_page.update_playing_indicators ();
                 } else if (stack.visible_child_name == "title") {
                     app.sort_mode = SortMode.ALL;
                     app.find_current_item ();
                     settings?.set_uint ("sort-mode", SortMode.ALL);
+                    artist_page.update_playing_indicators ();
+                    album_page.update_playing_indicators ();
+                    refresh_all_songs_highlight (app.current_item);
                 }
             });
 
@@ -219,27 +240,28 @@ namespace Victrola {
             mobile_infobin.content_color_override = true;
         }
 
-        private async void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
+        private void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
             var app = (Application) application;
-            var entry = (SongEntry) ((Gtk.ListItem) item).child;
-            var song = (Song) ((Gtk.ListItem) item).item;
-            entry.playing = ((Gtk.ListItem) item).position == app.current_item;
+            var list_item = (Gtk.ListItem) item;
+            if (!(list_item.item is Song))
+                return;
+            var song = (Song) list_item.item;
+            var entry = (SongEntry) list_item.child;
+            var is_playing = app.is_current_song (song);
+            entry.playing = is_playing;
             entry.update (song, app.sort_mode);
-            var saved_pos = ((Gtk.ListItem) item).position;
-            if (saved_pos != ((Gtk.ListItem) item).position) {
-                Idle.add (() => {
-                    app.song_list.items_changed (saved_pos, 0, 0);
-                    return false;
-                });
-            }
+            
+            // Store reference to this entry
+            song_entries.set ((int) list_item.position, entry);
         }
 
         private void on_index_changed (int index, uint size) {
             var app = (Application) application;
             action_set_enabled (ACTION_APP + ACTION_PREV, index > 0);
             action_set_enabled (ACTION_APP + ACTION_NEXT, index < (int) size - 1);
-            scroll_to_item (index);
-            app.current_item = index;
+            if (!suppress_scroll)
+                scroll_to_item (index);
+            refresh_all_songs_highlight (index);
         }
 
         private void on_search_text_changed () {
@@ -261,6 +283,10 @@ namespace Victrola {
             update_song_info (song);
             lyric_page.update_cur_song (song);
             action_set_enabled (ACTION_APP + ACTION_PLAY, true);
+            var app = (Application) application;
+            refresh_all_songs_highlight (app.current_item);
+            artist_page.update_playing_indicators ();
+            album_page.update_playing_indicators ();
         }
 
         private He.Animation? fade_animation = null;
@@ -270,7 +296,7 @@ namespace Victrola {
             var app = (Application) application;
             var pixbufs = new Gdk.Pixbuf ? [1] { null };
 
-            if (song == app.current_song) {
+            if (app.is_current_song (song)) {
                 Gdk.Paintable? paintable = null;
                 if (image != null) {
                     pixbufs[0] = load_clamp_pixbuf_from_sample ((!) image, 300);
@@ -305,6 +331,35 @@ namespace Victrola {
                     fade_animation = null;
                 });
                 fade_animation?.play ();
+            }
+        }
+
+        private void refresh_all_songs_highlight (int index) {
+            var app = (Application) application;
+            if (app.song_list == null)
+                return;
+
+            // Turn off the old highlight
+            if (all_songs_highlight >= 0 && all_songs_highlight != index) {
+                var old_entry = song_entries.get (all_songs_highlight);
+                if (old_entry != null) {
+                    old_entry.playing = false;
+                }
+            }
+
+            all_songs_highlight = index;
+
+            // Turn on the new highlight
+            if (index >= 0) {
+                var new_entry = song_entries.get (index);
+                if (new_entry != null) {
+                    new_entry.playing = true;
+                }
+            }
+            
+            // Scroll to the item if not suppressing
+            if (!suppress_scroll && index >= 0 && index < (int) app.song_list.get_n_items ()) {
+                scroll_to_item (index);
             }
         }
 

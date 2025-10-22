@@ -45,6 +45,7 @@ namespace Victrola {
         private MprisPlayer? _mpris = null;
         private uint _mpris_id = 0;
         private MainWindow window;
+        private bool _pending_autoplay = false;
 
         public signal void loading_changed (bool loading, uint size);
         public signal void index_changed (int index, uint size);
@@ -211,28 +212,58 @@ namespace Victrola {
             set {
                 var count = _song_list.get_n_items ();
                 value = value < count ? value : 0;
-                var playing = _current_song != null;
+                var was_playing = _player.state == Gst.State.PLAYING;
                 var song = _song_list.get_item (value) as Song;
+                var song_changed_flag = false;
+                var item_changed_flag = false;
+
                 if (song != null && _current_song != song) {
                     _current_song = song;
                     _player.uri = ((!) song).uri;
                     song_changed ((!) song);
+                    song_changed_flag = true;
                 }
                 if (_current_item != value) {
                     var old_item = _current_item;
                     _current_item = value;
-                    _song_list.items_changed (old_item, 0, 0);
-                    _song_list.items_changed (value, 0, 0);
+                    if (old_item >= 0 && old_item < count) {
+                        _song_list.items_changed (old_item, 1, 1);
+                    }
+                    if (value >= 0 && value < count) {
+                        _song_list.items_changed (value, 1, 1);
+                    }
                     index_changed (value, count);
+                    item_changed_flag = true;
                 }
-                _player.state = playing ? Gst.State.PLAYING : Gst.State.PAUSED;
+                if (song_changed_flag || item_changed_flag) {
+                    var should_play = was_playing || _pending_autoplay;
+                    var target_state = should_play ? Gst.State.PLAYING : Gst.State.PAUSED;
+                    if (_player.state != target_state) {
+                        _player.state = target_state;
+                    }
+                }
             }
+        }
+
+        public void play_item (int value) {
+            _pending_autoplay = true;
+            current_item = value;
+            _pending_autoplay = false;
         }
 
         public Song? current_song {
             get {
                 return _current_song;
             }
+        }
+
+        public bool is_current_song (Song? candidate) {
+            if (candidate == null || _current_song == null)
+                return false;
+            if (candidate == _current_song)
+                return true;
+            var current = (!) _current_song;
+            return candidate.uri == current.uri;
         }
 
         public GstPlayer player {

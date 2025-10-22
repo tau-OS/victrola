@@ -54,12 +54,14 @@ namespace Victrola {
         private ListStore album_store;
         private ListStore current_album_songs;
         private AlbumItem? current_album;
+        private HashTable<int, SongEntry> song_entries;
 
         construct {
             app = (Application) GLib.Application.get_default ();
 
             album_store = new ListStore (typeof (AlbumItem));
             current_album_songs = new ListStore (typeof (Song));
+            song_entries = new HashTable<int, SongEntry> (direct_hash, direct_equal);
 
             build_ui ();
             connect_signals ();
@@ -80,6 +82,11 @@ namespace Victrola {
 
             main_stack.visible_child_name = "albums";
             this.child = main_stack;
+
+            // Update playing indicators when stack page changes
+            main_stack.notify["visible-child-name"].connect (() => {
+                update_playing_indicators ();
+            });
         }
 
         private Gtk.Widget build_albums_page () {
@@ -208,11 +215,23 @@ namespace Victrola {
 
             factory.bind.connect ((item) => {
                 var list_item = (Gtk.ListItem) item;
+                if (!(list_item.item is Song))
+                    return;
                 var song = (Song) list_item.item;
                 var entry = (SongEntry) list_item.child;
 
-                entry.playing = list_item.position == app.current_item;
+                entry.playing = app.is_current_song (song);
                 entry.update (song, SortMode.ALBUM);
+                
+                // Store reference to this entry
+                song_entries.set ((int) list_item.position, entry);
+            });
+
+            factory.unbind.connect ((item) => {
+                var list_item = (Gtk.ListItem) item;
+                var entry = (SongEntry) list_item.child;
+                entry.playing = false;
+                song_entries.remove ((int) list_item.position);
             });
 
             song_list_view = new Gtk.ListView (new Gtk.NoSelection (current_album_songs), factory);
@@ -331,6 +350,7 @@ namespace Victrola {
 
             current_album_songs.splice (0, 0, sorted_songs.data);
             main_stack.visible_child_name = "album-detail";
+            update_playing_indicators ();
         }
 
         private void on_song_activated (uint position) {
@@ -343,25 +363,28 @@ namespace Victrola {
             for (uint i = 0; i < song_count; i++) {
                 var main_song = (Song) app.song_list.get_item (i);
                 if (main_song.uri == song.uri) {
-                    app.current_item = (int) i;
+                    app.play_item ((int) i);
+                    update_playing_indicators ();
                     break;
                 }
             }
         }
 
-        private void update_playing_indicators () {
-            // Update playing indicators in both views
-            if (album_grid_view.model != null) {
-                var count = album_grid_view.model.get_n_items ();
-                for (uint i = 0; i < count; i++) {
-                    album_grid_view.model.items_changed (i, 0, 0);
-                }
-            }
+        public void update_playing_indicators () {
+            // Directly update the song entries
+            var current_song = app.current_song;
+            if (current_song == null)
+                return;
 
-            if (song_list_view.model != null) {
-                var count = song_list_view.model.get_n_items ();
-                for (uint i = 0; i < count; i++) {
-                    song_list_view.model.items_changed (i, 0, 0);
+            // Update all visible song entries
+            var keys = song_entries.get_keys ();
+            foreach (var pos in keys) {
+                var entry = song_entries.get (pos);
+                if (entry != null) {
+                    var song = (Song?) current_album_songs.get_item ((uint) pos);
+                    if (song != null) {
+                        entry.playing = app.is_current_song (song);
+                    }
                 }
             }
         }

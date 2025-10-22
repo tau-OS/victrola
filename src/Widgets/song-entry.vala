@@ -22,6 +22,7 @@ namespace Victrola {
             picon = new Gtk.Image ();
             picon.icon_name = "media-playback-start-symbolic";
             picon.pixel_size = 24;
+            picon.margin_end = 12;
             picon.visible = false;
             picon.set_parent (this);
 
