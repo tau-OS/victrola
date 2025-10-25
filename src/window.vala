@@ -244,12 +244,14 @@ namespace Victrola {
                 if (album.folded) {
                     info_box.remove_css_class ("side-pane");
                     info_box.remove_css_class ("side-pane-margin");
+                    lyrics_box.remove_css_class ("side-pane-margin");
                     lyrics_box.add_css_class ("side-pane-mobile-margin");
                     info_title.show_back = true;
                     infogridbin.add_css_class ("sidebin");
                 } else {
                     info_box.add_css_class ("side-pane");
                     info_box.add_css_class ("side-pane-margin");
+                    lyrics_box.add_css_class ("side-pane-margin");
                     lyrics_box.remove_css_class ("side-pane-mobile-margin");
                     info_title.show_back = false;
                     infogridbin.remove_css_class ("sidebin");
