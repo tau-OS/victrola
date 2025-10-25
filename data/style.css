@@ -130,5 +130,8 @@
     padding: 24px;
 }
 .view-lyric {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.66rem;
     border-radius: 12px 12px 0 0;
 }
