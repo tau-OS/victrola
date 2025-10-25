@@ -239,6 +239,7 @@ namespace Victrola {
 
             listgrid.remove_css_class ("sidebar-view");
             info_box.add_css_class ("side-pane-margin");
+            lyrics_box.add_css_class ("side-pane-margin");
 
             album.notify["folded"].connect (() => {
                 if (album.folded) {
