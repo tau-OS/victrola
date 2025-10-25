@@ -22,6 +22,7 @@
 }
 .play-bar-mobile {
     background: @surface_container_bg_color;
+    box-shadow: 0 -1px 0 0 @outline, 0 1px 0 0 @outline;
 }
 .play-button {
     background: alpha(@accent_bg_color, 0.2);
@@ -84,33 +85,17 @@
 .side-pane {
     border-radius: 12px;
     background: @surface_container_low_bg_color;
-    margin: 0 8px 8px 8px;
     box-shadow: 0 0 0 1px @outline;
+}
+.side-pane-margin {
+    margin: 0 8px 8px 8px;
+}
+.side-pane-mobile-margin {
+    margin: 0 8px 0 8px;
 }
 
 .side-pane .bottom-bar {
     border-radius: 0 0 12px 12px;
-}
-
-.music-navrail {
-    background: @surface_container_high_bg_color;
-}
-
-.music-navrail button image,
-.music-navrail button label {
-    color: @accent_container_fg_color;
-}
-
-.music-navrail button image {
-    background: none;
-}
-
-.music-navrail button:hover image {
-    background: @accent_container_bg_color;
-}
-
-.music-navrail button:checked image {
-    background: shade(@accent_container_bg_color, 0.95);
 }
 
 .light {
@@ -133,5 +118,14 @@
     font-size: 20px;
     font-weight: 300;
     line-height: 1.66rem;
-    border-radius: 12px 12px 0 0;
+    border-radius: 12px;
+}
+
+.spacer {
+    min-height: 40px;
+    min-width: 40px;
+}
+
+.sidebin {
+    background: @surface_container_low_bg_color;
 }

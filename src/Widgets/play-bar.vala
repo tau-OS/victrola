@@ -22,6 +22,7 @@ namespace Victrola {
         private He.Button _play = new He.Button (null, "");
         private He.Button _next = new He.Button (null, "");
         private He.Button _stop = new He.Button (null, "");
+        public Gtk.ToggleButton lyrics_btn = new Gtk.ToggleButton ();
         private He.GroupedButton main_controls;
         private int _duration = 1;
         private int _position = 0;
@@ -85,6 +86,14 @@ namespace Victrola {
                 app.single_loop = !app.single_loop;
             });
 
+            lyrics_btn.valign = Gtk.Align.CENTER;
+            lyrics_btn.icon_name = "show-lyrics-symbolic";
+            lyrics_btn.halign = Gtk.Align.CENTER;
+            lyrics_btn.tooltip_text = _("Show Lyrics");
+            lyrics_btn.add_css_class ("iconic-button");
+            lyrics_btn.add_css_class ("media-toggle-button");
+            lyrics_btn.remove_css_class ("image-button");
+
             _stop.halign = Gtk.Align.END;
             _stop.hexpand = true;
             _stop.action_name = ACTION_APP + ACTION_STOP;
@@ -94,6 +103,7 @@ namespace Victrola {
             _stop.is_iconic = true;
 
             bottom_box.append (_repeat);
+            bottom_box.append (lyrics_btn);
             bottom_box.append (_stop);
 
             append (main_controls);

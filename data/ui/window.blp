@@ -119,22 +119,20 @@ template $VictrolaMainWindow : He.ApplicationWindow {
                     orientation: vertical;
                     visible: bind album.folded;
                   }
-                  He.NavigationRail {
-                    stack: stack;
-                    orientation: horizontal;
-                    visible: bind album.folded;
-                    styles [
-                      "music-navrail"
-                    ]
-                  }
                 }
               ;
+            }
+            He.NavigationRail {
+              stack: stack;
+              orientation: horizontal;
+              visible: bind album.folded;
             }
           };
         }
 
         Bis.AlbumPage {
           child:
+            He.Bin infogridbin {
               Box infogrid {
                 orientation: vertical;
                 hexpand-set: true;
@@ -143,13 +141,21 @@ template $VictrolaMainWindow : He.ApplicationWindow {
                   show-back: bind album.folded;
                   show-left-title-buttons: bind album.folded;
                   show-right-title-buttons: true;
+                  width-request: 417;
 
-                  viewtitle-widget: Gtk.Box {};
+                  viewtitle-widget: Gtk.Label {
+                    label: _("Now Playing");
 
-                  [titlebar-toggle]
-                  ToggleButton lyrics_btn {
-                    icon-name: "show-lyrics-symbolic";
-                    tooltip-text: _("Show Lyrics");
+                    styles [
+                      "view-title"
+                    ]
+                  };
+
+                  [titlebar-button]
+                  Gtk.Box spacer {
+                    styles [
+                      "spacer"
+                    ]
                   }
                 }
 
@@ -185,6 +191,7 @@ template $VictrolaMainWindow : He.ApplicationWindow {
                   }
                   ;
                 }
+              }
             }
           ;
         }

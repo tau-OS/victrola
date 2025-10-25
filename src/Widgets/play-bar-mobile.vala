@@ -93,7 +93,7 @@ namespace Victrola {
 
             var click = new Gtk.GestureClick ();
             click.pressed.connect (() => {
-                ((MainWindow) app.active_window).album.set_visible_child (((MainWindow) app.active_window).infogrid);
+                ((MainWindow) app.active_window).album.set_visible_child (((MainWindow) app.active_window).infogridbin);
             });
             cover_action.add_controller (click);
 

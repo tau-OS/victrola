@@ -23,6 +23,7 @@ namespace Victrola {
         string current_lyric;
         Gtk.TextView view;
         Gtk.ScrolledWindow scrolled;
+        Gtk.Label no_lyrics_label;
         public string last_title;
         public string last_artist;
         private int64 last_position;
@@ -41,8 +42,23 @@ namespace Victrola {
 
         construct {
             var player = app.player;
+            var main_window = (MainWindow) window;
 
             fetcher = new LyricsFetcher ();
+
+            // Create back button (only visible in non-folded/desktop view)
+            var back_button = new He.Button ("", "");
+            back_button.icon_name = "go-previous-symbolic";
+            back_button.is_iconic = true;
+            back_button.add_css_class ("media-toggle-button");
+            back_button.margin_start = 12;
+            back_button.margin_top = 12;
+            back_button.halign = Gtk.Align.START;
+            back_button.clicked.connect (() => {
+                main_window.play_bar.lyrics_btn.active = false;
+            });
+            // Bind visibility to album.folded - show button when NOT folded (desktop)
+            main_window.album.bind_property ("folded", back_button, "visible", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
 
             view = new Gtk.TextView () {
                 editable = false,
@@ -59,37 +75,40 @@ namespace Victrola {
             scrolled = new Gtk.ScrolledWindow ();
             scrolled.set_child (view);
 
-            var get_lyrics_button = new He.Button ("", "Fetch Lyrics") {
+            no_lyrics_label = new Gtk.Label (_("No Lyrics")) {
                 halign = Gtk.Align.CENTER,
-                is_pill = true,
-                margin_bottom = 18
+                valign = Gtk.Align.CENTER,
+                vexpand = true,
+                hexpand = true
             };
+            no_lyrics_label.add_css_class ("dim-label");
+            no_lyrics_label.add_css_class ("title-1");
 
-            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12);
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 6);
             main_box.vexpand = main_box.hexpand = true;
+            main_box.append (back_button);
             main_box.append (scrolled);
-            main_box.append (get_lyrics_button);
+            main_box.append (no_lyrics_label);
 
             this.child = main_box;
             this.vexpand = this.hexpand = true;
 
-            get_lyrics_button.clicked.connect (() => {
-                update_lyric.begin ();
-            });
+            // Initially show the no lyrics label
+            scrolled.visible = false;
+            no_lyrics_label.visible = true;
         }
 
         private async void update_lyric() {
             try {
                 clean_text_buffer();
-                insert_text(_("Searching for lyrics..."));
         
                 warning ("Fetching lyrics for title: '%s', artist: '%s'", cur_song.title, cur_song.artist);
                 var lyrics = yield fetcher.fetch_lyrics(cur_song.title, cur_song.artist);
                 
-                if (lyrics == "") {
-                    warning ("Lyrics object is null");
-                    clean_text_buffer();
-                    insert_text(_("No lyrics found!"));
+                if (lyrics == "" || lyrics == null) {
+                    warning ("No lyrics found");
+                    scrolled.visible = false;
+                    no_lyrics_label.visible = true;
                     return;
                 }
         
@@ -100,6 +119,8 @@ namespace Victrola {
                 show_lyrics();
             } catch (Error e) {
                 warning("Unexpected error while fetching lyrics: %s", e.message);
+                scrolled.visible = false;
+                no_lyrics_label.visible = true;
             }
         }
 
@@ -122,11 +143,14 @@ namespace Victrola {
 
         private void show_lyrics () {
             scrolled.get_vadjustment ().set_value (0);
-            scrolled.show ();
+            scrolled.visible = true;
+            no_lyrics_label.visible = false;
         }
 
         public void update_cur_song (Song song) {
             cur_song = song;
+            // Automatically fetch lyrics when song changes
+            update_lyric.begin ();
         }
     }
 }

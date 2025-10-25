@@ -44,8 +44,7 @@ namespace Victrola {
         private unowned Gtk.ListView list_view3;
         [GtkChild]
         public unowned Gtk.ToggleButton search_btn;
-        [GtkChild]
-        public unowned Gtk.ToggleButton lyrics_btn;
+        private Gtk.ToggleButton lyrics_btn;
         [GtkChild]
         private unowned Gtk.MenuButton menu_btn;
         [GtkChild]
@@ -60,19 +59,23 @@ namespace Victrola {
         public unowned He.Bin infobin;
         [GtkChild]
         public unowned He.Bin mobile_infobin;
+        [GtkChild]
+        public unowned He.Bin infogridbin;
+        [GtkChild]
+        private unowned Gtk.Box spacer;
 
         private string _search_text = "";
         private string _search_property = "";
         private SearchType _search_type = SearchType.ALL;
-        private PlayBar play_bar;
+        public PlayBar play_bar;
         private PlayBarMobile play_bar_mobile;
         private InfoPage info_page;
         private LyricPage lyric_page;
         private ArtistPage artist_page;
         private AlbumPage album_page;
-    private int all_songs_highlight = -1;
-    private bool suppress_scroll = false;
-    private HashTable<int, SongEntry> song_entries;
+        private int all_songs_highlight = -1;
+        private bool suppress_scroll = false;
+        private HashTable<int, SongEntry> song_entries;
         uint num3;        public SortMode sort_mode {
             set {
                 switch (value) {
@@ -121,6 +124,9 @@ namespace Victrola {
             info_page = new InfoPage ();
             info_box.append (info_page);
             info_box.append (play_bar);
+
+            // Get lyrics button from play_bar
+            lyrics_btn = play_bar.lyrics_btn;
 
             info_box_mobile.append (play_bar_mobile);
 
@@ -222,22 +228,39 @@ namespace Victrola {
 
             info_title.back_button.clicked.connect (() => {
                 if (album.folded) {
-                    album.set_visible_child (listgrid);
+                    // If lyrics are showing, untoggle them first
+                    if (lyrics_btn.active) {
+                        lyrics_btn.active = false;
+                    } else {
+                        album.set_visible_child (listgrid);
+                    }
                 }
             });
 
             listgrid.remove_css_class ("sidebar-view");
+            info_box.add_css_class ("side-pane-margin");
 
             album.notify["folded"].connect (() => {
                 if (album.folded) {
                     info_box.remove_css_class ("side-pane");
+                    info_box.remove_css_class ("side-pane-margin");
+                    lyrics_box.add_css_class ("side-pane-mobile-margin");
+                    info_title.show_back = true;
+                    infogridbin.add_css_class ("sidebin");
                 } else {
                     info_box.add_css_class ("side-pane");
+                    info_box.add_css_class ("side-pane-margin");
+                    lyrics_box.remove_css_class ("side-pane-mobile-margin");
+                    info_title.show_back = false;
+                    infogridbin.remove_css_class ("sidebin");
                 }
             });
 
             infobin.content_color_override = true;
             mobile_infobin.content_color_override = true;
+            infogridbin.content_color_override = true;
+
+            spacer.remove_css_class ("disclosure-button");
         }
 
         private void on_bind_item (Gtk.SignalListItemFactory factory, Object item) {
@@ -256,7 +279,6 @@ namespace Victrola {
         }
 
         private void on_index_changed (int index, uint size) {
-            var app = (Application) application;
             action_set_enabled (ACTION_APP + ACTION_PREV, index > 0);
             action_set_enabled (ACTION_APP + ACTION_NEXT, index < (int) size - 1);
             if (!suppress_scroll)
@@ -477,11 +499,13 @@ namespace Victrola {
                     accent_color.parse (He.hexcode_argb (top));
                     infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                     mobile_infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
+                    infogridbin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                 } else {
                     Gdk.RGBA accent_color = { 0 };
                     accent_color.parse ("#f99e5c");
                     infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                     mobile_infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
+                    infogridbin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                 }
                 loop.quit ();
             });
