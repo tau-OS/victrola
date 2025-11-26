@@ -172,7 +172,7 @@ namespace Victrola {
             });
             list_view3.factory = factory3;
             list_view3.model = new Gtk.NoSelection (app.song_list);
-            
+
             list_view3.activate.connect ((index) => {
                 suppress_scroll = true;
                 app.play_item ((int) index);
@@ -276,7 +276,7 @@ namespace Victrola {
             var is_playing = app.is_current_song (song);
             entry.playing = is_playing;
             entry.update (song, app.sort_mode);
-            
+
             // Store reference to this entry
             song_entries.set ((int) list_item.position, entry);
         }
@@ -331,7 +331,9 @@ namespace Victrola {
                     paintable = Gdk.Texture.for_pixbuf ((!) pixbufs[0]);
                 }
 
-                accent_set.begin ((!) pixbufs[0].scale_simple (128, 128, Gdk.InterpType.NEAREST));
+                // Use smaller image (32x32) for much faster accent color extraction
+                // The color quantizer samples pixels anyway, so high resolution isn't needed
+                accent_set.begin ((!) pixbufs[0].scale_simple (32, 32, Gdk.InterpType.BILINEAR));
 
                 var art = update_cover_paintable (info_page.cover_art, paintable);
                 info_page.cover_art.paintable = art;
@@ -381,7 +383,7 @@ namespace Victrola {
                     new_entry.playing = true;
                 }
             }
-            
+
             // Scroll to the item if not suppressing
             if (!suppress_scroll && index >= 0 && index < (int) app.song_list.get_n_items ()) {
                 scroll_to_item (index);
@@ -492,6 +494,10 @@ namespace Victrola {
         }
 
         public async void accent_set (Gdk.Pixbuf? pixbuf) {
+            // Null check to avoid crashes
+            if (pixbuf == null) {
+                return;
+            }
             var loop = new MainLoop ();
             He.Ensor.accent_from_pixels_async.begin (pixbuf.get_pixels_with_length (), pixbuf.get_has_alpha (), (obj, res) => {
                 GLib.Array<int> result = He.Ensor.accent_from_pixels_async.end (res);
@@ -505,7 +511,7 @@ namespace Victrola {
                     infogridbin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                 } else {
                     Gdk.RGBA accent_color = { 0 };
-                    accent_color.parse ("#f99e5c");
+                    accent_color.parse ("#F7812B");
                     infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                     mobile_infobin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
                     infogridbin.content_source_color = { accent_color.red, accent_color.green, accent_color.blue };
