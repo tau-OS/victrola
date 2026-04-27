@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: com.fyralabs.Victrola\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-21 23:25-0800\n"
-"PO-Revision-Date: 2026-04-27 03:21+0000\n"
+"PO-Revision-Date: 2026-04-27 04:39+0000\n"
 "Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://weblate.fyralabs.com/projects/tauOS/"
 "victrola/ka/>\n"
@@ -45,7 +45,7 @@ msgstr "დაუკარით თქვენი მუსიკა ელე
 
 #: data/app.desktop.in:12
 msgid "music;sound;player;media;audio;playlist;"
-msgstr "music;sound;player;media;audio;playlist;მუსიკა;დასაკრავისია;"
+msgstr "დამკვრელი;music;sound;player;media;audio;playlist;მუსიკა;დასაკრავისია;"
 
 #: data/ui/window.blp:39
 msgid "Search music"
