@@ -1,3 +1,7 @@
+# Victrola is Deprecated
+
+Try out any of [these great apps](https://flathub.org/en/apps/search?q=music%20player)!
+
 <img align="left" style="vertical-align: middle" width="120" height="120" src="data/icons/hicolor/scalable/apps/app.svg">
 
 # Victrola
